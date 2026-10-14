@@ -1,0 +1,20 @@
+# ข้อมูล (ใหญ่เกิน GitHub และโหลดใหม่ได้จาก CDC / OSF)
+data/**
+!data/**/
+!data/**/README.md
+metadata/manifest.csv
+project.zip
+*.zip
+*.tar.bz2
+*.parquet
+
+# Python / environment
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.vscode/

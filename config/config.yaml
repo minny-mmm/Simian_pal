@@ -1,0 +1,27 @@
+# ตั้งค่าหลักของ pipeline (path ทั้งหมดอ้างอิงจาก root ของโปรเจค)
+
+paths:
+  raw: data/raw
+  processed: data/processed
+  sensor_data: data/processed/sensor_data
+  manifest: metadata/manifest.csv
+
+datasets:
+  cops:
+    enabled: true
+    raw_dir: data/raw/cops
+    subject_file: data/processed/subject_data/subject_metadata_COv.csv
+    sampling_rate_hz: 100
+    acc_unit: g
+    gyro_unit: null          # COPS ไม่มี gyroscope
+    # ค่า |acc| เฉลี่ย ~1.0 g -> ยังรวมแรงโน้มถ่วง
+    acc_includes_gravity: true
+
+  nhanes:
+    enabled: false           # ยังไม่มีข้อมูล เปิดเมื่อวางไฟล์ใน data/raw/nhanes แล้ว
+    raw_dir: data/raw/nhanes
+    subject_file: data/processed/subject_data/subject_metadata_NHA.csv
+    sampling_rate_hz: 80
+    acc_unit: g
+    gyro_unit: null
+    acc_includes_gravity: true
