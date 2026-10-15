@@ -6,6 +6,15 @@ paths:
   sensor_data: data/processed/sensor_data
   manifest: metadata/manifest.csv
 
+# ---------------------------------------------------------------- ที่เก็บบน S3 (python tools/s3_sync.py)
+# layout บน S3 = layout ในเครื่อง: data/raw/cops/... <-> <s3_root>/data/raw/cops/...
+# อ่าน raw จาก S3 ตรง ๆ: เปลี่ยน datasets.<ชื่อ>.raw_dir เป็น <s3_root>/data/raw/...
+storage:
+  s3_root: s3://CHANGE-ME-bucket/pd-pipeline   # ยังไม่มี bucket: แก้ตรงนี้ทีหลัง
+  aws_profile: null         # null = ใช้ค่า default ของ AWS CLI / ตัวแปร AWS_PROFILE
+  region: null              # เช่น ap-southeast-1
+  endpoint_url: null        # ใช้กับ S3 จำลองเท่านั้น ปกติไม่ต้องใส่
+
 datasets:
   cops:
     enabled: true
@@ -18,10 +27,92 @@ datasets:
     acc_includes_gravity: true
 
   nhanes:
-    enabled: false           # ยังไม่มีข้อมูล เปิดเมื่อวางไฟล์ใน data/raw/nhanes แล้ว
-    raw_dir: data/raw/nhanes
+    enabled: false           # src/pipeline.py ยังไม่รองรับ NHANES (ขั้น clean อ่านเองได้แล้ว)
+    raw_dir: data/raw/nhanes/2013-2014
     subject_file: data/processed/subject_data/subject_metadata_NHA.csv
     sampling_rate_hz: 80
     acc_unit: g
     gyro_unit: null
     acc_includes_gravity: true
+
+# ---------------------------------------------------------------- ขั้น clean (python -m src.clean.run)
+# ทุกเกณฑ์ใช้กับทุก dataset เหมือนกัน ยกเว้นที่ระบุ datasets ไว้ชัด (harmonize)
+clean:
+  out_dir: data/clean                       # data/clean/<dataset>/<subject_id>.parquet + .qc.json
+  qc_summary: reports/qc_summary.csv
+  subjects:
+    cops_summary: reports/cops_visit_summary.csv   # ใช้คนที่ use_for_main_model == yes
+    cops_splits: metadata/cops_splits.csv          # subject_id, use_wrist, split
+    nhanes_selected: metadata/selected_seqn.csv    # seqn, split
+  default_visit: outpatient   # dataset ที่ไม่มี diary (NHANES) ถือว่าอยู่บ้านทั้งหมด
+
+  time:                       # ขั้น 2
+    max_interp_gap_s: 1.0     # ช่องว่าง <= ค่านี้ interpolate ได้ ยาวกว่านี้ = ไม่มีข้อมูล
+  calibration:                # ขั้น 3 (van Hees 2014 / GGIR)
+    window_s: 10
+    sd_max_g: 0.013           # หน้าต่างนิ่ง: SD ทุกแกน < 13 mg
+    sphere_g: 0.3             # จุดนิ่งต้องกระจายทั้งฝั่ง + และ - ของทุกแกนเกินค่านี้
+    max_norm_dev_g: 0.15      # ไม่ใช้หน้าต่างนิ่งที่ |acc| ห่างจาก 1 g เกินนี้ (เซ็นเซอร์เสีย)
+    min_points: 50
+    max_iter: 1000
+    tol: 1.0e-10
+  resample:                   # ขั้น 4
+    fs_out: 50
+    chunk_s: 600              # resample ทีละ 10 นาที (ประหยัด RAM)
+    context_s: 5              # ข้อมูลส่วนเกินสองข้างกันผลจากขอบ
+    min_run_s: 1.0            # ช่วงต่อเนื่องสั้นกว่านี้ทิ้ง (นับเป็นไม่มีข้อมูล)
+  clip:                       # ขั้น 5
+    limit_g: 6.0
+    flag_g: 5.9
+  abnormal:                   # ขั้น 6
+    stuck_min_s: 60           # ทุกแกนค่าเท่าเดิมนานเท่านี้ = ค่าค้าง
+    stuck_eps_g: 1.0e-5
+    zero_g: 0.05              # ทุกแกน |ค่า| < นี้ ...
+    zero_min_s: 1.0           # ... นานเท่านี้ = ค่า 0 ผิดปกติ
+    spike_g: 3.0              # กระโดดเกินนี้ในตัวอย่างเดียวแล้วกลับ = spike
+    spike_pad_s: 0.1
+    gravity_window_s: 10      # แรงโน้มถ่วงเป็นไปไม่ได้: หน้าต่างนิ่ง (SD < gravity_sd_max_g)
+    gravity_sd_max_g: 0.013
+    gravity_tol_g: 0.10       #   ที่ |acc| ห่างจาก 1 g เกินนี้ (หลัง calibrate)
+    gravity_hour_tol_g: 0.10  # ชั่วโมงที่มัธยฐาน |acc| ห่างจาก 1 g เกินนี้ -> ทั้งชั่วโมง
+    gravity_hour_min_windows: 6   # ต้องมีข้อมูลอย่างน้อย 6 หน้าต่าง (1 นาที) ในชั่วโมงนั้น
+  ism:                        # ขั้น 7
+    window_s: 10
+    range_max_g: 0.05         # ทุกแกน max-min <= 50 mg = ช่วงนิ่ง
+    min_valid_frac: 0.5
+    constant_window_s: 1      # หน้าต่าง 1 วิ ที่ทุกแกน SD < 1 mg = เครื่องเขียนค่าเดิมซ้ำ (idle mode)
+    constant_sd_max_g: 0.001  #   (เซ็นเซอร์จริงมี noise ~5 mg เสมอ)
+  harmonize:                  # ขั้น 7 (ต่อ) ทำเฉพาะ dataset ที่ระบุ
+    noise_window_s: 10
+    min_noise_windows: 30     # หน้าต่างถอดนาฬิกาน้อยกว่านี้ -> วัด noise จากช่วงนิ่ง (ISM) แทน
+    # ลำดับ: เติม noise ก่อน แล้วปัดเป็นขั้น ทั้งสองชุด
+    # (ถ้าปัดแค่ COPS ค่า NHANES ที่เติม noise แล้วจะต่อเนื่อง แยกเครื่องได้ 100% จากความละเอียดค่า)
+    quantize:
+      datasets: [cops, nhanes]
+      step_g: 0.0039          # ปัดเป็นขั้น 3.9 mg (ความละเอียด GENEActiv)
+    add_noise:
+      datasets: [nhanes]
+      target_mg: auto         # auto = มัธยฐาน noise floor ของ COPS กลุ่ม train ที่ clean แล้ว
+      seed: 0
+  nonwear:                    # ขั้น 8
+    window_min: 60
+    step_min: 15
+    sd_max_g: 0.013           # SD ของค่าดิบ
+    range_max_g: 0.050        # range ของค่าเฉลี่ยทุก range_smooth_s วินาที
+    range_smooth_s: 1         #   (range ค่าดิบใน 1 ชม. ถูก noise ดันจน ~50 mg เอง)
+    min_axes: 2
+    min_valid_frac: 0.5
+  sleep:                      # ขั้น 9 (HDCZA, van Hees 2018)
+    epoch_s: 5
+    median_window_min: 5
+    percentile: 10
+    multiplier: 15
+    threshold_min_deg: 0.13
+    threshold_max_deg: 0.50
+    min_block_min: 30
+    max_gap_min: 60
+    min_window_hours: 12      # หน้าต่างเที่ยง-เที่ยงที่มีข้อมูลน้อยกว่านี้ไม่หาช่วงนอน
+  days:                       # ขั้น 11
+    min_valid_hours: 10       # วันที่ใช้ได้ = เวลาตื่นที่ใส่และไม่ติดธง >= ค่านี้
+    min_valid_days: 3         # คนที่มีวันใช้ได้น้อยกว่านี้ไม่ใช้
+    include_visits: [outpatient]
