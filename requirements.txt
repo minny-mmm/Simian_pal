@@ -3,3 +3,6 @@ pandas>=2.2
 pyarrow>=17
 PyYAML>=6.0
 pytest>=8.0
+s3fs>=2024.6          # อ่าน/เขียน s3:// (ดึง boto/aiobotocore มาด้วย)
+universal_pathlib>=0.2  # Path API แบบเดียวกันสำหรับ s3://
+moto[server]>=5.0     # S3 จำลองสำหรับ tests/test_storage.py เท่านั้น

@@ -9,6 +9,12 @@ MANIFEST_COLUMNS = [
     "n_samples", "duration_s", "fs_measured_hz", "fs_expected_hz",
     "acc_unit", "gyro_unit", "acc_includes_gravity", "status",
 ]
+# label ระดับ recording จาก reader.recording_labels() (ว่างถ้า dataset ไม่มี)
+LABEL_COLUMNS = [
+    "visit", "wearable", "kinesia", "kinesia_score", "tremor_score",
+    "freezing_score", "fall_score", "medication",
+]
+MANIFEST_COLUMNS += LABEL_COLUMNS
 
 
 def file_md5(path):

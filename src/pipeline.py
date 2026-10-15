@@ -16,6 +16,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 import yaml
 
+from src import storage
 from src.ingestion import READERS
 from src.schema.sensor_schema import summarize_recording, to_sensor_table
 from src.schema.subject_schema import to_subject_frame
@@ -33,8 +34,10 @@ def ingest_dataset(key, cfg, paths, force):
     subjects = reader.read_subjects()
     condition = {s["subject_id"]: s["condition"] or "unknown" for s in subjects}
     rows, seen_md5 = [], set()
+    recordings = reader.list_recordings()
+    labels = reader.recording_labels(recordings)
 
-    for rec in reader.list_recordings():
+    for rec in recordings:
         if rec.subject_id not in condition:
             raise ValueError(f"{rec.recording_id}: ไม่พบ {rec.subject_id} ใน subject metadata")
         md5 = file_md5(rec.path)
@@ -48,6 +51,7 @@ def ingest_dataset(key, cfg, paths, force):
             md5=md5, is_duplicate=md5 in seen_md5, processed_path=None,
             fs_expected_hz=cfg.get("sampling_rate_hz"), acc_unit=cfg.get("acc_unit"),
             gyro_unit=cfg.get("gyro_unit"), acc_includes_gravity=cfg.get("acc_includes_gravity"),
+            **labels.get(rec.recording_id, {}),
         )
         seen_md5.add(md5)
 
@@ -66,7 +70,7 @@ def ingest_dataset(key, cfg, paths, force):
             row.update(summarize_recording(df), processed_path=str(out.relative_to(ROOT)))
         rows.append(row)
 
-    print(f"[{reader.name}] subjects={len(subjects)} recordings={len(rows)}")
+    print(f"[{reader.name}] subjects={len(subjects)} recordings={len(rows)} labeled={len(labels)}")
     return subjects, rows
 
 
@@ -79,6 +83,7 @@ def main():
     args = ap.parse_args()
 
     config = load_config(args.config)
+    storage.configure(config.get("storage"))
     paths = config["paths"]
     keys = args.datasets or [k for k, c in config["datasets"].items() if c.get("enabled")]
 
