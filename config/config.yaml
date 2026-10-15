@@ -43,7 +43,7 @@ clean:
   subjects:
     cops_summary: reports/cops_visit_summary.csv   # ใช้คนที่ use_for_main_model == yes
     cops_splits: metadata/cops_splits.csv          # subject_id, use_wrist, split
-    nhanes_selected: metadata/selected_seqn.csv    # seqn, split
+    nhanes_selected: metadata/nhanes_splits.csv    # seqn, split
   default_visit: outpatient   # dataset ที่ไม่มี diary (NHANES) ถือว่าอยู่บ้านทั้งหมด
 
   time:                       # ขั้น 2

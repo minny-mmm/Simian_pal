@@ -1,4 +1,4 @@
-"""แบ่งคนเป็น train / valid / test แล้วเขียน metadata/cops_splits.csv และ metadata/selected_seqn.csv
+"""แบ่งคนเป็น train / valid / test แล้วเขียน metadata/cops_splits.csv และ metadata/nhanes_splits.csv
 
     python tools/make_splits.py            # แบ่งใหม่ (seed คงที่ = ได้ผลเดิมทุกครั้ง)
     python tools/make_splits.py --check    # แสดงสัดส่วนในแต่ละกลุ่ม ไม่เขียนไฟล์
@@ -9,7 +9,7 @@
   stratify ตามชนิด PD x ระดับ H&Y (<= 2 / >= 2.5) แล้วลอง seed 0..N_SEEDS-1
   เลือก seed ที่สัดส่วนเพศ, ชนิด, H&Y, DBS และอายุเฉลี่ยของ 3 กลุ่มใกล้กันที่สุด
   use_wrist = ข้อมือข้างไม่ถนัด (ตรงกับ NHANES ที่ใส่ข้อมือข้างไม่ถนัด)
-- NHANES: ทุก seqn ใน metadata/selected_seqn.csv (สร้างด้วย tools/select_nhanes.py)
+- NHANES: ทุก seqn ใน metadata/nhanes_splits.csv (สร้างด้วย tools/select_nhanes.py)
   กระจายเพศ x ช่วงอายุ 10 ปี ถ้ามีคอลัมน์ sex / age และมีคนพอ
 """
 import argparse
@@ -62,7 +62,8 @@ def cops_splits():
     best = min(range(N_SEEDS), key=lambda sd: imbalance(df.assign(split=assign(df["subject_id"], strata, sd).values)))
     df["split"] = assign(df["subject_id"], strata, best).values
     print(f"COPS: seed {best} (imbalance {imbalance(df):.3f})")
-    pilot = pd.read_csv(ROOT / "tools/pilot_sample.csv")
+    pilot_path = ROOT / "tools/pilot_sample.csv"                # ไม่อยู่ใน git: ไม่มีไฟล์ = pilot เป็น False ทุกคน
+    pilot = pd.read_csv(pilot_path) if pilot_path.exists() else pd.DataFrame(columns=["dataset", "id"])
     df["pilot"] = df["subject_id"].isin(pilot.loc[pilot["dataset"] == "COPS", "id"])   # อยู่ใน pilot_sample.csv
     return df.rename(columns={"Sex": "sex", "Age": "age", "Handedness": "handedness",
                               "PD_HoehnAndYahr": "hoehn_yahr", "PD_Subtype": "pd_subtype", "DBS": "dbs"})[
@@ -71,7 +72,7 @@ def cops_splits():
 
 
 def nhanes_splits():
-    path = ROOT / "metadata/selected_seqn.csv"
+    path = ROOT / "metadata/nhanes_splits.csv"
     df = pd.read_csv(path, dtype={"seqn": str}).drop(columns="split", errors="ignore")
     strata = None
     if {"sex", "age"} <= set(df.columns):
@@ -100,8 +101,8 @@ def main():
     show(nh.assign(age_group=nh["age"] // 10 * 10), ["sex", "age_group"])
     if not args.check:
         cops.to_csv(ROOT / "metadata/cops_splits.csv", index=False)
-        nh.to_csv(ROOT / "metadata/selected_seqn.csv", index=False)
-        print("เขียน metadata/cops_splits.csv, metadata/selected_seqn.csv")
+        nh.to_csv(ROOT / "metadata/nhanes_splits.csv", index=False)
+        print("เขียน metadata/cops_splits.csv, metadata/nhanes_splits.csv")
 
 
 if __name__ == "__main__":

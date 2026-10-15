@@ -18,13 +18,13 @@
   diary, demographics)│         (วันบ้าน/รพ., use_for_main_model)
                       │                 │
  data/raw/nhanes/    ─┼─> tools/select_nhanes.py                 ┌─> src/clean/run.py ──────> data/clean/<ds>/<id>.parquet
- (แบบสอบถาม, PAX     │      -> metadata/selected_seqn.csv         │   (อ่านไฟล์ดิบผ่าน           data/clean/<ds>/<id>.qc.json
+ (แบบสอบถาม, PAX     │      -> metadata/nhanes_splits.csv         │   (อ่านไฟล์ดิบผ่าน           data/clean/<ds>/<id>.qc.json
   summary, tar.bz2)   │         (NHANES 150 คน)                  │    src/ingestion/ แล้วรัน      reports/qc_summary.csv
                       │                 │                         │    src/clean/steps.py)              │
                       │                 v                         │                                     v
                       │      tools/make_splits.py ────────────────┘                      notebooks/clean_check.ipynb
                       │      -> metadata/cops_splits.csv  (split + ข้อมือที่ใช้)                 (ตรวจด้วยตา + LR ร่องรอยเครื่อง)
-                      │         + คอลัมน์ split ใน selected_seqn.csv                                  │
+                      │         + คอลัมน์ split ใน nhanes_splits.csv                                  │
                       │                                                                              v
                       └─> src/pipeline.py (ทางเลือก, COPS เท่านั้น)                          feature extraction + โมเดล
                             -> data/processed/ + metadata/manifest.csv                           (ยังไม่ได้เริ่ม)
@@ -71,10 +71,10 @@
 | ไฟล์ | หน้าที่ |
 | --- | --- |
 | `download_pilot.py` | โหลดชุด pilot จาก CDC / OSF ตาม `pilot_sample.csv` |
-| `pilot_sample.csv` | รายชื่อ pilot 10 คน (NHANES 5, COPS 5) พร้อมเหตุผลที่เลือก |
+| `pilot_sample.csv` | รายชื่อ pilot 10 คน (NHANES 5, COPS 5) พร้อมเหตุผลที่เลือก (ไม่อยู่ใน git; ไม่มีไฟล์ = ไม่เลือก pilot ก่อน) |
 | `cops_diary_visits.py` | สรุปวันบ้าน/รพ. ของ COPS ทุกคน -> `reports/cops_visit_summary.csv` (+ `use_for_main_model`) |
-| `select_nhanes.py` | คัดคนปกติ NHANES 150 คน -> `metadata/selected_seqn.csv` (`--check` ดูจำนวนที่ผ่านแต่ละเกณฑ์) |
-| `make_splits.py` | แบ่ง train / valid / test ตามคน -> `metadata/cops_splits.csv`, คอลัมน์ `split` ใน `selected_seqn.csv` |
+| `select_nhanes.py` | คัดคนปกติ NHANES 150 คน -> `metadata/nhanes_splits.csv` (`--check` ดูจำนวนที่ผ่านแต่ละเกณฑ์) |
+| `make_splits.py` | แบ่ง train / valid / test ตามคน -> `metadata/cops_splits.csv`, คอลัมน์ `split` ใน `nhanes_splits.csv` |
 | `feature_check.py` | ตรวจเร็ว ๆ จากไฟล์ดิบว่า feature หลักไปทิศที่คาดไหม (ยังไม่ผ่าน clean) -> `reports/feature_check*` |
 | `s3_sync.py` | sync `data/` กับ S3 (`status` / `push` / `pull`, ข้ามไฟล์ที่ md5 ตรงกัน) |
 
@@ -99,15 +99,15 @@ data/                           (ไม่อยู่ใน git)
   processed/                    ผลจาก src/pipeline.py
     subject_data/subject_metadata_<dataset>.csv     1 แถว / 1 คน
     sensor_data/<dataset>/<condition>/<subject_id>/<recording_id>.parquet   1 ไฟล์ / 1 recording
-metadata/
+metadata/                       (ไม่อยู่ใน git สร้างใหม่ด้วย tools/)
   cops_splits.csv               COPS 49 คน: subject_id, use_wrist, split, เพศ อายุ H&Y ชนิด DBS, pilot
-  selected_seqn.csv             NHANES 150 คน: seqn, age, sex, valid_days, age_band, pilot, split
-  manifest.csv                  1 แถว / 1 recording (สร้างโดย src/pipeline.py, ไม่อยู่ใน git)
-reports/
+  nhanes_splits.csv             NHANES 150 คน: seqn, age, sex, valid_days, age_band, pilot, split
+  manifest.csv                  1 แถว / 1 recording (สร้างโดย src/pipeline.py)
+reports/                        (ไม่อยู่ใน git)
   cops_visit_summary.csv        จำนวนวันอยู่ รพ. / บ้าน ของ COPS ทุกคน + use_for_main_model
   qc_summary.csv                QC ของขั้น clean 1 แถว / 1 คน
   feature_check/, feature_check_hours.csv   ผลของ tools/feature_check.py
-notebooks/clean_check.ipynb     ตรวจผล clean (กราฟรายวัน, ISM, noise floor, การนอน, LR ร่องรอยเครื่อง)
+notebooks/clean_check.ipynb     (ไม่อยู่ใน git) ตรวจผล clean (กราฟรายวัน, ISM, noise floor, การนอน, LR ร่องรอยเครื่อง)
 tests/
   test_ingestion.py             reader ของ COPS (zip, ข้ามเที่ยงคืน, diary label)
   test_clean.py                 ขั้น clean 2, 4, 7, 8 (เวลา, resample, ISM/noise, ถอดนาฬิกา)
@@ -132,7 +132,7 @@ tests/
 | NHANES (คนปกติ) | SEQN 74132 | ไฟล์ accelerometer ดิบ 1 คน + แบบสอบถามสุขภาพทั้งรอบ 2013–2014 |
 
 ผล clean ตอนนี้: COPS-8, COPS-45, NHANES-74132 ใช้ได้; COPS-29 ไม่ผ่าน (วันใช้ได้ 2 วัน < 3)
-ยังไม่ได้โหลด: COPS คนอื่นใน `cops_splits.csv` และ NHANES ที่เหลือใน `selected_seqn.csv` (~26 GB)
+ยังไม่ได้โหลด: COPS คนอื่นใน `cops_splits.csv` และ NHANES ที่เหลือใน `nhanes_splits.csv` (~26 GB)
 
 ## วิธีรัน
 
@@ -150,8 +150,9 @@ python -m src.pipeline --datasets cops  # เฉพาะ dataset ที่เ�
 python -m pytest tests
 ```
 
-โค้ดอยู่ที่ GitHub `6710615243/Simianpal` (private) ข้อมูลทั้งหมดถูกกันไว้ใน `.gitignore`
-ต้องโหลดใหม่ด้วย `tools/` เมื่อ clone ไปเครื่องอื่น
+ข้อมูลทั้งหมดและไฟล์ที่ได้จากข้อมูล (`data/`, `metadata/`, `reports/`, `notebooks/`, `tools/pilot_sample.csv`) ถูกกันไว้ใน `.gitignore`
+เมื่อ clone ไปเครื่องอื่นต้องโหลดข้อมูลดิบใหม่ แล้วรัน `cops_diary_visits.py` → `select_nhanes.py` → `make_splits.py`
+(seed คงที่ ได้รายชื่อและ split เดิม)
 
 ## เก็บข้อมูลบน AWS S3
 

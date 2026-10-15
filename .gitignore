@@ -2,11 +2,16 @@
 data/**
 !data/**/
 !data/**/README.md
-metadata/manifest.csv
 project.zip
 *.zip
 *.tar.bz2
 *.parquet
+
+# ผลที่ได้จากข้อมูล (มีข้อมูลรายคน สร้างใหม่ได้ด้วย tools/ และ src/clean/run.py)
+metadata/
+reports/
+notebooks/
+tools/pilot_sample.csv
 
 # Python / environment
 .venv/

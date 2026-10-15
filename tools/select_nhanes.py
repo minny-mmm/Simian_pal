@@ -1,4 +1,4 @@
-"""คัดคนปกติจาก NHANES 2013–2014 (PAX80_H) มาเทียบกับผู้ป่วย COPS -> metadata/selected_seqn.csv
+"""คัดคนปกติจาก NHANES 2013–2014 (PAX80_H) มาเทียบกับผู้ป่วย COPS -> metadata/nhanes_splits.csv
 
     python tools/select_nhanes.py            # คัด + เขียนไฟล์ (seed คงที่ = ได้ผลเดิม)
     python tools/select_nhanes.py --check    # แสดงจำนวนที่ผ่านแต่ละเกณฑ์ ไม่เขียนไฟล์
@@ -45,6 +45,16 @@ def xpt(path):
 def to_num(s):
     """คอลัมน์รหัสที่ pandas อ่านเป็น bytes/str -> ตัวเลข"""
     return pd.to_numeric(s.astype(str).str.strip(), errors="coerce")
+
+
+def read_pilot(dataset):
+    """id ของคนใน pilot (tools/pilot_sample.csv ไม่อยู่ใน git: ไม่มีไฟล์ = ไม่มี pilot)"""
+    path = ROOT / "tools/pilot_sample.csv"
+    if not path.exists():
+        print(f"ไม่พบ {path.relative_to(ROOT)}: ไม่เลือก pilot ก่อน")
+        return set()
+    pilot = pd.read_csv(path)
+    return set(pilot.loc[pilot["dataset"] == dataset, "id"].astype(int))
 
 
 def band(age):
@@ -122,8 +132,7 @@ def main():
     ref = cops_reference()
     log = lambda step, df: print(f"{len(df):6d}  {step}")
     pool = eligible(ref, log)
-    pilot = pd.read_csv(ROOT / "tools/pilot_sample.csv")
-    pilot = set(pilot.loc[pilot["dataset"] == "NHANES", "id"].astype(int))
+    pilot = read_pilot("NHANES")
     print(f"pilot ที่ผ่านเกณฑ์: {sorted(pilot & set(pool['seqn']))} | ไม่ผ่าน: {sorted(pilot - set(pool['seqn']))}")
 
     q = quotas(ref, N_TOTAL)
@@ -136,8 +145,8 @@ def main():
           f"ชาย {(sel['sex'] == 'M').mean():.0%} vs {(ref['sex'] == 'M').mean():.0%}")
     if not args.check:
         out = sel[["seqn", "age", "sex", "valid_days", "age_band"]].assign(pilot=sel["seqn"].isin(pilot))
-        out.to_csv(ROOT / "metadata/selected_seqn.csv", index=False)
-        print("เขียน metadata/selected_seqn.csv (รัน tools/make_splits.py ต่อเพื่อแบ่ง train / valid / test)")
+        out.to_csv(ROOT / "metadata/nhanes_splits.csv", index=False)
+        print("เขียน metadata/nhanes_splits.csv (รัน tools/make_splits.py ต่อเพื่อแบ่ง train / valid / test)")
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
     python -m src.clean.run --summary-only          # รวม qc_summary.csv จากผลที่มีอยู่
 
 รายชื่อ: COPS = use_for_main_model == yes ใน cops_visit_summary.csv (ข้อมือ / split จาก cops_splits.csv)
-         NHANES = selected_seqn.csv
+         NHANES = nhanes_splits.csv
 คนที่มีผลแล้ว (.parquet + .qc.json) จะถูกข้าม
 """
 import argparse
