@@ -206,6 +206,8 @@ def summarize(diaries):
             outpatient_worn_hours=int((worn & d["Visit"].eq("outpatient")).sum()),
         ))
     s = pd.DataFrame(rows)
+    # ใช้ในโมเดลหลัก = มีวันอยู่บ้านที่ใช้ได้ >= 3 วัน (ได้ 49 คน)
+    s["use_for_main_model"] = (s.outpatient_days >= 3).map({True: "yes", False: "no"})
     s = s.sort_values("subject_id", key=lambda c: c.str.extract(r"(\d+)$")[0].astype(int))
     os.makedirs("reports", exist_ok=True)
     s.to_csv("reports/cops_visit_summary.csv", index=False)
