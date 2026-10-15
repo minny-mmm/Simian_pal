@@ -61,3 +61,23 @@ def test_cops_reads_zip_and_drops_subjects_without_data(raw):
     df = r.read_recording(rec)
     np.testing.assert_allclose(df["acc_y"], [0, 1])
     assert df["study_time_s"].iloc[0] == pytest.approx(18 * 3600)
+
+
+def test_cops_diary_labels(raw):
+    cops = raw / "data/raw/cops/COPS-01"
+    head = ("ID;Day;Time;Visit;Kinesia;KinesiaScore;Tremor;TremorScore;Freezing;FreezingScore;"
+            "Fall;FallScore;Medication;Dosage_1;Dosage_2;WearableDataAvailability;"
+            "WearableDataLeftCSV;WearableDataLeftZIP;WearableDataRightCSV;WearableDataRightZIP\n")
+    (cops / "COPS-01_symptomdiary.csv").write_text(
+        head
+        + "COPS-01;1 days;23 hr;inpatient;No Data;NaN;No Data;NaN;No Data;NaN;No Data;NaN;\"\";;;"
+          "Wearable Not Worn;;;;\n"
+        + "COPS-01;1 days;24 hr;outpatient;Slight Akinesia;-1;Weak Tremor;1;No Freezing;0;No Fall;0;"
+          "Piribedil;50;;Wearable Worn;COPS-01_Day1_23h-24h_leftWrist.csv;"
+          "COPS-01_Day1_23h-24h_leftWrist.zip;;\n")
+    r = CopsReader("data/raw/cops", raw)
+    labels = r.recording_labels(r.list_recordings())
+    assert labels == {"COPS-01_Day1_23h_LeftWrist": {
+        "visit": "outpatient", "wearable": "Wearable Worn", "kinesia": "Slight Akinesia",
+        "kinesia_score": "-1", "tremor_score": "1", "freezing_score": "0", "fall_score": "0",
+        "medication": "Piribedil"}}
