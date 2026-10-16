@@ -24,11 +24,12 @@ DEFAULT_TARGETS = ["data/raw/cops", "data/raw/nhanes", "data/clean"]
 SKIP_SUFFIXES = (".part", ".tmp", ".DS_Store")
 
 
-def local_files(target):
+def local_files(target, exclude=()):
     base = ROOT / target
     if base.is_file():
         return [base]
-    return sorted(p for p in base.rglob("*") if p.is_file() and not p.name.endswith(SKIP_SUFFIXES))
+    return sorted(p for p in base.rglob("*") if p.is_file() and not p.name.endswith(SKIP_SUFFIXES)
+                  and not p.name.lower().endswith(exclude))
 
 
 def remote_files(fs, s3_root, target):
@@ -47,8 +48,10 @@ def main():
     ap.add_argument("targets", nargs="*", default=DEFAULT_TARGETS, help=f"ค่าเริ่มต้น: {DEFAULT_TARGETS}")
     ap.add_argument("--dry-run", action="store_true", help="แสดงอย่างเดียว ไม่ย้ายไฟล์")
     ap.add_argument("--overwrite", action="store_true", help="ย้ายทุกไฟล์แม้ md5 ตรงกัน")
+    ap.add_argument("--exclude", nargs="*", default=[], help="push: นามสกุลไฟล์ที่ไม่อัป เช่น --exclude mat eps")
     ap.add_argument("--config", default=ROOT / "config" / "config.yaml")
     a = ap.parse_args()
+    exclude = tuple("." + e.lower().lstrip(".") for e in a.exclude)
 
     config = yaml.safe_load(Path(a.config).read_text(encoding="utf-8"))
     storage.configure(config.get("storage"))
@@ -59,7 +62,7 @@ def main():
     counts = {}
     for target in a.targets:
         target = target.rstrip("/")
-        local = {p.relative_to(ROOT).as_posix(): p for p in local_files(target)} if (ROOT / target).exists() else {}
+        local = {p.relative_to(ROOT).as_posix(): p for p in local_files(target, exclude)} if (ROOT / target).exists() else {}
         remote = set(remote_files(fs, s3_root, target))
         if a.action == "status":
             only_l, only_r = sorted(set(local) - remote), sorted(remote - set(local))

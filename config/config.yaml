@@ -10,9 +10,9 @@ paths:
 # layout บน S3 = layout ในเครื่อง: data/raw/cops/... <-> <s3_root>/data/raw/cops/...
 # อ่าน raw จาก S3 ตรง ๆ: เปลี่ยน datasets.<ชื่อ>.raw_dir เป็น <s3_root>/data/raw/...
 storage:
-  s3_root: s3://CHANGE-ME-bucket/pd-pipeline   # ยังไม่มี bucket: แก้ตรงนี้ทีหลัง
-  aws_profile: null         # null = ใช้ค่า default ของ AWS CLI / ตัวแปร AWS_PROFILE
-  region: null              # เช่น ap-southeast-1
+  s3_root: s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline
+  aws_profile: minny
+  region: ap-southeast-1
   endpoint_url: null        # ใช้กับ S3 จำลองเท่านั้น ปกติไม่ต้องใส่
 
 datasets:

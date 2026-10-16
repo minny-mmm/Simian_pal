@@ -8,8 +8,11 @@ project.zip
 *.parquet
 
 # ผลที่ได้จากข้อมูล (มีข้อมูลรายคน สร้างใหม่ได้ด้วย tools/ และ src/clean/run.py)
-metadata/
-reports/
+metadata/*
+!metadata/cops_splits.csv
+!metadata/nhanes_splits.csv
+reports/*
+!reports/cops_visit_summary.csv
 notebooks/
 tools/pilot_sample.csv
 
