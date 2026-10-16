@@ -6,20 +6,21 @@
     python tools/s3_batch.py ingest                      # ทุกคนในรายชื่อ
     python tools/s3_batch.py ingest --ids COPS-8 NHANES-74132
 
-    # 2) ดึงจาก S3 ทีละ 3 คน -> clean -> สกัด feature -> อัปโหลดผล -> ลบไฟล์ใหญ่ในเครื่อง
-    python tools/s3_batch.py features                    # ทุกคนที่ยังไม่มี feature บน S3
-    python tools/s3_batch.py features --split train --batch-size 3
-    python tools/s3_batch.py features --ids COPS-8 --force
+    # 2) ดึงข้อมูลดิบจาก S3 ทีละ 3 คน -> clean -> อัปผล clean ขึ้น S3 -> ลบไฟล์ใหญ่ในเครื่อง
+    python tools/s3_batch.py clean --dry-run             # ดูว่าใครต้อง clean และเพราะอะไร
+    python tools/s3_batch.py clean                       # ทุกคนที่ยังไม่มีผล clean บน S3 หรือผลเก่า
+    python tools/s3_batch.py clean --dataset cops --split train
+    python tools/s3_batch.py clean --ids NHANES-73558 --force
 
 รายชื่อคน = รายชื่อเดียวกับขั้น clean (src/clean/run.py: load_subjects) ทำ COPS ก่อน NHANES
 (NHANES ใช้ noise floor ของ COPS กลุ่ม train เป็นเป้า)
+ผล clean บน S3 ที่ใช้เป้า noise ต่างจาก config ปัจจุบัน (NHANES) ถือว่าเก่า -> clean ใหม่ให้เอง
 
 layout บน S3 = layout ในเครื่อง (เหมือน tools/s3_sync.py):
     <s3_root>/data/raw/cops/COPS-8/...                     ข้อมูลดิบ
     <s3_root>/data/raw/nhanes/2013-2014/pax80_raw/<SEQN>.tar.bz2
     <s3_root>/data/clean/<dataset>/<subject_id>.parquet    ผล clean (+ .qc.json)
-    <s3_root>/data/features/<dataset>/<subject_id>.csv     feature 1 แถว = 1 ชั่วโมง
-ในเครื่องเหลือแค่ไฟล์เล็ก: .qc.json, feature .csv, reports/qc_summary.csv, reports/features_hours.csv
+ในเครื่องเหลือแค่ไฟล์เล็ก: .qc.json, reports/qc_summary.csv (--keep-clean = เก็บ parquet ไว้ด้วย)
 """
 import argparse
 import json
@@ -33,22 +34,17 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import pyarrow.parquet as pq
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 from src import storage  # noqa: E402
-from src.clean import run  # noqa: E402
+from src.clean import noise_target, run  # noqa: E402
 from src.ingestion import READERS  # noqa: E402
 from src.ingestion.cops_reader import FILE_RE  # noqa: E402
 
-FEATURES_DIR = "data/features"
 WORK_DIR = ROOT / "data" / "_batch"          # ไฟล์ดิบชั่วคราวของกลุ่มที่กำลังทำ (ลบเมื่อเสร็จ)
 OSF_CACHE = ROOT / "metadata" / "osf_files.csv"
-FS = 50                                      # ความถี่หลัง clean (clean.resample.fs_out)
-MIN_WINDOWS = 30                             # ชั่วโมงที่มีหน้าต่าง 10 วิ ที่ใช้ได้น้อยกว่านี้ (< 5 นาที) ไม่เก็บ
-GROUP = {"cops": "PD", "nhanes": "healthy"}
 
 
 def batches(items, n):
@@ -268,35 +264,7 @@ def cmd_ingest(config, args, s3_root):
     shutil.rmtree(WORK_DIR, ignore_errors=True)
 
 
-# ---------------------------------------------------------------- 2) features: S3 -> clean -> feature -> S3
-
-def hour_features(path, subj):
-    """parquet ที่ clean แล้ว -> feature รายชั่วโมง (ใช้เฉพาะ sample ที่ valid)
-    feature ต่อหน้าต่าง 10 วิ และการสรุปรายชั่วโมงใช้ฟังก์ชันเดียวกับ tools/feature_check.py"""
-    import feature_check as fc
-    pf = pq.ParquetFile(path)
-    per_hour = 3600 * FS
-    out = []
-    for i in range(pf.num_row_groups):
-        t = pf.read_row_group(i, columns=["time_s", "x", "y", "z", "valid"])
-        valid = t["valid"].to_numpy(zero_copy_only=False)
-        if not valid.any():
-            continue
-        g = np.round(t["time_s"].to_numpy() * FS).astype(np.int64)
-        xyz = np.c_[t["x"].to_numpy(), t["y"].to_numpy(), t["z"].to_numpy()].astype(np.float32)
-        xyz[~valid] = np.nan                                   # หน้าต่างที่มี sample ไม่ valid ถูกข้าม
-        h = g // per_hour
-        for hh in np.unique(h[valid]):
-            sel = h == hh
-            s = fc.summarize_hour(fc.window_features(xyz[sel], FS),
-                                  subject_id=subj["subject_id"], dataset=subj["dataset"],
-                                  group=GROUP[subj["dataset"]], label=int(subj["dataset"] == "cops"),
-                                  split=subj["split"], day=int(hh // 24), hour=int(hh % 24),
-                                  valid_min=round(float(valid[sel].sum()) / FS / 60, 1))
-            if s and s["windows"] >= MIN_WINDOWS and s["still_frac"] < 0.9:
-                out.append(s)
-    return pd.DataFrame(out)
-
+# ---------------------------------------------------------------- 2) clean: S3 -> clean -> S3
 
 def raw_keys(fs, s3_root, rd, subj):
     """ไฟล์ดิบบน S3 ที่ clean ต้องใช้ของคนนี้ (COPS: diary + ข้อมือที่เลือก, NHANES: tar)"""
@@ -319,26 +287,35 @@ def fetch_from_s3(s3_root, rels, dest):
         storage.download(uri(s3_root, rel), dest / rel)
 
 
-def prefetch(fs, s3_root, config, subj, reclean):
-    """โหลดสิ่งที่ต้องใช้ของ 1 คน: ผล clean บน S3 (ถ้ามีและไม่สั่ง --reclean) ไม่งั้นข้อมูลดิบ"""
-    pq_path, qc_path = run.out_paths(config, subj)
-    clean_rels = [p.relative_to(ROOT).as_posix() for p in (pq_path, qc_path)]
-    if not reclean:
-        if pq_path.exists() and qc_path.exists():
-            return "clean"
-        if all(fs.exists(key(uri(s3_root, r))) for r in clean_rels):
-            fetch_from_s3(s3_root, clean_rels, ROOT)
-            return "clean"
+def prefetch_raw(fs, s3_root, config, subj):
+    """โหลดข้อมูลดิบของ 1 คนจาก S3 ลง WORK_DIR/raw -> True ถ้ามีข้อมูลดิบบน S3"""
     rd = raw_rel(config, subj["dataset"], s3_root)
     rels = raw_keys(fs, s3_root, rd, subj)
     if not rels:
-        return "no_raw"
+        return False
     fetch_from_s3(s3_root, rels, WORK_DIR / "raw")
-    return "raw"
+    return True
+
+
+def clean_rels(config, subj):
+    return [p.relative_to(ROOT).as_posix() for p in run.out_paths(config, subj)]   # parquet, qc.json
+
+
+def needs_clean(fs, s3_root, config, subj, target):
+    """-> (ต้อง clean ไหม, เหตุผล) จากผล clean บน S3
+    NHANES ที่ใช้เป้า noise ไม่ตรงกับ config ปัจจุบันถือว่าเก่า (เช่น clean ก่อนเปลี่ยนเป็นต่อแกน)"""
+    pq_rel, qc_rel = clean_rels(config, subj)
+    if not (fs.exists(key(uri(s3_root, pq_rel))) and fs.exists(key(uri(s3_root, qc_rel)))):
+        return True, "ยังไม่มีผล clean บน S3"
+    if target is not None:
+        old = json.loads(fs.cat(key(uri(s3_root, qc_rel)))).get("noise_target_axes_mg")
+        if old is None or not np.allclose(old, target, atol=1e-6):
+            return True, f"เป้า noise เปลี่ยน ({old if old is None else np.round(old, 2).tolist()} -> {np.round(target, 2).tolist()})"
+    return False, "มีผล clean บน S3 แล้ว"
 
 
 def sync_small(fs, s3_root, pattern):
-    """โหลดไฟล์เล็ก (qc.json / feature csv) จาก S3 ที่ยังไม่มีในเครื่อง"""
+    """โหลดไฟล์เล็ก (qc.json) จาก S3 ที่ยังไม่มีในเครื่อง"""
     root_key = key(uri(s3_root, ""))
     for k in fs.glob(key(uri(s3_root, pattern))):
         local = ROOT / k[len(root_key):]
@@ -346,98 +323,95 @@ def sync_small(fs, s3_root, pattern):
             storage.download(f"s3://{k}", local)
 
 
-def cmd_features(config, args, s3_root):
+def cmd_clean(config, args, s3_root):
     fs = storage.fs_of(s3_root)
     all_subjects = run.load_subjects(config)
     subjects = select_subjects(config, args)
     out_dir = config["clean"]["out_dir"]
-    # qc.json ของ COPS ที่เคย clean (อาจจากเครื่องอื่น) ใช้หา noise target ของ NHANES
+    noise_ds = config["clean"]["harmonize"]["add_noise"]["datasets"]
+    # qc.json ของ COPS ที่เคย clean (อาจจากเครื่องอื่น) ใช้หาเป้า noise ถ้า target_mg: auto
     sync_small(fs, s3_root, f"{out_dir}/cops/*.qc.json")
+    target, _ = run.resolve_noise_target(config, all_subjects)
 
-    def feat_rel(s):
-        return f"{FEATURES_DIR}/{s['dataset']}/{s['subject_id']}.csv"
+    todo = []
+    for s in subjects:
+        need, why = (True, "--force") if args.force else \
+            needs_clean(fs, s3_root, config, s, target if s["dataset"] in noise_ds else None)
+        if need:
+            todo.append(s)
+            print(f"  {s['subject_id']}: {why}")
+    print(f"S3: {s3_root}\n{len(subjects)} คนในรายชื่อ, ต้อง clean {len(todo)} คน (คนที่มีผล clean ล่าสุดบน S3 แล้วข้าม)")
+    if args.dry_run:
+        return
 
-    todo = [s for s in subjects
-            if args.force or args.reclean or not fs.exists(key(uri(s3_root, feat_rel(s))))]
-    print(f"S3: {s3_root}\n{len(subjects)} คนในรายชื่อ, ต้องทำ {len(todo)} คน (คนที่มี feature บน S3 แล้วข้าม)")
-
+    cleaned = []
     for b, group in enumerate(batches(todo, args.batch_size), 1):
         t0 = time.time()
-        print(f"กลุ่ม {b}: {', '.join(s['subject_id'] for s in group)}  - โหลดจาก S3")
+        print(f"กลุ่ม {b}: {', '.join(s['subject_id'] for s in group)}  - โหลดข้อมูลดิบจาก S3")
         with ThreadPoolExecutor(len(group)) as ex:
-            srcs = list(ex.map(lambda s: prefetch(fs, s3_root, config, s, args.reclean), group))
+            has_raw = list(ex.map(lambda s: prefetch_raw(fs, s3_root, config, s), group))
         readers = {}
-        for subj, src in zip(group, srcs):            # clean ทีละคน (ใช้ RAM มาก)
+        for subj, ok in zip(group, has_raw):            # clean ทีละคน (ใช้ RAM มาก)
             sid = subj["subject_id"]
-            pq_path, qc_path = run.out_paths(config, subj)
-            if src == "no_raw":
+            if not ok:
                 print(f"  {sid}: ไม่มีข้อมูลดิบบน S3 (รัน ingest ก่อน) ข้าม")
                 continue
-            if src == "raw":
-                if subj["dataset"] not in readers:
-                    readers[subj["dataset"]] = READERS[subj["dataset"]](
-                        raw_rel(config, subj["dataset"], s3_root), WORK_DIR / "raw")
-                target, target_src = (run.resolve_noise_target(config, all_subjects)
-                                      if subj["dataset"] in config["clean"]["harmonize"]["add_noise"]["datasets"]
-                                      else (None, None))
-                print(f"  {sid}: clean")
-                res, qc = run.clean_subject(config, subj, readers[subj["dataset"]], target,
-                                            log=lambda m: print("  " + m))
-                qc["noise_target_source"] = target_src
-                if res is not None:
-                    run.write_parquet(pq_path, res)
-                    del res
-                qc_path.parent.mkdir(parents=True, exist_ok=True)
-                qc_path.write_text(json.dumps(run.to_json(qc), ensure_ascii=False, indent=1))
-                for p in (pq_path, qc_path):
-                    if p.exists():
-                        storage.upload(p, storage.mirror(p, ROOT, s3_root))
-                shutil.rmtree(WORK_DIR / "raw" / raw_rel(config, subj["dataset"], s3_root) / sid,
-                              ignore_errors=True)
-                print(f"  {sid}: clean เสร็จ วันใช้ได้ {qc.get('valid_days')} ชม.ใช้ได้ {qc.get('hours_valid')}")
-            qc = json.loads(qc_path.read_text())
-            feats = hour_features(pq_path, subj) if pq_path.exists() and qc.get("included") else pd.DataFrame()
-            f_path = ROOT / feat_rel(subj)
-            f_path.parent.mkdir(parents=True, exist_ok=True)
-            feats.to_csv(f_path, index=False)              # ว่างได้ (ไม่ผ่านเกณฑ์วัน) = ทำแล้ว ไม่ต้องทำซ้ำ
-            storage.upload(f_path, uri(s3_root, feat_rel(subj)), overwrite=True)
-            print(f"  {sid}: feature {len(feats)} ชั่วโมง"
-                  + ("" if qc.get("included") else " (ไม่ผ่านเกณฑ์จำนวนวัน)"))
+            if subj["dataset"] not in readers:
+                readers[subj["dataset"]] = READERS[subj["dataset"]](
+                    raw_rel(config, subj["dataset"], s3_root), WORK_DIR / "raw")
+            subj_target, target_src = (run.resolve_noise_target(config, all_subjects)
+                                       if subj["dataset"] in noise_ds else (None, None))
+            print(f"  {sid}: clean")
+            res, qc = run.clean_subject(config, subj, readers[subj["dataset"]], subj_target,
+                                        log=lambda m: print("  " + m))
+            qc["noise_target_source"] = target_src
+            pq_path, qc_path = run.out_paths(config, subj)
+            if res is not None:
+                run.write_parquet(pq_path, res)
+                del res
+            qc_path.parent.mkdir(parents=True, exist_ok=True)
+            qc_path.write_text(json.dumps(run.to_json(qc), ensure_ascii=False, indent=1))
+            for p in (pq_path, qc_path):                # qc.json ขึ้นทีหลัง = เครื่องหมายว่าเสร็จ
+                if p.exists():
+                    storage.upload(p, storage.mirror(p, ROOT, s3_root))
+            cleaned.append(subj)
+            shutil.rmtree(WORK_DIR / "raw" / raw_rel(config, subj["dataset"], s3_root) / sid,
+                          ignore_errors=True)
             if not args.keep_clean and pq_path.exists():
                 pq_path.unlink()                           # อยู่บน S3 แล้ว
+            print(f"  {sid}: เสร็จ วันใช้ได้ {qc.get('valid_days')} ชม.ใช้ได้ {qc.get('hours_valid')}"
+                  + ("" if qc.get("included") else " (ไม่ผ่านเกณฑ์จำนวนวัน)"))
         shutil.rmtree(WORK_DIR, ignore_errors=True)
         print(f"  เสร็จกลุ่ม {b} ({time.time() - t0:.0f} วิ)")
 
-    # รวมผล (รวมของเครื่องอื่นที่อยู่บน S3)
+    # clean COPS train ใหม่ -> noise ของ COPS อาจเปลี่ยน: เทียบกับ target_mg ใน config
+    if any(s["dataset"] == "cops" and s["split"] == "train" for s in cleaned):
+        _, _, warn = noise_target.compare(
+            config, noise_target.cops_train_axes(config, all_subjects, ROOT, use_parquet=False), 0.1)
+        for w in warn:
+            print("คำเตือน noise:", w, "(ตรวจละเอียด: python tools/noise_target.py)")
+
+    # รวม QC (รวมของเครื่องอื่นที่อยู่บน S3)
     sync_small(fs, s3_root, f"{out_dir}/*/*.qc.json")
-    sync_small(fs, s3_root, f"{FEATURES_DIR}/*/*.csv")
     df = run.write_summary(config)
     if df is not None:
         print(f"เขียน {config['clean']['qc_summary']}: {len(df)} คน")
-    parts = [pd.read_csv(p) for p in sorted((ROOT / FEATURES_DIR).glob("*/*.csv")) if p.stat().st_size > 1]
-    if parts:
-        allf = pd.concat(parts, ignore_index=True)
-        path = ROOT / "reports" / "features_hours.csv"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        allf.to_csv(path, index=False)
-        print(f"เขียน reports/features_hours.csv: {len(allf)} ชั่วโมง จาก {allf.subject_id.nunique()} คน")
 
 
 def main():
-    ap = argparse.ArgumentParser(description="ส่งข้อมูลขึ้น S3 / ดึงจาก S3 มาสกัด feature ทีละกลุ่ม")
-    ap.add_argument("action", choices=["ingest", "features"])
+    ap = argparse.ArgumentParser(description="ส่งข้อมูลดิบขึ้น S3 / ดึงจาก S3 มา clean แล้วอัปผลกลับ ทีละกลุ่ม")
+    ap.add_argument("action", choices=["ingest", "clean"])
     ap.add_argument("--ids", nargs="+", help="subject_id เช่น COPS-8 NHANES-74132 (ค่าเริ่มต้น = ทุกคนในรายชื่อ)")
     ap.add_argument("--split", choices=["train", "valid", "test"])
     ap.add_argument("--dataset", choices=["cops", "nhanes"])
     ap.add_argument("--batch-size", type=int, default=3, help="จำนวนคนต่อกลุ่ม (ค่าเริ่มต้น 3)")
-    ap.add_argument("--dry-run", action="store_true", help="ingest: แสดงรายการไฟล์อย่างเดียว")
+    ap.add_argument("--dry-run", action="store_true", help="แสดงรายการอย่างเดียว (ingest: ไฟล์, clean: คนที่ต้อง clean)")
     ap.add_argument("--refresh-osf", action="store_true", help="ingest: อ่านรายชื่อไฟล์บน OSF ใหม่")
     ap.add_argument("--overwrite", action="store_true", help="ingest: ส่งใหม่แม้บน S3 มีแล้ว")
     ap.add_argument("--exclude", nargs="*", default=["mat"],
                     help="ingest: นามสกุลไฟล์ที่ไม่อัป (ค่าเริ่มต้น mat = สำเนา MATLAB ของ .csv; --exclude เปล่า ๆ = อัปทุกไฟล์)")
-    ap.add_argument("--force", action="store_true", help="features: สกัดใหม่แม้มี feature บน S3 แล้ว")
-    ap.add_argument("--reclean", action="store_true", help="features: clean ใหม่จากข้อมูลดิบ (ไม่ใช้ผล clean เดิม)")
-    ap.add_argument("--keep-clean", action="store_true", help="features: เก็บ parquet ที่ clean แล้วไว้ในเครื่อง")
+    ap.add_argument("--force", action="store_true", help="clean: clean ใหม่แม้บน S3 มีผลล่าสุดแล้ว")
+    ap.add_argument("--keep-clean", action="store_true", help="clean: เก็บ parquet ที่ clean แล้วไว้ในเครื่อง")
     ap.add_argument("--config", default=ROOT / "config" / "config.yaml")
     args = ap.parse_args()
 
@@ -448,7 +422,7 @@ def main():
     if args.action == "ingest":
         cmd_ingest(config, args, s3_root)
     else:
-        cmd_features(config, args, s3_root)
+        cmd_clean(config, args, s3_root)
 
 
 if __name__ == "__main__":

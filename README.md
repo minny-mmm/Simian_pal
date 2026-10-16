@@ -16,13 +16,12 @@
 | --- | --- |
 | ตั้งเครื่องครั้งแรก, login AWS, ดึง/อัปข้อมูลกับ S3 | [`README_Download.md`](README_Download.md) |
 | เข้าใจภาพรวมว่าโค้ดไหนทำอะไร | หัวข้อ "Flow ของโปรเจค" และ "โครงสร้างโปรเจค" ด้านล่าง |
-| ใช้ผล clean / feature ต่อ (เทรนโมเดล) | หัวข้อ "ขั้น clean" → ผลลัพธ์ และ "feature รายชั่วโมง" |
+| ทำ feature / เทรนโมเดลจากผล clean | [`README_feature.md`](README_feature.md) (แนวทาง + ปัญหาที่เจอ) และหัวข้อ "ขั้น clean" → ผลลัพธ์ |
 | แก้เกณฑ์ clean | `config/config.yaml` → `clean` (ไม่ต้องแก้โค้ด) และหัวข้อ "การปรับ noise" |
 
 **ข้อมูลอยู่ที่ไหน**
 - โค้ด + config + รายชื่อคน/split → **git** (`git pull` ก่อนเริ่มงานทุกครั้ง)
-- ข้อมูลดิบ, ผล clean, feature → **S3** ของทีม (`tools/s3_pull.py` / `tools/s3_batch.py`) ไม่อยู่ใน git
-- บน S3 ตอนนี้: raw COPS 42 คน, NHANES 1 คน; clean COPS 4 คน (COPS-4/5/6/8), NHANES 1 คน (74132); feature ยังไม่มี
+- ข้อมูลดิบ, ผล clean → **S3** ของทีม (`tools/s3_pull.py` / `tools/s3_batch.py`) ไม่อยู่ใน git
   ดูสถานะล่าสุดเองได้ด้วย `python tools/s3_pull.py list`
 
 **งานปกติของแต่ละคน**
@@ -31,19 +30,10 @@
 git pull                                                     # โค้ด / config / split ล่าสุด
 aws sso login --profile minny                                # ถ้า login หมดอายุ
 python tools/s3_pull.py list                                 # บน S3 มีอะไรแล้วบ้าง
-python tools/s3_batch.py features --ids COPS-9 COPS-10       # clean + feature คนที่ยังไม่มี แล้วอัปให้เอง
-python tools/s3_pull.py get --what features                  # ใช้ feature ของทุกคน (รวมของเครื่องอื่น)
+python tools/s3_batch.py clean --dry-run                     # ใครยังไม่มีผล clean บน S3 / ผลเก่า
+python tools/s3_batch.py clean --ids COPS-7 COPS-12          # ดึง raw จาก S3 -> clean -> อัปผลขึ้น S3 ให้เอง
+python tools/s3_pull.py get --what clean --dataset cops      # ใช้ผล clean ของทุกคน (รวมของเครื่องอื่น)
 ```
-
-**กติกาที่ต้องตกลงกัน**
-1. **แบ่งคนกันทำ** (เช่นตาม `--ids` หรือ `--split`) ก่อนรัน `s3_batch.py features` จะได้ไม่ทำซ้ำ / อัปทับกัน
-2. **COPS กลุ่ม train ก่อน NHANES** เพราะ noise เป้าของ NHANES มาจาก COPS train
-   ตอนนี้ COPS train ครบ 35 คนแล้ว เป้าตั้งตายตัวเป็นต่อแกน `target_mg: [4.93, 5.07, 6.00]` ใน config ห้ามแก้โดยไม่บอกทีม
-3. **ห้ามแก้ `config.yaml` (ส่วน `clean`), `src/clean/`, `tools/feature_check.py` แล้วรันเงียบ ๆ**
-   ผลจะไม่ตรงกับของคนอื่น ถ้าแก้ต้องบอกทีม commit แล้วรันใหม่ทุกคนด้วย `--reclean` (แก้ clean) หรือ `--force` (แก้ feature)
-4. **ห้าม commit ข้อมูล** ใช้ `git add <ไฟล์>` ระบุเป็นไฟล์ อย่า `git add .` (`config/config.yaml.bak`, ข้อมูลรายคนจะติดไป)
-5. **ห้ามเปลี่ยน split** (`make_splits.py`, `select_nhanes.py`) โดยไม่บอกทีม เปลี่ยนแล้วต้อง clean NHANES ใหม่ทั้งหมด
-6. รัน `python -m pytest tests` ก่อน push โค้ด
 
 **แก้อะไรต้องไปที่ไหน**
 
@@ -51,8 +41,8 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
 | --- | --- |
 | เกณฑ์ clean (nonwear, ISM, วันใช้ได้ ฯลฯ) | `config/config.yaml` → `clean` |
 | ขั้นตอน clean | `src/clean/steps.py` (ฟังก์ชัน) + `src/clean/run.py` (ลำดับ) + test ใน `tests/test_clean.py` |
-| feature ต่อหน้าต่าง 10 วิ / สรุปรายชั่วโมง | `tools/feature_check.py` → `window_features`, `summarize_hour` (ใช้ทั้งใน feature_check และ `s3_batch.py features`) |
-| วิธีรวม feature เป็นรายชั่วโมงจากผล clean | `tools/s3_batch.py` → `hour_features` |
+| เป้า noise ของ NHANES | `config/config.yaml` → `clean.harmonize.add_noise.target_mg` ตรวจด้วย `tools/noise_target.py` |
+| feature (ยังไม่มีโค้ด) | ดู [`README_feature.md`](README_feature.md) |
 | รายชื่อคน / split | `tools/cops_diary_visits.py`, `tools/select_nhanes.py`, `tools/make_splits.py` |
 | อ่าน dataset ใหม่ | `src/ingestion/` (ดู "เพิ่ม dataset ใหม่") |
 | bucket / profile AWS | `config/config.yaml` → `storage` |
@@ -60,8 +50,8 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
 ## Flow ของโปรเจค
 
 ```
- ต้นทาง                 เตรียมรายชื่อคน (git)                   clean                              feature (ทีละชั่วโมง)
- ──────                 ──────────────────                     ─────                              ─────────────────────
+ ต้นทาง                 เตรียมรายชื่อคน (git)                   clean
+ ──────                 ──────────────────                     ─────
  OSF (COPS)  ─┐   tools/cops_diary_visits.py
  CDC (NHANES)─┤     -> reports/cops_visit_summary.csv
               │   tools/select_nhanes.py
@@ -70,14 +60,14 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
               v     -> metadata/cops_splits.csv (+ split)
      S3: data/raw/ ───────────────┐
               │                   v
-  s3_pull.py  │          src/clean/run.py  ───────────>  data/clean/<ds>/<id>.parquet ──>  tools/s3_batch.py features
-     get      v          (src/ingestion/ อ่านไฟล์ดิบ        + <id>.qc.json                    (hour_features ใช้ฟังก์ชัน
-  data/raw/ ในเครื่อง      + src/clean/steps.py)              -> S3 + reports/qc_summary.csv      ของ tools/feature_check.py)
-                                                                                                    -> S3: data/features/<ds>/<id>.csv
-                                                                                                    -> reports/features_hours.csv
-                                                                                                          │
-   ตรวจผล: notebooks/clean_check.ipynb (กราฟรายวัน, noise floor, LR ร่องรอยเครื่อง)                         v
-   ทางเลือก: src/pipeline.py -> data/processed/ + metadata/manifest.csv (ดูไฟล์ดิบรายชั่วโมง)         โมเดล (ยังไม่ได้เริ่ม)
+  s3_pull.py  │          src/clean/run.py  ───────────>  S3: data/clean/<ds>/<id>.parquet + <id>.qc.json
+     get      v          (src/ingestion/ อ่านไฟล์ดิบ        reports/qc_summary.csv
+  data/raw/ ในเครื่อง      + src/clean/steps.py)                     │
+                         หรือ tools/s3_batch.py clean               v
+                         (ดึง raw จาก S3 -> clean -> อัปกลับ)    feature + โมเดล (ยังไม่มีโค้ด ดู README_feature.md)
+
+   ตรวจผล: notebooks/clean_check.ipynb (กราฟรายวัน, noise floor, LR ร่องรอยเครื่อง)
+   ทางเลือก: src/pipeline.py -> data/processed/ + metadata/manifest.csv (ดูไฟล์ดิบรายชั่วโมง)
 ```
 
 ลำดับการทำงาน
@@ -90,11 +80,10 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
      ไม่กินยา PD, ไม่เคยเป็น stroke) แล้วสุ่มให้สัดส่วนเพศ × อายุ ตรงกับ COPS
 3. **แบ่ง train / valid / test** ตามคน (70/15/15) ด้วย `tools/make_splits.py`
    ค่ากลางที่คำนวณจากข้อมูล (เช่น noise floor เป้าหมาย) ใช้เฉพาะคนใน train
-4. **clean** ด้วย `python -m src.clean.run` (ในเครื่อง) หรือ `tools/s3_batch.py features` (ดึงจาก S3 ทีละ 3 คนแล้วอัปผลให้)
+4. **clean** ด้วย `python -m src.clean.run` (ในเครื่อง) หรือ `tools/s3_batch.py clean` (ดึง raw จาก S3 ทีละ 3 คน แล้วอัปผล clean กลับ)
    อ่านไฟล์ดิบโดยตรง (ไม่ต้องผ่าน `src/pipeline.py`) ทำทีละคน ทีละชั่วโมง ติดธงทุก sample แทนการลบ แล้วสรุป QC
 5. **ตรวจผล** ใน `notebooks/clean_check.ipynb` (กราฟรายวัน, noise floor, การนอนเทียบ diary, LR ว่าแยกเครื่องได้ไหม)
-6. **feature รายชั่วโมง** ด้วย `tools/s3_batch.py features` ใช้เฉพาะ sample ที่ `valid = True` → `data/features/` บน S3
-7. **โมเดล** (ยังไม่ได้เริ่ม) ใช้ `reports/features_hours.csv` หรือ `data/features/` แบ่งตามคอลัมน์ `split`
+6. **feature + โมเดล** (ยังไม่มีโค้ด) ดูแนวทางและปัญหาที่เจอใน [`README_feature.md`](README_feature.md)
 
 `src/pipeline.py` (ingestion -> common schema + manifest) เป็นเส้นทางแยก ใช้ดูข้อมูลดิบและ label รายชั่วโมงของ COPS
 ขั้น clean ไม่ได้ใช้ผลจากส่วนนี้
@@ -113,7 +102,7 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
 | `src/clean/steps.py` | ฟังก์ชันของขั้น clean 2–11 (ไม่มี I/O ทดสอบแยกได้): `TimeFixer`, `Resampler`, calibration, clip, abnormal, ISM, noise harmonize, nonwear, HDCZA, ชั่วโมงใช้ได้ต่อวัน |
 | `src/clean/run.py` | รัน clean ทีละคน: อ่านรายชื่อจาก metadata, เรียก steps ตามลำดับ, เขียน parquet + `.qc.json`, รวม `reports/qc_summary.csv` |
 | `src/clean/noise_target.py` | เป้า noise ต่อแกนจาก COPS train: อ่านจาก `.qc.json` หรือวัดจาก parquet (หน้ากากเดียวกับขั้น clean) แล้วเทียบกับ config |
-| `src/clean/report.py` | อ่าน parquet ที่ clean แล้วเป็น epoch / feature หน้าต่าง 10 วิ (ใช้ใน notebook) |
+| `src/clean/report.py` | อ่าน parquet ที่ clean แล้วเป็น epoch และค่าตรวจร่องรอยเครื่องต่อหน้าต่าง 10 วิ (ใช้ใน notebook ตรวจผล clean ไม่ใช่ feature ของโมเดล) |
 | `src/pipeline.py` | ingestion: แปลงไฟล์ดิบเป็น common schema + เขียน `metadata/manifest.csv` |
 | `src/schema/` | นิยามคอลัมน์ของ subject metadata และ sensor parquet |
 | `src/validation/manifest.py` | สร้าง manifest (md5, ขนาดไฟล์, label รายชั่วโมง) |
@@ -128,16 +117,16 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
 | `cops_diary_visits.py` | สรุปวันบ้าน/รพ. ของ COPS ทุกคน -> `reports/cops_visit_summary.csv` (+ `use_for_main_model`) |
 | `select_nhanes.py` | คัดคนปกติ NHANES 150 คน -> `metadata/nhanes_splits.csv` (`--check` ดูจำนวนที่ผ่านแต่ละเกณฑ์) |
 | `make_splits.py` | แบ่ง train / valid / test ตามคน -> `metadata/cops_splits.csv`, คอลัมน์ `split` ใน `nhanes_splits.csv` |
-| `feature_check.py` | ตรวจเร็ว ๆ จากไฟล์ดิบว่า feature หลักไปทิศที่คาดไหม (ยังไม่ผ่าน clean) -> `reports/feature_check*` |
 | `noise_target.py` | คำนวณเป้า noise ต่อแกนจาก COPS train แล้วเทียบกับ `target_mg` ใน config (รันหลัง clean COPS ใหม่ทุกครั้ง) |
 | `s3_sync.py` | sync `data/` กับ S3 (`status` / `push` / `pull`, ข้ามไฟล์ที่ md5 ตรงกัน) |
-| `s3_pull.py` | ดึงข้อมูลจาก S3 ลงเครื่อง เลือกคน / ชนิด (raw, clean, features) ได้ COPS โหลดเฉพาะข้อมือที่ใช้ ตรวจ md5 |
-| `s3_batch.py` | ทีละ 3 คน: `ingest` โหลดจาก OSF/CDC ขึ้น S3, `features` ดึงจาก S3 -> clean -> feature รายชั่วโมง -> อัปโหลด -> ลบในเครื่อง |
+| `s3_pull.py` | ดึงข้อมูลจาก S3 ลงเครื่อง เลือกคน / ชนิด (raw, clean) ได้ COPS โหลดเฉพาะข้อมือที่ใช้ ตรวจ md5 |
+| `s3_batch.py` | ทีละ 3 คน: `ingest` โหลดจาก OSF/CDC ขึ้น S3, `clean` ดึง raw จาก S3 -> clean -> อัปผล clean -> ลบในเครื่อง (ผล NHANES ที่เป้า noise ไม่ตรง config = เก่า clean ใหม่ให้) |
 
 ### ข้อมูลและผลลัพธ์
 
 ```
 README_Download.md              คู่มือตั้งเครื่อง + ดึง/อัปข้อมูลกับ S3 สำหรับคนในทีม
+README_feature.md               แนวทางทำ feature + ปัญหาที่เจอจากต้นแบบเดิม (ยังไม่มีโค้ด feature)
 config/config.yaml              ตั้งค่าทั้งหมด: path, dataset, storage (S3), เกณฑ์ทุกขั้นของ clean
 data/                           (ไม่อยู่ใน git)
   raw/cops/                     ข้อมูลดิบ COPS (ห้ามแก้)
@@ -153,7 +142,6 @@ data/                           (ไม่อยู่ใน git)
     pax_summary/PAXHD_H, PAXDAY_H  สถานะ accelerometer และเวลาใส่รายวัน (ใช้คัดคน)
     pax80_raw/<SEQN>.tar.bz2    accelerometer ดิบ 80 Hz ของแต่ละคน
   clean/<dataset>/              ผลขั้น clean: <subject_id>.parquet + <subject_id>.qc.json
-  features/<dataset>/<id>.csv   feature 1 แถว = 1 ชั่วโมง (จาก s3_batch.py features)
   _batch/                       ไฟล์ชั่วคราวของ s3_batch.py (ลบเองเมื่อเสร็จ)
   processed/                    ผลจาก src/pipeline.py
     subject_data/subject_metadata_<dataset>.csv     1 แถว / 1 คน
@@ -166,36 +154,35 @@ metadata/                       (อยู่ใน git เฉพาะ cops_spl
 reports/                        (อยู่ใน git เฉพาะ cops_visit_summary.csv)
   cops_visit_summary.csv        จำนวนวันอยู่ รพ. / บ้าน ของ COPS ทุกคน + use_for_main_model
   qc_summary.csv                QC ของขั้น clean 1 แถว / 1 คน
-  features_hours.csv            feature รายชั่วโมงของทุกคนรวมกัน (s3_batch.py features)
-  feature_check/, feature_check_hours.csv   ผลของ tools/feature_check.py (จากไฟล์ดิบ ใช้ดูทิศทางเท่านั้น)
 notebooks/clean_check.ipynb     (ไม่อยู่ใน git) ตรวจผล clean (กราฟรายวัน, ISM, noise floor, การนอน, LR ร่องรอยเครื่อง)
 tests/
   test_ingestion.py             reader ของ COPS (zip, ข้ามเที่ยงคืน, diary label)
   test_clean.py                 ขั้น clean 2, 4, 7, 8 (เวลา, resample, ISM/noise, ถอดนาฬิกา)
   test_storage.py               อ่าน/เขียน/sync กับ S3 จำลอง
+  test_noise_target.py          เป้า noise ต่อแกน: วัดจาก parquet = ตอน clean, เตือนเมื่อ config เก่า
 ```
 
-## สถานะ
+## สถานะ (16 ต.ค. 2026)
 
 | ส่วน | สถานะ |
 | --- | --- |
 | COPS reader | ใช้ได้ อ่านจาก zip ตรง ๆ + ดึง label รายชั่วโมงจาก symptom diary |
 | NHANES reader | อ่าน stream จาก tar ได้แล้ว (ใช้ในขั้น clean; `src/pipeline.py` ยังไม่รองรับ) |
 | เลือกคน + แบ่ง split | เสร็จแล้ว COPS 49 คน (35/7/7), NHANES 150 คน (106/22/22) |
-| ขั้น clean | ใช้ได้ ตรวจกับ 4 คนแล้ว (`notebooks/clean_check.ipynb`) บน S3 มีผล clean 5 คน |
-| S3 | raw COPS 42 คน, NHANES 1 คน; metadata ยังไม่ได้อัป |
-| feature รายชั่วโมง | โค้ดพร้อม (`s3_batch.py features`) ยังไม่มีผลบน S3 |
+| ขั้น clean | ใช้ได้ เติม noise ให้ NHANES ต่อแกนแล้ว (`target_mg: [4.93, 5.07, 6.00]`) |
+| ข้อมูลดิบบน S3 | COPS 42 คน (train 35 + valid 7, ยังไม่มี test), NHANES 60 คน (กำลังส่งขึ้นเพิ่ม) |
+| ผล clean บน S3 | COPS กลุ่ม train ครบ 35 คน; NHANES 2 คน (73558, 74132) **ใช้สูตร noise เก่า ต้อง clean ใหม่** |
+| metadata บน S3 | ยังไม่ได้อัป (อยู่ใน git) |
+| feature | ยังไม่มีโค้ด (ต้นแบบเดิมถูกเอาออก) ดู `README_feature.md` |
 | โมเดล | ยังไม่ได้เริ่ม |
 
-ข้อมูลในเครื่องตอนนี้ (ชุด pilot บางส่วน ดู `tools/pilot_sample.csv`):
+ดูสถานะล่าสุดเองได้ด้วย `python tools/s3_pull.py list` (ตารางนี้อัปเดตด้วยมือ)
 
-| dataset | คน | รายละเอียด |
-| --- | --- | --- |
-| COPS (PD) | COPS-8, COPS-29, COPS-45 | 2 ข้อมือ, 1,014 ไฟล์ชั่วโมง, มีทั้งช่วงอยู่ รพ. และอยู่บ้าน |
-| NHANES (คนปกติ) | SEQN 74132 | ไฟล์ accelerometer ดิบ 1 คน + แบบสอบถามสุขภาพทั้งรอบ 2013–2014 |
-
-ผล clean ตอนนี้: COPS-8, COPS-45, NHANES-74132 ใช้ได้; COPS-29 ไม่ผ่าน (วันใช้ได้ 2 วัน < 3)
-ยังไม่ได้โหลด: COPS คนอื่นใน `cops_splits.csv` และ NHANES ที่เหลือใน `nhanes_splits.csv` (~26 GB)
+**ที่ต้องทำต่อ (ขั้น clean)**
+1. COPS กลุ่ม valid (7 คน มี raw บน S3 แล้ว): `python tools/s3_batch.py clean --dataset cops --split valid`
+   กลุ่ม test (7 คน) ยังไม่มี raw บน S3: `python tools/s3_batch.py ingest --dataset cops --split test` ก่อน แล้วค่อย clean
+2. `python tools/s3_batch.py clean --dataset nhanes` — NHANES ทุกคน (2 คนที่ใช้สูตรเก่าจะถูก clean ใหม่ให้เอง)
+3. หลัง clean COPS เพิ่ม รัน `python tools/noise_target.py` เช็กว่าเป้า noise ยังตรง
 
 ## วิธีรัน
 
@@ -207,7 +194,9 @@ python tools/cops_diary_visits.py       # สรุปวันบ้าน/ร�
 python tools/select_nhanes.py           # คัด NHANES (--check ดูอย่างเดียว)
 python tools/make_splits.py             # แบ่ง train / valid / test (--check ดูอย่างเดียว)
 python -m src.clean.run                 # clean ทุกคนในรายชื่อที่มีไฟล์ดิบ (ข้ามคนที่ทำแล้ว)
-python -m src.clean.run --ids COPS-8    # ทีละคน; --force ทำซ้ำ; --summary-only รวม qc_summary
+python -m src.clean.run --ids COPS-8    # ทีละคน; --force ทำซ้ำ; --summary-only รวม qc_summary; --upload อัปขึ้น S3
+python tools/s3_batch.py clean          # ดึง raw จาก S3 ทีละ 3 คน -> clean -> อัปผลกลับ (ดู README_Download.md)
+python tools/noise_target.py            # เช็กเป้า noise ต่อแกนของ NHANES กับ COPS train
 python -m src.pipeline                  # (ทางเลือก) ingestion ทุก dataset ที่ enabled
 python -m src.pipeline --datasets cops  # เฉพาะ dataset ที่เลือก; --force เขียน Parquet ทับ
 python -m pytest tests
@@ -275,7 +264,6 @@ python tools/s3_pull.py list                                  # บน S3 มี
 python tools/s3_pull.py get --metadata                        # รายชื่อคน + split จาก S3 (ไม่จำเป็นถ้า git pull แล้ว)
 python tools/s3_pull.py get --ids COPS-4 73558                # ข้อมูลดิบ (73558 = NHANES-73558) COPS โหลดเฉพาะข้อมือที่ใช้
 python tools/s3_pull.py get --ids COPS-4 --wrist both         # COPS ทั้ง 2 ข้อมือ (ขนาด 2 เท่า)
-python tools/s3_pull.py get --what features                   # feature ทุกคน (ไฟล์เล็ก)
 python tools/s3_pull.py get --what clean --dataset cops       # ผล clean ของ COPS ทุกคน
 python tools/s3_pull.py get --ids COPS-4 --dry-run            # ดูก่อนว่าจะโหลดอะไร
 ```
@@ -293,21 +281,22 @@ python tools/s3_sync.py push metadata reports/cops_visit_summary.csv
 python tools/s3_batch.py ingest --dry-run      # ดูรายการไฟล์ก่อน (รายชื่อไฟล์ OSF เก็บไว้ที่ metadata/osf_files.csv)
 python tools/s3_batch.py ingest                # ไฟล์ที่ขนาดบน S3 ตรงกันแล้วข้าม รันซ้ำได้
 
-# สกัด feature: ดึงทีละ 3 คน -> clean -> feature -> อัปโหลด -> ลบไฟล์ใหญ่ในเครื่อง
-python tools/s3_batch.py features              # ทุกคนที่ยังไม่มี feature บน S3 (หยุดกลางคันแล้วรันใหม่ได้)
-python tools/s3_batch.py features --split train
-python tools/s3_batch.py features --ids COPS-8 --force   # สกัดใหม่ (ใช้ผล clean เดิมบน S3; --reclean = clean ใหม่ด้วย)
+# clean: ดึง raw ทีละ 3 คน -> clean -> อัปผล clean -> ลบไฟล์ใหญ่ในเครื่อง
+python tools/s3_batch.py clean --dry-run       # ใครต้อง clean และเพราะอะไร
+python tools/s3_batch.py clean                 # ทุกคนที่ยังไม่มีผล clean บน S3 หรือผลเก่า (หยุดกลางคันแล้วรันใหม่ได้)
+python tools/s3_batch.py clean --dataset cops --split train
+python tools/s3_batch.py clean --ids COPS-8 --force   # clean ใหม่แม้บน S3 มีผลล่าสุดแล้ว
 ```
 
 - COPS บน OSF เก็บเป็น zip ทั้งคน (`/Data/COPS-<n>.zip` ~800 MB) สคริปต์โหลดมาแตกแล้วอัปทีละไฟล์เข้า `data/raw/cops/<ID>/...`
   ตามชื่อไฟล์ (zip สัญญาณ -> `Accelerometry/`) แล้วเขียน `_source.json` ไว้ รอบหน้าข้ามทั้งคน; ส่งทั้ง 2 ข้อมือ
-  แต่ตอน `features` โหลดเฉพาะข้อมือที่ใช้ (`use_wrist`) + symptom diary
+  แต่ตอน `clean` โหลดเฉพาะข้อมือที่ใช้ (`use_wrist`) + symptom diary
 - ทำ COPS ก่อน NHANES เพราะ NHANES ใช้ noise floor ของ COPS กลุ่ม train เป็นเป้า (โหลด `.qc.json` ของ COPS จาก S3 ให้เอง)
-- ผล: `<s3_root>/data/clean/<ds>/<id>.parquet + .qc.json`, `<s3_root>/data/features/<ds>/<id>.csv`
-  ในเครื่องเหลือ `.qc.json`, `data/features/`, `reports/qc_summary.csv`, `reports/features_hours.csv` (รวมทุกคน)
-- feature: 1 แถว = 1 ชั่วโมง ใช้เฉพาะ sample ที่ `valid` หน้าต่าง 10 วิ ด้วยฟังก์ชันเดียวกับ `tools/feature_check.py`
-  (ENMO, เดิน/การแกว่งแขน, jerk, rest tremor 3.5–7.5 Hz) เก็บชั่วโมงที่มีหน้าต่างใช้ได้ ≥ 30 (5 นาที)
-- เวลาโดยประมาณ: NHANES 1 คน ~4 นาที (clean ~3 + feature ~1)
+- **ผลเก่าถูก clean ใหม่ให้เอง:** NHANES ที่ `.qc.json` บน S3 ใช้เป้า noise ไม่ตรงกับ `target_mg` ใน config
+  (เช่น clean ก่อนเปลี่ยนเป็นเติม noise ต่อแกน) ถือว่าต้อง clean ใหม่ ดูได้จาก `--dry-run`
+- ผล: `<s3_root>/data/clean/<ds>/<id>.parquet + .qc.json` (อัป qc.json หลัง parquet)
+  ในเครื่องเหลือ `.qc.json`, `reports/qc_summary.csv` (รวมทุกคนบน S3) ใส่ `--keep-clean` ถ้าจะเก็บ parquet
+- เวลาโดยประมาณ: NHANES 1 คน ~3 นาที
 
 ## รูปแบบไฟล์ดิบ
 
@@ -344,7 +333,7 @@ HEADER_TIMESTAMP,X,Y,Z
 | 9 นอน | HDCZA (van Hees 2018) เทียบกับ `Kinesia == Sleep` ของ COPS |
 | 10–11 | ใช้ได้ = ตื่น + ใส่ + ไม่ติดธง + visit = outpatient; วันใช้ได้ ≥ 10 ชม.; คนใช้ได้ ≥ 3 วัน |
 
-ไม่ band-pass ตอน clean (ขั้น feature ตอนนี้ก็ยังไม่มี band-pass: ใช้การหักค่าเฉลี่ย 1 วิ และเลือกช่วงความถี่ในสเปกตรัมแทน)
+ไม่ band-pass ตอน clean (ถ้าจะใช้ ให้ทำตอน feature ดู `README_feature.md`)
 calibration หาค่าและปรับที่ 50 Hz ซึ่งให้ผลเท่ากับปรับก่อน resample เพราะทั้งสองขั้นเป็น linear
 
 **ผลลัพธ์** `data/clean/<dataset>/<subject_id>.parquet`
@@ -365,24 +354,6 @@ calibration หาค่าและปรับที่ 50 Hz ซึ่งใ�
 
 `.qc.json` ข้างกันเก็บ QC ของคนนั้น (รวมรายวันและรายคืน) และ `reports/qc_summary.csv` รวมทุกคน
 ใช้เวลา ~50 วินาทีและ RAM สูงสุด ~2.5 GB ต่อคน, parquet ~130 MB ต่อคน
-
-## feature รายชั่วโมง (`data/features/<dataset>/<id>.csv`)
-
-สร้างโดย `tools/s3_batch.py features` → `hour_features` จากผล clean (เฉพาะ sample ที่ `valid`)
-หน้าต่าง 10 วิ ด้วย `window_features` / `summarize_hour` ของ `tools/feature_check.py`
-เก็บเฉพาะชั่วโมงที่มีหน้าต่างใช้ได้ ≥ 30 (5 นาที) และนิ่งไม่เกิน 90% คนที่ไม่ผ่านเกณฑ์วันได้ไฟล์ว่าง
-
-| คอลัมน์ | ความหมาย |
-| --- | --- |
-| `subject_id`, `dataset`, `group`, `label`, `split` | คน, `cops`/`nhanes`, `PD`/`healthy`, 1 = PD, train/valid/test |
-| `day`, `hour`, `valid_min` | วัน (เริ่ม 0), ชั่วโมง (0–23), นาทีที่ใช้ได้ในชั่วโมงนั้น |
-| `windows`, `still_frac` | จำนวนหน้าต่าง 10 วิ, สัดส่วนหน้าต่างนิ่ง |
-| `enmo_mg` | ความแรงการเคลื่อนไหวเฉลี่ย |
-| `walk_windows`, `swing_deg`, `walk_jerk` | จำนวนหน้าต่างเดิน, มุมแกว่งแขนตอนเดิน, jerk ตอนเดิน |
-| `move_jerk` | jerk ของหน้าต่างที่ขยับทั้งหมด |
-| `rest_windows`, `tremor_windows`, `rest_tremor_ratio`, `rest_peak_hz` | หน้าต่างพัก, หน้าต่างพักที่มีสั่น 3.5–7.5 Hz, สัดส่วนพลังงานช่วงสั่น, ความถี่หลักตอนพัก |
-
-**ใช้เทรน:** แบ่ง train / valid / test ด้วยคอลัมน์ `split` เท่านั้น (แบ่งตามคน ห้ามสุ่มรายชั่วโมง ไม่งั้นคนเดียวกันอยู่ทั้ง train และ test)
 
 ## การปรับ noise ระหว่างยี่ห้อนาฬิกา (harmonize)
 
@@ -416,7 +387,7 @@ python tools/noise_target.py --write-qc  # qc.json เก่าที่ยั�
 | noise x, y, z (mg) | 0.01, 0.00, 0.13 | 5.40, 5.39, 5.40 | 4.87, 5.05, 5.98 |
 | COPS train 35 คน x, y, z (mg) | 4.86, 5.00, 5.91 | ← | ← |
 | LR แยกยี่ห้อจาก SD 3 แกนในช่วงนิ่ง (AUC) | 1.00 | 0.91 | **0.49** (= เดาสุ่ม) |
-| LR แยกยี่ห้อจาก feature หน้าต่าง 10 วิ ทั้งวัน (AUC) | 1.00 | ~0.60 | ยังไม่ได้วัดซ้ำ (เป้า < 0.7) |
+| LR แยกยี่ห้อจากค่าตรวจหน้าต่าง 10 วิ ทั้งวัน (`report.window_features`, AUC) | 1.00 | ~0.60 | ยังไม่ได้วัดซ้ำ (เป้า < 0.7) |
 
 ค่าใน `.qc.json`: `noise_floor_before_axes_mg`, `noise_added_axes_mg`, `noise_target_axes_mg`, `noise_floor_after_axes_mg`
 (ช่องเดิมแบบเฉลี่ย 3 แกน `noise_floor_*_mg` ยังมีอยู่) ถ้าแกนไหน noise เดิมสูงกว่าเป้า จะเตือนและบันทึก `noise_over_target_axes`
@@ -448,7 +419,7 @@ python tools/noise_target.py --write-qc  # qc.json เก่าที่ยั�
 คือ clean ด้วยโค้ดเวอร์ชันนี้ขึ้นไป) ค่าที่ใช้ต้องเก็บคู่กับโมเดล
 
 **สิ่งที่ต้องทำต่อ**
-1. หลังสกัด feature แล้ว ให้รัน LR แยกยี่ห้อบน feature จริงซ้ำ (โดยเฉพาะช่วงนิ่ง) feature ไหนให้ AUC > 0.7 ให้ตัดออกหรือปรับก่อนเทรน
+1. หลังสกัด feature แล้ว ให้รัน LR แยกยี่ห้อบน feature จริงซ้ำ (ดู `README_feature.md` หัวข้อ 4)
 2. ทดสอบกับข้อมูลที่ยี่ห้อไม่ซ้อนกับโรค
    - NHANES ที่กิน levodopa (PD ที่ใส่ ActiGraph) มี 3 คน คือ SEQN 73725, 78144, 78486
      ถ้าโมเดลทายว่าเป็น PD บ่อยกว่าคนปกติ แปลว่าโมเดลเรียนโรคได้จริง จำนวนน้อยมาก ใช้ได้แค่ตรวจสอบเบื้องต้น

@@ -1,26 +1,26 @@
 # ดาวน์โหลด / อัปโหลดข้อมูลกับ S3
 
 คู่มือสำหรับคนในทีมที่จะดึง dataset (COPS / NHANES) จาก AWS S3 ของทีมมาทำงานต่อในเครื่องตัวเอง
-และส่งผล (clean / feature) กลับขึ้น S3 ให้คนอื่นใช้ต่อ
+และส่งผล clean กลับขึ้น S3 ให้คนอื่นใช้ต่อ (การทำ feature ดู `README_feature.md`)
 ทำครั้งแรกประมาณ 15 นาที ครั้งต่อไปแค่ login แล้วสั่งดาวน์โหลด
 
 - **ดาวน์โหลด** (ทุกคน): ขั้นที่ 1–5
-- **อัปโหลด** (คนที่ส่งข้อมูลดิบ / รัน clean และ feature): ขั้นที่ 6–8
+- **อัปโหลด** (คนที่ส่งข้อมูลดิบ / รัน clean): ขั้นที่ 6–8
 
 ```
  ต้นทาง (OSF / CDC) ──s3_batch.py ingest──>  S3  <──s3_sync.py push── เครื่องที่มีไฟล์อยู่แล้ว
                                               │ ^
-                         s3_pull.py get ──────┘ └──── s3_batch.py features (clean + feature แล้วอัปให้เอง)
+                         s3_pull.py get ──────┘ └──── s3_batch.py clean (ดึง raw -> clean แล้วอัปผลให้เอง)
                                               v      src.clean.run --upload
                                          เครื่องเรา
 ```
 
 | สคริปต์ | ทิศทาง | ใช้เมื่อ |
 | --- | --- | --- |
-| `tools/s3_pull.py` | S3 → เครื่อง | ดูว่ามีอะไรบน S3 / โหลดข้อมูลดิบ, ผล clean, feature มาใช้ |
+| `tools/s3_pull.py` | S3 → เครื่อง | ดูว่ามีอะไรบน S3 / โหลดข้อมูลดิบ, ผล clean มาใช้ |
 | `tools/s3_sync.py` | เครื่อง ⇄ S3 | ไฟล์อยู่ในเครื่องแล้ว อยากอัปขึ้น (`push`) หรือเทียบ (`status`) |
 | `tools/s3_batch.py ingest` | ต้นทาง → S3 | ส่งข้อมูลดิบขึ้น S3 ตรงจาก OSF / CDC ทีละ 3 คน ไม่ต้องเก็บไว้ในเครื่อง |
-| `tools/s3_batch.py features` | S3 → clean → feature → S3 | ทำ clean + feature ทีละ 3 คน แล้วอัปผลให้อัตโนมัติ |
+| `tools/s3_batch.py clean` | S3 → clean → S3 | ดึง raw ทีละ 3 คน clean แล้วอัปผล clean ให้อัตโนมัติ |
 
 | | |
 | --- | --- |
@@ -38,7 +38,6 @@ pd-pipeline/
   data/raw/cops/Demographics.csv
   data/raw/nhanes/2013-2014/pax80_raw/73558.tar.bz2   ข้อมูลดิบ NHANES
   data/clean/<dataset>/<id>.parquet + .qc.json      ผล clean
-  data/features/<dataset>/<id>.csv                  feature รายชั่วโมง
   metadata/cops_splits.csv, nhanes_splits.csv       รายชื่อคน, split, ข้อมือที่ใช้
   reports/cops_visit_summary.csv                    วันอยู่บ้าน/รพ. ของ COPS
 ```
@@ -131,7 +130,6 @@ S3: s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline  (1037 ไ
 ```bash
 python tools/s3_pull.py get --ids COPS-4 COPS-5 73558      # ข้อมูลดิบของคนที่เลือก (73558 = NHANES-73558) 
 python tools/s3_pull.py get --dataset nhanes               # ข้อมูลดิบ NHANES ทุกคนที่มีบน S3
-python tools/s3_pull.py get --what features                # feature ทุกคน (ไฟล์เล็ก)
 python tools/s3_pull.py get --what clean --dataset cops    # ผล clean ของ COPS ทุกคน
 python tools/s3_pull.py get --what raw clean --ids COPS-4  # หลายชนิดพร้อมกัน
 python tools/s3_pull.py get --all                          # ข้อมูลดิบทุกคน (ใหญ่มาก ระวังพื้นที่)
@@ -141,7 +139,7 @@ python tools/s3_pull.py get --all                          # ข้อมูล�
 | --- | --- |
 | `--ids` | รหัสคน: `COPS-4`, `NHANES-73558` หรือแค่ `73558` |
 | `--dataset` | `cops` หรือ `nhanes` |
-| `--what` | `raw` (ค่าเริ่มต้น), `clean`, `features` ใส่หลายอันได้ |
+| `--what` | `raw` (ค่าเริ่มต้น), `clean` ใส่ทั้งสองได้ |
 | `--wrist` | COPS: `auto` (ค่าเริ่มต้น = ข้างที่ pipeline ใช้), `left`, `right`, `both` |
 | `--exclude` | นามสกุลที่ไม่โหลด ค่าเริ่มต้น `mat` (สำเนา MATLAB ของ .csv) เช่น `--exclude mat eps` |
 | `--metadata` | โหลดรายชื่อคน + split จาก S3 (ไม่จำเป็นถ้า `git pull` แล้ว) |
@@ -153,7 +151,7 @@ python tools/s3_pull.py get --all                          # ข้อมูล�
 - **รันซ้ำได้:** ไฟล์ที่มีในเครื่องแล้วและ md5 ตรงกันจะข้าม เน็ตหลุดกลางทางก็รันคำสั่งเดิมต่อได้
 
 ขนาดโดยประมาณ: COPS คนละ ~400 MB (ข้อมือเดียว) / ~800 MB (สองข้อมือ), NHANES คนละ ~150–180 MB,
-ผล clean คนละ ~130–160 MB, feature คนละไม่กี่สิบ KB
+ผล clean คนละ ~130–160 MB
 
 ## ใช้งานครั้งต่อไป
 
@@ -208,40 +206,47 @@ python tools/s3_sync.py push                                 # data/raw/cops, da
 
 ทุกไฟล์เก็บ md5 ไว้ใน metadata บน S3 ไฟล์ที่ md5 ตรงกันจะข้าม (`--overwrite` = อัปทับทุกไฟล์)
 
-## ขั้นที่ 7: clean + feature แล้วอัปผลขึ้น S3
+## ขั้นที่ 7: ดึง raw จาก S3 มา clean แล้วอัปผลขึ้น S3
 
 ```bash
-python tools/s3_batch.py features --ids COPS-8                   # ลอง 1 คนก่อน
-python tools/s3_batch.py features --dataset cops --split train   # COPS กลุ่ม train ให้ครบก่อน (ดูข้อสำคัญด้านล่าง)
-python tools/s3_batch.py features                                # ทุกคนที่ยังไม่มี feature บน S3
+python tools/s3_batch.py clean --dry-run                      # ดูว่าใครต้อง clean และเพราะอะไร (ไม่โหลดอะไร)
+python tools/s3_batch.py clean --ids COPS-7                   # ลอง 1 คนก่อน
+python tools/s3_batch.py clean --dataset nhanes               # NHANES ทุกคนที่ยังไม่มีผล clean บน S3 หรือผลเก่า
+python tools/s3_batch.py clean                                # ทุกคนที่ยังต้อง clean
 ```
 
+ใครต้อง clean (ดูจากผลบน S3)
+- ยังไม่มี `data/clean/<ds>/<id>.parquet` + `.qc.json` บน S3
+- **NHANES ที่ผล clean บน S3 ใช้เป้า noise ไม่ตรงกับ `target_mg` ใน config** (เช่น clean ก่อนเปลี่ยนเป็นต่อแกน) ถือว่าเก่า clean ใหม่ให้เอง
+- ใส่ `--force` = clean ใหม่ทุกคนที่เลือก (หลังแก้โค้ด / config ของขั้น clean)
+
 ต่อ 1 กลุ่ม (3 คน) สคริปต์ทำดังนี้
-1. ถ้าบน S3 มีผล clean แล้ว → โหลดผล clean มาใช้ ไม่งั้น → โหลดข้อมูลดิบ (COPS เฉพาะข้อมือที่ใช้) แล้ว clean
-2. อัป `data/clean/<ds>/<id>.parquet` + `.qc.json` ขึ้น S3
-3. คำนวณ feature รายชั่วโมงจากแถว `valid = True` → `data/features/<ds>/<id>.csv` แล้วอัปขึ้น S3
-   (คนที่ไม่ผ่านเกณฑ์วันได้ไฟล์ว่าง = ทำแล้ว ไม่ต้องทำซ้ำ)
+1. โหลดข้อมูลดิบจาก S3 (COPS เฉพาะข้อมือที่ใช้ + symptom diary) ลง `data/_batch/`
+2. clean ทีละคน (ใช้ RAM มาก ~2.5 GB ต่อคน)
+3. อัป `data/clean/<ds>/<id>.parquet` แล้วตามด้วย `.qc.json` ขึ้น S3
 4. ลบไฟล์ดิบและ `.parquet` ในเครื่อง (`--keep-clean` = เก็บ parquet ไว้)
 
-จบแล้วรวมผลของทุกเครื่องที่อยู่บน S3 เป็น `reports/qc_summary.csv` และ `reports/features_hours.csv`
+จบแล้วรวม QC ของทุกเครื่องที่อยู่บน S3 เป็น `reports/qc_summary.csv`
+ถ้ารอบนั้น clean COPS กลุ่ม train จะเช็กว่าเป้า noise ใน config ยังตรงกับ COPS ไหม และเตือนถ้าไม่ตรง
 
 | ตัวเลือก | ความหมาย |
 | --- | --- |
 | `--ids`, `--dataset`, `--split`, `--batch-size` | เหมือน ingest |
-| `--force` | คำนวณ feature ใหม่แม้บน S3 มีแล้ว (ใช้ผล clean เดิม) |
-| `--reclean` | clean ใหม่จากข้อมูลดิบ (หลังแก้โค้ด / config ของขั้น clean) |
+| `--dry-run` | แสดงรายชื่อคนที่ต้อง clean พร้อมเหตุผล ไม่โหลด ไม่ clean |
+| `--force` | clean ใหม่แม้บน S3 มีผลล่าสุดแล้ว |
 | `--keep-clean` | เก็บ `.parquet` ไว้ในเครื่อง |
 
-ฝั่งนี้ไม่มี `--dry-run` ให้ลองกับ 1 คนก่อน clean ใช้เวลา ~50 วิ และ RAM ~2.5 GB ต่อคน (clean ทีละคน)
+ถ้า raw ของคนนั้นไม่มีบน S3 จะข้าม (`ไม่มีข้อมูลดิบบน S3`) → `ingest` ก่อน หรือถ้ามี raw ในเครื่องใช้ขั้นที่ 8
 
 **เป้า noise ของ NHANES**
 noise ของ NHANES ถูกปรับต่อแกนให้เท่า median ของ COPS กลุ่ม train ซึ่งตอนนี้ **clean ครบ 35 คนแล้ว**
 และตั้งตายตัวไว้ที่ `clean.harmonize.add_noise.target_mg: [4.93, 5.07, 6.00]` ใน `config/config.yaml`
 - รัน NHANES ได้เลย ไม่ต้องรอ COPS แล้ว
-- **ห้ามแก้ค่านี้** โดยไม่บอกทีม แก้แล้ว NHANES ทุกคนต้อง `--reclean`
+- **ห้ามแก้ค่านี้** โดยไม่บอกทีม แก้แล้ว NHANES ทุกคนต้อง clean ใหม่ (`s3_batch.py clean` จับได้เองว่าผลเก่า)
 - ถ้า clean COPS ใหม่ (หลังแก้ขั้น clean) ให้รัน `python tools/noise_target.py` เช็กว่าเป้ายังตรงไหม
-- NHANES ที่ clean ก่อนแก้เป็นต่อแกน (มีแค่ NHANES-74132) ต้อง clean ใหม่
-- ทุกคนต้องใช้โค้ดและ `config.yaml` เวอร์ชันเดียวกัน (`git pull` ก่อนรัน) ถ้าแก้ขั้น clean ต้อง `--reclean` ใหม่ทุกคน
+- NHANES ที่ clean ก่อนแก้เป็นต่อแกน (NHANES-73558, NHANES-74132) ต้อง clean ใหม่
+  `python tools/s3_batch.py clean` จับได้เองว่าเป็นผลเก่า (ดูด้วย `--dry-run`)
+- ทุกคนต้องใช้โค้ดและ `config.yaml` เวอร์ชันเดียวกัน (`git pull` ก่อนรัน) ถ้าแก้ขั้น clean ต้อง `--force` ใหม่ทุกคน
 
 ## ขั้นที่ 8: อัปผลที่ทำเองในเครื่อง
 
@@ -294,5 +299,5 @@ python tools/s3_sync.py push metadata/cops_splits.csv metadata/nhanes_splits.csv
   ไฟล์อื่นใน `metadata/` และ `reports/` ไม่อยู่ใน git
 - บัญชี AWS เป็นของผู้จัดงาน ค่าดาวน์โหลดออกจาก AWS ฟรี 100 GB ต่อเดือนต่อบัญชี (ทั้งทีมใช้ร่วมกัน)
   โหลดเท่าที่ใช้ อย่า `--all` ซ้ำหลายรอบ
-- **อัปทับ = ของเดิมหาย** (S3 ไม่ได้เปิด versioning) ระวัง `--overwrite`, `--force`, `--reclean` ใส่ `--dry-run` / ลอง 1 คนก่อน
+- **อัปทับ = ของเดิมหาย** (S3 ไม่ได้เปิด versioning) ระวัง `--overwrite`, `--force` ใส่ `--dry-run` / ลอง 1 คนก่อน
 - ห้ามอัปข้อมูลที่ไม่ใช่ของ dataset ทั้งสองนี้ หรือไฟล์ส่วนตัวขึ้น bucket ของทีม

@@ -3,7 +3,6 @@
     python tools/s3_pull.py list                                   # ดูว่าบน S3 มีใครบ้าง ชนิดไหน ขนาดเท่าไหร่
     python tools/s3_pull.py get --ids COPS-4 NHANES-73558          # ข้อมูลดิบของ 2 คน (COPS เฉพาะข้อมือที่ใช้)
     python tools/s3_pull.py get --ids COPS-4 --wrist both          # COPS ทั้ง 2 ข้อมือ (ขนาดเป็น 2 เท่า)
-    python tools/s3_pull.py get --what features                    # feature ของทุกคน (ไฟล์เล็ก)
     python tools/s3_pull.py get --dataset cops --what clean        # ผล clean ของ COPS ทุกคน
     python tools/s3_pull.py get --metadata                         # รายชื่อคน + split (metadata/, reports/)
     python tools/s3_pull.py get --ids COPS-4 --dry-run             # ดูก่อนว่าจะโหลดอะไร
@@ -23,7 +22,7 @@ sys.path.insert(0, str(ROOT))
 from src import storage  # noqa: E402
 from src.ingestion.cops_reader import FILE_RE  # noqa: E402
 
-WHAT = ("raw", "clean", "features")
+WHAT = ("raw", "clean")
 METADATA = ["metadata/cops_splits.csv", "metadata/nhanes_splits.csv", "reports/cops_visit_summary.csv"]
 
 
@@ -106,9 +105,7 @@ def files_for(remote, config, s3_root, sid, what, wrist):
                              and FILE_RE.match(k.rsplit("/", 1)[-1]).group(5).lower() != wrist)}
         files.update(remote.under(f"{rd}/Demographics.csv"))
         return files
-    if what == "clean":
-        return {**remote.under(f"data/clean/{ds}/{sid}.parquet"), **remote.under(f"data/clean/{ds}/{sid}.qc.json")}
-    return remote.under(f"data/features/{ds}/{sid}.csv")
+    return {**remote.under(f"data/clean/{ds}/{sid}.parquet"), **remote.under(f"data/clean/{ds}/{sid}.qc.json")}
 
 
 def gb(n):
