@@ -30,6 +30,16 @@
 | Region | `ap-southeast-1` (Singapore) |
 | Profile | `minny` (ต้องตรงกับ `storage.aws_profile` ใน `config/config.yaml`) |
 
+**บน S3 ตอนนี้ (16 ต.ค. 2026)** ดูล่าสุดเองด้วย `python tools/s3_pull.py list`
+
+| | raw | clean |
+| --- | --- | --- |
+| COPS train (35) | ✅ 35 | ✅ 35 |
+| COPS valid (7) | ✅ 7 | ❌ ยังไม่ได้ทำ |
+| COPS test (7) | ❌ ยังไม่ได้ ingest | ❌ |
+| NHANES (150) | 60 คน (กำลังส่งขึ้นเพิ่ม) | 2 คน (73558, 74132) **ใช้สูตร noise เก่า ต้อง clean ใหม่** |
+| metadata | ไม่มีบน S3 (ใช้จาก git) | |
+
 ข้อมูลบน S3 จัดโฟลเดอร์แบบเดียวกับในเครื่อง ดาวน์โหลดแล้วไฟล์จะไปอยู่ที่เดียวกันทันที
 
 ```
@@ -108,13 +118,15 @@ aws s3 ls s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/ --p
 python tools/s3_pull.py list
 ```
 
-ตัวอย่างผล
+ตัวอย่างผล (`metadata: ยังไม่มี` ไม่เป็นไร เพราะ metadata มากับ git)
 
 ```
-S3: s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline  (1037 ไฟล์, รวม 2.60 GB)
-  raw      cops     3 คน    2.44 GB  COPS-4, COPS-5, COPS-6
-  raw      nhanes   1 คน    0.17 GB  NHANES-73558
-  metadata: metadata/cops_splits.csv, metadata/nhanes_splits.csv, reports/cops_visit_summary.csv
+S3: s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline  (14142 ไฟล์, รวม 49.14 GB)
+  raw      cops    42 คน   33.63 GB  COPS-4, COPS-5, COPS-6, COPS-7, COPS-8, ... (+30)
+  raw      nhanes  60 คน   10.41 GB  NHANES-73558, NHANES-73596, ... (+48)
+  clean    cops    35 คน    4.79 GB  COPS-4, COPS-5, COPS-6, COPS-8, ... (+23)
+  clean    nhanes   2 คน    0.31 GB  NHANES-73558, NHANES-74132
+  metadata: ยังไม่มี (เจ้าของรัน s3_sync.py push metadata reports/cops_visit_summary.csv)
 ```
 
 ## ขั้นที่ 5: ดาวน์โหลด
@@ -126,11 +138,12 @@ S3: s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline  (1037 ไ
 > หรือรัน `setopt interactivecomments` ครั้งเดียวก่อน
 
 เลือกโหลดตามที่ต้องการ (ใส่ `--dry-run` ต่อท้ายเพื่อดูรายการก่อนได้ทุกคำสั่ง)
-
+# ที่เป็น ***** คือใช้บ่อย
 ```bash
-python tools/s3_pull.py get --ids COPS-4 COPS-5 73558      # ข้อมูลดิบของคนที่เลือก (73558 = NHANES-73558) 
-python tools/s3_pull.py get --dataset nhanes               # ข้อมูลดิบ NHANES ทุกคนที่มีบน S3
+python tools/s3_pull.py get --ids COPS-4 COPS-5 73558      # ข้อมูลดิบของคนที่เลือก (73558 = NHANES-73558) *****
+python tools/s3_pull.py get --dataset nhanes               # ข้อมูลดิบ NHANES ทุกคนที่มีบน S3 ******
 python tools/s3_pull.py get --what clean --dataset cops    # ผล clean ของ COPS ทุกคน
+python tools/s3_pull.py get --what clean --ids NHANES-74132 73558 # ผล clean ของแต่ละ id ******
 python tools/s3_pull.py get --what raw clean --ids COPS-4  # หลายชนิดพร้อมกัน
 python tools/s3_pull.py get --all                          # ข้อมูลดิบทุกคน (ใหญ่มาก ระวังพื้นที่)
 ```
@@ -142,7 +155,7 @@ python tools/s3_pull.py get --all                          # ข้อมูล�
 | `--what` | `raw` (ค่าเริ่มต้น), `clean` ใส่ทั้งสองได้ |
 | `--wrist` | COPS: `auto` (ค่าเริ่มต้น = ข้างที่ pipeline ใช้), `left`, `right`, `both` |
 | `--exclude` | นามสกุลที่ไม่โหลด ค่าเริ่มต้น `mat` (สำเนา MATLAB ของ .csv) เช่น `--exclude mat eps` |
-| `--metadata` | โหลดรายชื่อคน + split จาก S3 (ไม่จำเป็นถ้า `git pull` แล้ว) |
+| `--metadata` | โหลดรายชื่อคน + split จาก S3 (ไม่จำเป็นถ้า `git pull` แล้ว; ตอนนี้ยังไม่มีบน S3) |
 | `--dry-run` | แสดงรายการอย่างเดียว ไม่โหลดจริง |
 
 สิ่งที่สคริปต์ทำให้อัตโนมัติ
@@ -151,14 +164,14 @@ python tools/s3_pull.py get --all                          # ข้อมูล�
 - **รันซ้ำได้:** ไฟล์ที่มีในเครื่องแล้วและ md5 ตรงกันจะข้าม เน็ตหลุดกลางทางก็รันคำสั่งเดิมต่อได้
 
 ขนาดโดยประมาณ: COPS คนละ ~400 MB (ข้อมือเดียว) / ~800 MB (สองข้อมือ), NHANES คนละ ~150–180 MB,
-ผล clean คนละ ~130–160 MB
+ผล clean คนละ ~130–160 MB (ผล clean ทุกคน ≈ 30 GB, raw ข้อมือเดียวทุกคน ≈ 46 GB)
 
 ## ใช้งานครั้งต่อไป
 
 ```bash
 cd pd-pipeline
 source .venv/bin/activate
-aws sso login --profile minny      # ถ้า login หมดอายุ (มักเป็นรายวัน)
+aws sso login --profile ชื่อที่ตั้ง      # ถ้า login หมดอายุ (มักเป็นรายวัน)
 python tools/s3_pull.py get --ids COPS-7
 ```
 
@@ -175,8 +188,8 @@ python tools/s3_pull.py get --ids COPS-7
 → อัปขึ้น S3 → ลบ ทีละ 3 คน ในเครื่องใช้ที่แค่ ~2.5 GB
 
 ```bash
-python tools/s3_batch.py ingest --dry-run                    # ดูรายการไฟล์และขนาดก่อน
-python tools/s3_batch.py ingest --ids COPS-8 NHANES-74132    # เฉพาะบางคน
+python tools/s3_batch.py ingest --dry-run                    # ดูรายการไฟล์และขนาดก่อน *******
+python tools/s3_batch.py ingest --ids COPS-8 NHANES-74132    # เฉพาะบางคน ******
 python tools/s3_batch.py ingest --dataset nhanes             # NHANES ทุกคนในรายชื่อ
 python tools/s3_batch.py ingest                              # ทุกคนในรายชื่อ (COPS 49 + NHANES 150)
 ```
@@ -208,6 +221,18 @@ python tools/s3_sync.py push                                 # data/raw/cops, da
 
 ## ขั้นที่ 7: ดึง raw จาก S3 มา clean แล้วอัปผลขึ้น S3
 
+**`git pull` ก่อนทุกครั้ง** ต้องได้โค้ดที่เติม noise ต่อแกน (commit `65de488`) และคำสั่ง `s3_batch.py clean` (commit `c7cbdf7`)
+ถ้าโค้ดเก่า NHANES จะถูก clean ด้วยสูตรเดิม และจะไม่มีคำสั่ง `clean`
+
+**งานที่เหลือตอนนี้ (แบ่งคนกันทำ อย่ารันคนเดียวกันพร้อมกัน)**
+
+```bash
+python tools/s3_batch.py clean --dataset cops --split valid    # 1) COPS valid 7 คน (raw มีแล้ว)
+python tools/s3_batch.py ingest --dataset cops --split test    # 2) ส่ง raw COPS test 7 คนขึ้นก่อน
+python tools/s3_batch.py clean --dataset cops --split test     #    แล้วค่อย clean
+python tools/s3_batch.py clean --dataset nhanes                # 3) NHANES (รวม 2 คนที่ผลเก่า) เฉพาะคนที่ raw ขึ้นแล้ว
+```
+
 ```bash
 python tools/s3_batch.py clean --dry-run                      # ดูว่าใครต้อง clean และเพราะอะไร (ไม่โหลดอะไร)
 python tools/s3_batch.py clean --ids COPS-7                   # ลอง 1 คนก่อน
@@ -222,9 +247,10 @@ python tools/s3_batch.py clean                                # ทุกคน�
 
 ต่อ 1 กลุ่ม (3 คน) สคริปต์ทำดังนี้
 1. โหลดข้อมูลดิบจาก S3 (COPS เฉพาะข้อมือที่ใช้ + symptom diary) ลง `data/_batch/`
-2. clean ทีละคน (ใช้ RAM มาก ~2.5 GB ต่อคน)
+2. clean ทีละคน (ใช้ RAM มาก ~2.5 GB ต่อคน; COPS ~1 นาที, NHANES ~3 นาทีต่อคน)
 3. อัป `data/clean/<ds>/<id>.parquet` แล้วตามด้วย `.qc.json` ขึ้น S3
-4. ลบไฟล์ดิบและ `.parquet` ในเครื่อง (`--keep-clean` = เก็บ parquet ไว้)
+4. ลบไฟล์ดิบและ `.parquet` ในเครื่อง (`--keep-clean` = เก็บ parquet ไว้ ถ้าจะใช้ต่อในเครื่องทันที)
+   ในเครื่องเหลือแค่ `.qc.json` จะใช้ผล clean ทีหลังให้โหลดด้วย `s3_pull.py get --what clean`
 
 จบแล้วรวม QC ของทุกเครื่องที่อยู่บน S3 เป็น `reports/qc_summary.csv`
 ถ้ารอบนั้น clean COPS กลุ่ม train จะเช็กว่าเป้า noise ใน config ยังตรงกับ COPS ไหม และเตือนถ้าไม่ตรง
@@ -245,7 +271,7 @@ noise ของ NHANES ถูกปรับต่อแกนให้เท่
 - **ห้ามแก้ค่านี้** โดยไม่บอกทีม แก้แล้ว NHANES ทุกคนต้อง clean ใหม่ (`s3_batch.py clean` จับได้เองว่าผลเก่า)
 - ถ้า clean COPS ใหม่ (หลังแก้ขั้น clean) ให้รัน `python tools/noise_target.py` เช็กว่าเป้ายังตรงไหม
 - NHANES ที่ clean ก่อนแก้เป็นต่อแกน (NHANES-73558, NHANES-74132) ต้อง clean ใหม่
-  `python tools/s3_batch.py clean` จับได้เองว่าเป็นผลเก่า (ดูด้วย `--dry-run`)
+  `python tools/s3_batch.py clean` จับได้เองว่าเป็นผลเก่า (`--dry-run` ขึ้น `เป้า noise เปลี่ยน (None -> [4.93, 5.07, 6.0])`)
 - ทุกคนต้องใช้โค้ดและ `config.yaml` เวอร์ชันเดียวกัน (`git pull` ก่อนรัน) ถ้าแก้ขั้น clean ต้อง `--force` ใหม่ทุกคน
 
 ## ขั้นที่ 8: อัปผลที่ทำเองในเครื่อง
@@ -266,6 +292,8 @@ git commit -m "Update subject lists and splits" && git push
 python tools/s3_sync.py push metadata/cops_splits.csv metadata/nhanes_splits.csv reports/cops_visit_summary.csv
 ```
 
+ตอนนี้ metadata ยังไม่เคยอัปขึ้น S3 (ทุกคนใช้จาก git) ถ้าอยากให้ `get --metadata` ใช้ได้ รันคำสั่ง `s3_sync.py push` ข้างบนครั้งเดียว
+
 **เปลี่ยน split หลังเริ่มแล้ว = ต้อง clean NHANES ใหม่ทั้งหมด** (เป้า noise มาจาก COPS train) บอกทีมก่อนทุกครั้ง
 
 ---
@@ -285,7 +313,11 @@ python tools/s3_sync.py push metadata/cops_splits.csv metadata/nhanes_splits.csv
 | `ไม่อยู่ในรายชื่อ: [...]` (`s3_batch.py`) | รหัสไม่อยู่ใน `metadata/cops_splits.csv` / `nhanes_splits.csv` → `git pull` หรือเช็กการสะกด (`NHANES-74132` ต้องมี `NHANES-`) |
 | `ไม่มีข้อมูลดิบบน S3 (รัน ingest ก่อน)` | คนนั้นยังไม่มี raw บน S3 → `python tools/s3_batch.py ingest --ids <id>` |
 | `ไม่พบไฟล์ของ COPS-x บน OSF` | รหัสนี้ไม่มีบน OSF → เช็กรหัส หรือ `--refresh-osf` ถ้าเพิ่งมีไฟล์ใหม่ |
-| NHANES ไม่ถูก clean / บอกว่ายังไม่มี noise target | ยังไม่มี COPS train ที่ clean แล้ว → ทำ `--dataset cops --split train` ก่อน |
+| `ยังไม่มี noise target` | เกิดเฉพาะถ้าตั้ง `target_mg: auto` แล้วในเครื่องไม่มี `.qc.json` ของ COPS train ที่มีค่าต่อแกน → ใช้ค่าตัวเลขใน config ตามเดิม (`git checkout config/config.yaml`) |
+| `คำเตือน noise: target_mg ใน config ... ต่างจาก COPS train` | clean COPS ใหม่แล้ว noise เปลี่ยน → รัน `python tools/noise_target.py` แล้วบอกทีมก่อนแก้ config (แก้แล้วต้อง clean NHANES ใหม่ทั้งหมด) |
+| `คำเตือน NHANES-x: noise แกน ... สูงกว่าเป้าอยู่แล้ว` | คนนั้น noise เดิมสูงกว่าเป้า เติมไม่ได้ → แจ้งทีม (ปกติ NHANES ไม่ควรเจอ) |
+| `invalid choice: 'features'` | คำสั่ง `features` ถูกเอาออกแล้ว → ใช้ `clean` (การทำ feature ดู `README_feature.md`) |
+| `zsh: command not found: #` / `zsh: no matches found` | คัดลอกคำอธิบายหลัง `#` มาด้วย → เอาแค่ส่วนคำสั่ง หรือรัน `setopt interactivecomments` |
 | `AccessDenied` ตอนอัป | role อ่านได้แต่เขียนไม่ได้ → ติดต่อผู้จัด |
 | `มีอยู่ในเครื่องแล้ว ใช้ ... s3_sync.py push ... แทน` (ingest) | ไฟล์ของคนนั้นอยู่ในเครื่องแล้ว → `python tools/s3_sync.py push data/raw/cops/<id>` |
 | `datasets.<ชื่อ>.raw_dir (...) ไม่อยู่ใต้ storage.s3_root` | ตั้ง `raw_dir` เป็น `s3://` คนละ bucket กับ `s3_root` → แก้ให้อยู่ใต้ `s3_root` หรือใช้ path ในเครื่อง |
@@ -297,7 +329,16 @@ python tools/s3_sync.py push metadata/cops_splits.csv metadata/nhanes_splits.csv
 - ข้อมูลใน `data/` ไม่อยู่ใน git (กันไว้ใน `.gitignore`) ต้องโหลดจาก S3 ด้วยสคริปต์นี้
   ส่วน metadata 3 ไฟล์ (`cops_splits.csv`, `nhanes_splits.csv`, `cops_visit_summary.csv`) อยู่ใน git
   ไฟล์อื่นใน `metadata/` และ `reports/` ไม่อยู่ใน git
-- บัญชี AWS เป็นของผู้จัดงาน ค่าดาวน์โหลดออกจาก AWS ฟรี 100 GB ต่อเดือนต่อบัญชี (ทั้งทีมใช้ร่วมกัน)
-  โหลดเท่าที่ใช้ อย่า `--all` ซ้ำหลายรอบ
+- **ค่าใช้จ่าย:** บัญชี AWS เป็นของผู้จัดงาน ค่าเก็บไฟล์ถูก (~95 GB ≈ $2.4/เดือน) ตัวที่แพงคือ **ดาวน์โหลดลงเครื่อง**
+  ฟรี 100 GB ต่อเดือนต่อบัญชี (ทั้งทีมใช้ร่วมกัน) เกินแล้ว ~$0.12/GB
+
+  | ทำอะไร | ดาวน์โหลด |
+  | --- | --- |
+  | `s3_batch.py clean` ครบทุกคน 1 รอบ | ~46 GB |
+  | `--force` ทั้งชุดอีกรอบ | อีก ~46 GB |
+  | ดึงผล clean ทุกคน (`get --what clean`) | ~30 GB ต่อคน |
+  | `get --all --wrist both` | ~65 GB ต่อคน |
+
+  โหลดเท่าที่ใช้ อย่า `--all` / `--force` ทั้งชุดซ้ำหลายรอบ ทุกอย่างรันบนเครื่องเรา (ไม่มี EC2) จึงนับเป็นดาวน์โหลดทั้งหมด
 - **อัปทับ = ของเดิมหาย** (S3 ไม่ได้เปิด versioning) ระวัง `--overwrite`, `--force` ใส่ `--dry-run` / ลอง 1 คนก่อน
 - ห้ามอัปข้อมูลที่ไม่ใช่ของ dataset ทั้งสองนี้ หรือไฟล์ส่วนตัวขึ้น bucket ของทีม
