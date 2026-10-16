@@ -519,6 +519,20 @@ def noise_floor_mg(xyz, fs, window_s, mask, min_windows):
     return float(np.median(stats_sd(st)[sel].mean(1)) * 1000), int(sel.sum())
 
 
+def noise_floor_axes_mg(xyz, fs, window_s, mask, min_windows):
+    """เหมือน noise_floor_mg แต่แยกแกน: มัธยฐานของ SD แต่ละแกน -> array (x, y, z) เป็น mg
+
+    GENEActiv มี noise แต่ละแกนไม่เท่ากัน (z สูงกว่า x ~1 mg) จึงต้องเทียบ / เติม noise ทีละแกน
+    ถ้าหน้าต่างน้อยกว่า min_windows คืน NaN ทั้ง 3 แกน
+    """
+    win = int(window_s * fs)
+    st = window_stats(xyz, win)
+    sel = (st["n"] == win) & per_window(mask, win)
+    if sel.sum() < min_windows:
+        return np.full(3, np.nan), int(sel.sum())
+    return np.median(stats_sd(st)[sel], 0) * 1000, int(sel.sum())
+
+
 def quantize(xyz, step_g, block=4_320_000):
     """ปัดทุกค่าเป็นขั้นละ step_g (ในที่) เช่น 3.9 mg = ความละเอียดของ GENEActiv
 
@@ -531,14 +545,16 @@ def quantize(xyz, step_g, block=4_320_000):
 
 
 def add_noise(xyz, sigma_g, seed, block=4_320_000):
-    """เติม Gaussian noise SD = sigma_g ทุกแกน (ในที่) ทีละก้อน
+    """เติม Gaussian noise SD = sigma_g (ในที่) ทีละก้อน
+    sigma_g เป็นตัวเลขเดียว (ทุกแกนเท่ากัน) หรือ 3 ค่า (x, y, z) ก็ได้
 
-    ใช้กับ NHANES ให้ noise ตอนนิ่งเท่ากับ COPS seed คงที่ต่อคน = รันซ้ำได้ผลเดิม
+    ใช้กับ NHANES ให้ noise ตอนนิ่งเท่ากับ COPS ทีละแกน seed คงที่ต่อคน = รันซ้ำได้ผลเดิม
     """
     rng = np.random.default_rng(seed)
+    sigma = np.broadcast_to(np.asarray(sigma_g, np.float32), (3,))
     for a in range(0, len(xyz), block):
         v = xyz[a:a + block]
-        v += rng.standard_normal(v.shape, dtype=np.float32) * np.float32(sigma_g)
+        v += rng.standard_normal(v.shape, dtype=np.float32) * sigma
 
 
 # ---------------------------------------------------------------- ขั้น 8: ถอดนาฬิกา

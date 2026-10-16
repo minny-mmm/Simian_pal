@@ -38,7 +38,7 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
 **กติกาที่ต้องตกลงกัน**
 1. **แบ่งคนกันทำ** (เช่นตาม `--ids` หรือ `--split`) ก่อนรัน `s3_batch.py features` จะได้ไม่ทำซ้ำ / อัปทับกัน
 2. **COPS กลุ่ม train ก่อน NHANES** เพราะ noise เป้าของ NHANES มาจาก COPS train
-   หลัง COPS train ครบให้เขียน `clean.harmonize.add_noise.target_mg` เป็นตัวเลขแล้ว commit (ตอนนี้ยังเป็น `auto`)
+   ตอนนี้ COPS train ครบ 35 คนแล้ว เป้าตั้งตายตัวเป็นต่อแกน `target_mg: [4.93, 5.07, 6.00]` ใน config ห้ามแก้โดยไม่บอกทีม
 3. **ห้ามแก้ `config.yaml` (ส่วน `clean`), `src/clean/`, `tools/feature_check.py` แล้วรันเงียบ ๆ**
    ผลจะไม่ตรงกับของคนอื่น ถ้าแก้ต้องบอกทีม commit แล้วรันใหม่ทุกคนด้วย `--reclean` (แก้ clean) หรือ `--force` (แก้ feature)
 4. **ห้าม commit ข้อมูล** ใช้ `git add <ไฟล์>` ระบุเป็นไฟล์ อย่า `git add .` (`config/config.yaml.bak`, ข้อมูลรายคนจะติดไป)
@@ -112,6 +112,7 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
 | `src/ingestion/__init__.py` | `READERS` ลงทะเบียน reader ตามชื่อ dataset |
 | `src/clean/steps.py` | ฟังก์ชันของขั้น clean 2–11 (ไม่มี I/O ทดสอบแยกได้): `TimeFixer`, `Resampler`, calibration, clip, abnormal, ISM, noise harmonize, nonwear, HDCZA, ชั่วโมงใช้ได้ต่อวัน |
 | `src/clean/run.py` | รัน clean ทีละคน: อ่านรายชื่อจาก metadata, เรียก steps ตามลำดับ, เขียน parquet + `.qc.json`, รวม `reports/qc_summary.csv` |
+| `src/clean/noise_target.py` | เป้า noise ต่อแกนจาก COPS train: อ่านจาก `.qc.json` หรือวัดจาก parquet (หน้ากากเดียวกับขั้น clean) แล้วเทียบกับ config |
 | `src/clean/report.py` | อ่าน parquet ที่ clean แล้วเป็น epoch / feature หน้าต่าง 10 วิ (ใช้ใน notebook) |
 | `src/pipeline.py` | ingestion: แปลงไฟล์ดิบเป็น common schema + เขียน `metadata/manifest.csv` |
 | `src/schema/` | นิยามคอลัมน์ของ subject metadata และ sensor parquet |
@@ -128,6 +129,7 @@ python tools/s3_pull.py get --what features                  # ใช้ feature
 | `select_nhanes.py` | คัดคนปกติ NHANES 150 คน -> `metadata/nhanes_splits.csv` (`--check` ดูจำนวนที่ผ่านแต่ละเกณฑ์) |
 | `make_splits.py` | แบ่ง train / valid / test ตามคน -> `metadata/cops_splits.csv`, คอลัมน์ `split` ใน `nhanes_splits.csv` |
 | `feature_check.py` | ตรวจเร็ว ๆ จากไฟล์ดิบว่า feature หลักไปทิศที่คาดไหม (ยังไม่ผ่าน clean) -> `reports/feature_check*` |
+| `noise_target.py` | คำนวณเป้า noise ต่อแกนจาก COPS train แล้วเทียบกับ `target_mg` ใน config (รันหลัง clean COPS ใหม่ทุกครั้ง) |
 | `s3_sync.py` | sync `data/` กับ S3 (`status` / `push` / `pull`, ข้ามไฟล์ที่ md5 ตรงกัน) |
 | `s3_pull.py` | ดึงข้อมูลจาก S3 ลงเครื่อง เลือกคน / ชนิด (raw, clean, features) ได้ COPS โหลดเฉพาะข้อมือที่ใช้ ตรวจ md5 |
 | `s3_batch.py` | ทีละ 3 คน: `ingest` โหลดจาก OSF/CDC ขึ้น S3, `features` ดึงจาก S3 -> clean -> feature รายชั่วโมง -> อัปโหลด -> ลบในเครื่อง |
@@ -342,10 +344,15 @@ HEADER_TIMESTAMP,X,Y,Z
 | 9 นอน | HDCZA (van Hees 2018) เทียบกับ `Kinesia == Sleep` ของ COPS |
 | 10–11 | ใช้ได้ = ตื่น + ใส่ + ไม่ติดธง + visit = outpatient; วันใช้ได้ ≥ 10 ชม.; คนใช้ได้ ≥ 3 วัน |
 
-ไม่ band-pass ตอน clean (ทำ 0.5–15 Hz ตอนสกัด feature)
+ไม่ band-pass ตอน clean (ขั้น feature ตอนนี้ก็ยังไม่มี band-pass: ใช้การหักค่าเฉลี่ย 1 วิ และเลือกช่วงความถี่ในสเปกตรัมแทน)
 calibration หาค่าและปรับที่ 50 Hz ซึ่งให้ผลเท่ากับปรับก่อน resample เพราะทั้งสองขั้นเป็น linear
 
-**ผลลัพธ์** `data/clean/<dataset>/<subject_id>.parquet` (1 row group ต่อวัน)
+**ผลลัพธ์** `data/clean/<dataset>/<subject_id>.parquet`
+
+**row group ≠ วัน:** โค้ดเขียนทีละวัน แต่ pyarrow ตัด row group เองทุก 1,048,576 แถว (~5 ชม. 49 นาทีที่ 50 Hz)
+1 วันจึงมี 4–5 row group และรอยตัดอยู่กลางชั่วโมง (เช่น 05:49, 11:39, 17:28, 23:18)
+ถ้าอ่านทีละ row group เพื่อประหยัด RAM **ให้แบ่งวัน / ชั่วโมงจากคอลัมน์ `day` และ `time_s`** ห้ามถือว่า 1 row group = 1 วัน
+(ไม่งั้นชั่วโมงที่คร่อมรอยตัดจะแตกเป็น 2 ชิ้น) หรืออ่านทีละวันด้วย filter: `pq.read_table(path, filters=[("day", "=", d)])`
 
 | คอลัมน์ | ความหมาย |
 | --- | --- |
@@ -382,15 +389,37 @@ calibration หาค่าและปรับที่ 50 Hz ซึ่งใ�
 PD ทุกคนใส่ GENEActiv คนปกติทุกคนใส่ ActiGraph ยี่ห้อกับโรคจึงซ้อนกัน 100%
 ถ้าไม่ปรับ โมเดลจะเรียนยี่ห้อนาฬิกาแทนโรคได้ (shortcut learning)
 
-**ทำอะไร:** เติม Gaussian noise ให้ NHANES จน noise floor เท่า median ของ COPS กลุ่ม train
+**ทำอะไร:** เติม Gaussian noise ให้ NHANES **ทีละแกน** จน noise floor แต่ละแกนเท่า median ของ COPS กลุ่ม train
 แล้วปัดค่าเป็นขั้น 3.9 mg ทั้งสองชุด (`clean.harmonize` ใน config)
 
-**ผลที่วัดได้**
+GENEActiv มี noise แต่ละแกนไม่เท่ากัน (แกน z สูงสุดในทุกคน) ส่วน ActiGraph แทบไม่มี noise เลย (< 0.2 mg)
+ถ้าเติมเท่ากันทุกแกน NHANES จะมี noise "เท่ากันทุกแกน" ซึ่งเป็นลายนิ้วมือยี่ห้ออีกแบบ
 
-| | ก่อนปรับ | หลังปรับ |
-| --- | --- | --- |
-| noise floor (mg) | COPS ~5, NHANES ต่ำกว่า | COPS 4.89–5.52, NHANES 5.41 (เป้า 5.41) |
-| LR แยกยี่ห้อจากหน้าต่าง 10 วิ (AUC) | 1.00 | ~0.60 (เป้า < 0.7) |
+noise ที่เติมต่อแกน: `added_a = sqrt(เป้า_a² − noise เดิม_a² − (3.9 / √12)²)` (หักส่วนที่การปัดเป็นขั้นจะเพิ่มให้เอง)
+seed = `seed + crc32(subject_id)` รันซ้ำได้ผลเดิม
+
+**เป้า** `target_mg: [4.93, 5.07, 6.00]` (x, y, z) = มัธยฐานของ COPS กลุ่ม train ครบ 35 คน ตั้งตายตัวใน config
+
+```bash
+python tools/noise_target.py             # คำนวณเป้าใหม่จาก COPS train แล้วเทียบกับ config (exit 1 = ไม่ตรง)
+python tools/noise_target.py --qc-only   # เร็ว: ใช้ค่าใน .qc.json อย่างเดียว
+python tools/noise_target.py --write-qc  # qc.json เก่าที่ยังไม่มีค่าต่อแกน: วัดจาก parquet แล้วเขียนเพิ่ม
+```
+
+**รันทุกครั้งหลัง clean COPS ใหม่** (แก้ calibration / quantize / nonwear ฯลฯ) ถ้าต่างเกิน 0.1 mg ให้แก้ config แล้ว clean NHANES ใหม่ทั้งหมด
+`src.clean.run` เตือนให้เองถ้า clean COPS train ในรอบนั้นแล้วค่าไม่ตรง
+
+**ผลที่วัดได้** (NHANES-74132)
+
+| | ไม่ปรับ | เติมเท่ากันทุกแกน (เดิม) | เติมต่อแกน (ปัจจุบัน) |
+| --- | --- | --- | --- |
+| noise x, y, z (mg) | 0.01, 0.00, 0.13 | 5.40, 5.39, 5.40 | 4.87, 5.05, 5.98 |
+| COPS train 35 คน x, y, z (mg) | 4.86, 5.00, 5.91 | ← | ← |
+| LR แยกยี่ห้อจาก SD 3 แกนในช่วงนิ่ง (AUC) | 1.00 | 0.91 | **0.49** (= เดาสุ่ม) |
+| LR แยกยี่ห้อจาก feature หน้าต่าง 10 วิ ทั้งวัน (AUC) | 1.00 | ~0.60 | ยังไม่ได้วัดซ้ำ (เป้า < 0.7) |
+
+ค่าใน `.qc.json`: `noise_floor_before_axes_mg`, `noise_added_axes_mg`, `noise_target_axes_mg`, `noise_floor_after_axes_mg`
+(ช่องเดิมแบบเฉลี่ย 3 แกน `noise_floor_*_mg` ยังมีอยู่) ถ้าแกนไหน noise เดิมสูงกว่าเป้า จะเตือนและบันทึก `noise_over_target_axes`
 
 **ทำไมสำคัญ:** สองยี่ห้อต่างกันมากที่สุดตอนขยับน้อย
 ([Mielke et al.](https://nih.brage.unit.no/nih-xmlui/handle/11250/3096131?show=full),
@@ -401,7 +430,7 @@ PD ทุกคนใส่ GENEActiv คนปกติทุกคนใส่
 **ข้อจำกัด**
 - สัญญาณที่เล็กกว่า ~5 mg หายทั้งสองชุดเท่ากัน
 - noise ที่เติมเป็น white Gaussian ซึ่ง spectrum อาจไม่เหมือน noise จริงของ GENEActiv
-- แก้ไม่ได้: ActiGraph อ่านค่าต่ำกว่า ~10% ที่ข้อมือ และตัวกรองภายในเครื่องต่างกัน (80 vs 100 Hz) จึงยังเหลือ AUC ~0.60
+- แก้ไม่ได้: ActiGraph อ่านค่าต่ำกว่า ~10% ที่ข้อมือ และตัวกรองภายในเครื่องต่างกัน (80 vs 100 Hz) ตอนขยับ feature อาจยังแยกยี่ห้อได้บ้าง
 - feature ด้านความถี่ (เช่น tremor 3.5–7.5 Hz) ข้ามยี่ห้อได้ดีกว่าขนาดสัญญาณ
   ([Comparability of measured acceleration](https://ro.uow.edu.au/sspapers/1656))
 
@@ -410,12 +439,13 @@ PD ทุกคนใส่ GENEActiv คนปกติทุกคนใส่
 | กรณี | ต้องทำ |
 | --- | --- |
 | แหล่งใหม่ noise ต่ำกว่าเป้า | ใส่ชื่อ dataset ใน `harmonize.add_noise.datasets` |
-| แหล่งใหม่ noise สูงกว่าเป้า | โค้ดจะไม่เติม noise (`need ≤ 0`) ต้องยกเป้าเป็นค่าสูงสุดของทุกแหล่ง เติม noise ให้ COPS ด้วย แล้ว clean + เทรนใหม่ทั้งหมด |
+| แหล่งใหม่ noise สูงกว่าเป้า (บางแกน) | โค้ดเติมไม่ได้ในแกนนั้น จะเตือน + บันทึก `noise_over_target_axes` ใน qc ต้องยกเป้าเป็นค่าสูงสุดของทุกแหล่ง เติม noise ให้ COPS ด้วย แล้ว clean + เทรนใหม่ทั้งหมด |
 | แหล่งใหม่ความละเอียดหยาบกว่า 3.9 mg | เปลี่ยน `quantize.step` เป็นค่าที่หยาบที่สุด แล้ว clean ใหม่ทั้งหมด |
 | ใช้โมเดลกับข้อมูลใหม่ | ต้องใช้เป้า noise ค่าเดียวกับตอนเทรน |
 
-`target_mg: auto` คำนวณจาก COPS train **เฉพาะคนที่ clean แล้วในเครื่องนั้น** เหมาะกับช่วงพัฒนาเท่านั้น
-พอ clean COPS train ครบแล้วให้เขียนค่าเป็นตัวเลขใน config และเก็บค่านี้คู่กับโมเดล
+`target_mg` รับได้ 3 แบบ: `[x, y, z]` (ปัจจุบัน), ตัวเลขเดียว (ทุกแกนเท่ากัน), หรือ `auto`
+(มัธยฐานต่อแกนจาก `.qc.json` ของ COPS train ในเครื่อง ใช้ได้เฉพาะ qc ที่มี `noise_floor_after_axes_mg`
+คือ clean ด้วยโค้ดเวอร์ชันนี้ขึ้นไป) ค่าที่ใช้ต้องเก็บคู่กับโมเดล
 
 **สิ่งที่ต้องทำต่อ**
 1. หลังสกัด feature แล้ว ให้รัน LR แยกยี่ห้อบน feature จริงซ้ำ (โดยเฉพาะช่วงนิ่ง) feature ไหนให้ AUC > 0.7 ให้ตัดออกหรือปรับก่อนเทรน

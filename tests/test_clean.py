@@ -154,6 +154,29 @@ def test_quantize_and_noise_reach_target():
     assert after == pytest.approx(7, rel=0.05)
 
 
+def test_noise_per_axis_reaches_axis_target():
+    # เหมือน NHANES: noise เดิมต่ำเท่ากันทุกแกน -> เติมต่อแกนให้เท่าโปรไฟล์ COPS (z สูงกว่า x)
+    rng = np.random.default_rng(2)
+    xyz = rng.normal(0, 0.0005, (50 * 600, 3)).astype(np.float32)
+    xyz[:, 2] += 1
+    all_true = np.ones(len(xyz), bool)
+    target = np.array([4.9, 5.1, 6.0])
+    before, _ = steps.noise_floor_axes_mg(xyz, 50, 10, all_true, 10)
+    assert before == pytest.approx([0.5] * 3, rel=0.1)
+    steps.add_noise(xyz, np.sqrt(target ** 2 - before ** 2) / 1000, seed=0)
+    after, _ = steps.noise_floor_axes_mg(xyz, 50, 10, all_true, 10)
+    np.testing.assert_allclose(after, target, rtol=0.05)
+    # ค่าเฉลี่ย 3 แกน (ค่าเดิมใน qc) ต้องสอดคล้องกัน
+    mean, _ = steps.noise_floor_mg(xyz, 50, 10, all_true, 10)
+    assert mean == pytest.approx(target.mean(), rel=0.05)
+
+
+def test_noise_axes_too_few_windows():
+    xyz = np.zeros((50 * 60, 3), np.float32)
+    axes, n = steps.noise_floor_axes_mg(xyz, 50, 10, np.ones(len(xyz), bool), min_windows=30)
+    assert n == 6 and np.isnan(axes).all()
+
+
 # ---------------------------------------------------------------- ขั้น 8
 
 def wear_pattern(fs=10, still_axes=3):

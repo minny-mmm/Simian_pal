@@ -22,7 +22,7 @@ import pyarrow.parquet as pq
 import yaml
 
 from src import storage
-from src.clean import steps
+from src.clean import noise_target, steps
 from src.clean.steps import BIT
 from src.ingestion import READERS
 
@@ -64,21 +64,23 @@ def out_paths(config, subj):
 
 
 def resolve_noise_target(config, subjects):
-    """target_mg: auto = มัธยฐาน noise floor หลังปรับของ COPS กลุ่ม train ที่ clean แล้ว
+    """เป้า noise ต่อแกน -> (array (x, y, z) mg, แหล่งที่มา)
+    target_mg: [x, y, z] = ใช้ตามนั้น, ตัวเลขเดียว = ทุกแกนเท่ากัน,
+    auto = มัธยฐานต่อแกนของ noise_floor_after_axes_mg ของ COPS กลุ่ม train ที่ clean แล้ว
     (กลุ่ม train อ่านจาก cops_splits.csv ปัจจุบัน ไม่ใช่ค่าที่บันทึกไว้ตอน clean)"""
     target = config["clean"]["harmonize"]["add_noise"]["target_mg"]
     if target != "auto":
-        return float(target), "config"
+        return np.broadcast_to(np.asarray(target, float), (3,)).copy(), "config"
     train = {s["subject_id"] for s in subjects if s["dataset"] == "cops" and s["split"] == "train"}
     vals = []
     for p in sorted((ROOT / config["clean"]["out_dir"] / "cops").glob("*.qc.json")):
         q = json.loads(p.read_text())
-        if q["subject_id"] in train and q.get("noise_floor_after_mg") is not None \
-                and np.isfinite(q["noise_floor_after_mg"]):
-            vals.append(q["noise_floor_after_mg"])
+        v = q.get("noise_floor_after_axes_mg")            # qc ที่ clean ก่อนมีค่าต่อแกนจะไม่มีช่องนี้
+        if q["subject_id"] in train and v is not None and np.isfinite(np.asarray(v, float)).all():
+            vals.append(v)
     if not vals:
         return None, "no_cops_train"
-    return float(np.median(vals)), f"median_cops_train_n={len(vals)}"
+    return np.median(np.asarray(vals, float), 0), f"median_cops_train_axes_n={len(vals)}"
 
 
 # ---------------------------------------------------------------- clean 1 คน
@@ -143,32 +145,47 @@ def clean_subject(config, subj, reader, noise_target, log=print):
     h = c["harmonize"]
 
     def measure():
+        """-> (noise เฉลี่ย 3 แกน, noise ต่อแกน (x, y, z), จำนวนหน้าต่าง, แหล่งที่วัด) หน่วย mg
+        ใช้ช่วงถอดนาฬิกาก่อน ถ้าไม่พอใช้ช่วง ISM"""
         nw = steps.nonwear_mask(xyz, fs, c["nonwear"])
-        nf, nwin = steps.noise_floor_mg(xyz, fs, h["noise_window_s"], nw & ~missing, h["min_noise_windows"])
-        if np.isfinite(nf):
-            return nf, nwin, "nonwear"
-        nf, nwin = steps.noise_floor_mg(xyz, fs, h["noise_window_s"], ism & ~missing, h["min_noise_windows"])
-        return nf, nwin, "ism"
+        for mask, name in ((nw & ~missing, "nonwear"), (ism & ~missing, "ism")):
+            nf, nwin = steps.noise_floor_mg(xyz, fs, h["noise_window_s"], mask, h["min_noise_windows"])
+            if np.isfinite(nf):
+                break
+        axes, _ = steps.noise_floor_axes_mg(xyz, fs, h["noise_window_s"], mask, h["min_noise_windows"])
+        return nf, axes, nwin, name
 
-    nf_before, _, src = measure()
-    added = 0.0
+    nf_before, axes_before, _, src = measure()
+    added = np.zeros(3)
     if subj["dataset"] in h["add_noise"]["datasets"]:
         if noise_target is None:
             raise RuntimeError("ยังไม่มี noise target: clean COPS กลุ่ม train ก่อน หรือใส่ target_mg ใน config")
+        # เติมทีละแกน (COPS แต่ละแกน noise ไม่เท่ากัน)
         # การปัดเป็นขั้น (ทำหลังเติม noise) เพิ่ม noise อีก step/sqrt(12) จึงหักออกจากที่ต้องเติม
         q_mg = (h["quantize"]["step_g"] * 1000 / np.sqrt(12)
                 if subj["dataset"] in h["quantize"]["datasets"] else 0.0)
-        need = noise_target ** 2 - nf_before ** 2 - q_mg ** 2
-        if np.isfinite(nf_before) and need > 0:
-            added = float(np.sqrt(need))
-            seed = h["add_noise"]["seed"] + zlib.crc32(sid.encode())
-            steps.add_noise(xyz, added / 1000, seed)
-            np.clip(xyz, -c["clip"]["limit_g"], c["clip"]["limit_g"], out=xyz)
+        need = np.asarray(noise_target) ** 2 - axes_before ** 2 - q_mg ** 2
+        if np.isfinite(axes_before).all():
+            short = [a for a, nd in zip("xyz", need) if nd <= 0]
+            if short:   # noise เดิมสูงกว่าเป้าแล้ว ลดไม่ได้ -> ยังต่างจาก COPS ในแกนนั้น
+                log(f"  คำเตือน {sid}: noise แกน {', '.join(short)} สูงกว่าเป้าอยู่แล้ว เติมไม่ได้ "
+                    f"(ก่อน {np.round(axes_before, 2).tolist()} mg, เป้า {np.round(noise_target, 2).tolist()} mg)")
+                qc["noise_over_target_axes"] = short
+            added = np.sqrt(np.maximum(need, 0))
+            if added.any():
+                seed = h["add_noise"]["seed"] + zlib.crc32(sid.encode())
+                steps.add_noise(xyz, added / 1000, seed)
+                np.clip(xyz, -c["clip"]["limit_g"], c["clip"]["limit_g"], out=xyz)
     if subj["dataset"] in h["quantize"]["datasets"]:   # หลังเติม noise
         steps.quantize(xyz, h["quantize"]["step_g"])
-    nf_after, nf_windows, src_after = measure()
-    qc.update(noise_floor_before_mg=nf_before, noise_floor_after_mg=nf_after, noise_added_mg=added,
-              noise_target_mg=noise_target, noise_source=src_after, noise_windows=nf_windows)
+    nf_after, axes_after, nf_windows, src_after = measure()
+    qc.update(noise_floor_before_mg=nf_before, noise_floor_after_mg=nf_after,
+              noise_added_mg=float(np.sqrt(np.mean(added ** 2))),
+              noise_target_mg=None if noise_target is None else float(np.mean(noise_target)),
+              noise_source=src_after, noise_windows=nf_windows,
+              noise_floor_before_axes_mg=axes_before.tolist(), noise_floor_after_axes_mg=axes_after.tolist(),
+              noise_added_axes_mg=added.tolist(),
+              noise_target_axes_mg=None if noise_target is None else np.asarray(noise_target, float).tolist())
 
     # ขั้น 8: ถอดนาฬิกา
     nonwear = steps.nonwear_mask(xyz, fs, c["nonwear"])
@@ -249,7 +266,8 @@ def dict_array(codes, names):
 
 
 def write_parquet(path, res):
-    """1 row group ต่อวัน เขียนเฉพาะตั้งแต่ตัวอย่างแรกถึงตัวอย่างสุดท้ายที่มีข้อมูล"""
+    """เขียนทีละวัน เฉพาะตั้งแต่ตัวอย่างแรกถึงตัวอย่างสุดท้ายที่มีข้อมูล
+    pyarrow ยังตัด row group เองทุก 1,048,576 แถว (1 วันมี 4-5 row group) คนอ่านต้องแบ่งวันจากคอลัมน์ day"""
     fs, xyz, flags, valid = res["fs"], res["xyz"], res["flags"], res["valid"]
     per_day, hour = int(86400 * fs), int(3600 * fs)
     visit_names, visit_codes_h = np.unique(res["visit_h"].astype(str), return_inverse=True)
@@ -330,6 +348,7 @@ def main():
                 raise SystemExit(f"ไม่อยู่ในรายชื่อ: {sorted(unknown)}")
             subjects = [s for s in subjects if s["subject_id"] in args.ids]
         readers = {ds: make_reader(config, ds) for ds in {s["dataset"] for s in subjects}}
+        cleaned = []
         # COPS ก่อน เพราะ NHANES ใช้ noise floor ของ COPS เป็นเป้า
         for subj in sorted(subjects, key=lambda s: s["dataset"] != "cops"):
             pq_path, qc_path = out_paths(config, subj)
@@ -346,6 +365,7 @@ def main():
                                   if subj["dataset"] in config["clean"]["harmonize"]["add_noise"]["datasets"]
                                   else (None, None))
             res, qc = clean_subject(config, subj, reader, target)
+            cleaned.append(subj)
             qc["noise_target_source"] = target_src
             if res is not None:
                 write_parquet(pq_path, res)
@@ -356,6 +376,13 @@ def main():
                   f"วันใช้ได้ {qc.get('valid_days')} ชม.ใช้ได้ {qc.get('hours_valid')}")
             if s3_root:
                 push(pq_path, qc_path)
+
+        # clean COPS train ใหม่ -> noise ของ COPS อาจเปลี่ยน: เทียบกับ target_mg ใน config (ใช้ค่าใน qc.json)
+        if any(s["dataset"] == "cops" and s["split"] == "train" for s in cleaned):
+            _, _, warn = noise_target.compare(
+                config, noise_target.cops_train_axes(config, all_subjects, ROOT, use_parquet=False), 0.1)
+            for w in warn:
+                print("คำเตือน noise:", w, "(ตรวจละเอียด: python tools/noise_target.py)")
 
     df = write_summary(config)
     if df is not None:

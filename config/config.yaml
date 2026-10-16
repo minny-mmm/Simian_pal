@@ -92,7 +92,11 @@ clean:
       step_g: 0.0039          # ปัดเป็นขั้น 3.9 mg (ความละเอียด GENEActiv)
     add_noise:
       datasets: [nhanes]
-      target_mg: auto         # auto = มัธยฐาน noise floor ของ COPS กลุ่ม train ที่ clean แล้ว
+      # เป้า noise ต่อแกน [x, y, z] mg = มัธยฐานของ COPS กลุ่ม train ครบ 35 คน (GENEActiv แกน z สูงสุด)
+      # ตั้งตายตัวให้ทุกคน / ทุกเครื่องใช้ค่าเดียวกัน (auto = คำนวณใหม่จาก qc.json ของ COPS train ในเครื่อง)
+      # คำนวณ / ตรวจด้วย python tools/noise_target.py (รันทุกครั้งหลัง clean COPS ใหม่)
+      # แก้ค่านี้ = ต้อง clean NHANES ใหม่ทั้งหมด
+      target_mg: [4.93, 5.07, 6.00]
       seed: 0
   nonwear:                    # ขั้น 8
     window_min: 60

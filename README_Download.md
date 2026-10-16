@@ -234,12 +234,13 @@ python tools/s3_batch.py features                                # ทุกค�
 
 ฝั่งนี้ไม่มี `--dry-run` ให้ลองกับ 1 คนก่อน clean ใช้เวลา ~50 วิ และ RAM ~2.5 GB ต่อคน (clean ทีละคน)
 
-**ข้อสำคัญ: COPS ก่อน NHANES**
-noise ของ NHANES ถูกปรับให้เท่า median ของ **COPS กลุ่ม train ที่ clean แล้ว** (อ่านจาก `.qc.json` บน S3 รวมของเครื่องอื่น)
-- ยังไม่มี COPS train ที่ clean แล้วเลย → NHANES จะไม่ถูก clean
-- มีแค่บางคน → เป้า noise ต่างจากตอนครบ NHANES ที่ clean คนละช่วงจะได้ noise ไม่เท่ากัน
-- ทางที่ถูก: รัน `--dataset cops --split train` ให้ครบก่อน แล้วเขียนค่าเป้าเป็นตัวเลขที่
-  `clean.harmonize.add_noise.target_mg` ใน `config/config.yaml` (commit ขึ้น git ให้ทุกคนใช้ค่าเดียวกัน) แล้วค่อยรัน NHANES
+**เป้า noise ของ NHANES**
+noise ของ NHANES ถูกปรับต่อแกนให้เท่า median ของ COPS กลุ่ม train ซึ่งตอนนี้ **clean ครบ 35 คนแล้ว**
+และตั้งตายตัวไว้ที่ `clean.harmonize.add_noise.target_mg: [4.93, 5.07, 6.00]` ใน `config/config.yaml`
+- รัน NHANES ได้เลย ไม่ต้องรอ COPS แล้ว
+- **ห้ามแก้ค่านี้** โดยไม่บอกทีม แก้แล้ว NHANES ทุกคนต้อง `--reclean`
+- ถ้า clean COPS ใหม่ (หลังแก้ขั้น clean) ให้รัน `python tools/noise_target.py` เช็กว่าเป้ายังตรงไหม
+- NHANES ที่ clean ก่อนแก้เป็นต่อแกน (มีแค่ NHANES-74132) ต้อง clean ใหม่
 - ทุกคนต้องใช้โค้ดและ `config.yaml` เวอร์ชันเดียวกัน (`git pull` ก่อนรัน) ถ้าแก้ขั้น clean ต้อง `--reclean` ใหม่ทุกคน
 
 ## ขั้นที่ 8: อัปผลที่ทำเองในเครื่อง
