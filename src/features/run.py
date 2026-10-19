@@ -6,15 +6,19 @@ Time axis: index 0 of the clean array = 00:00 of day 1 (see src/clean/steps.py),
   hour_idx = whole hours since the start, hour = hour_idx % 24 = clock hour.
 Pipeline:
   valid rows only -> complete 10 s windows (500 samples, nothing stitched across gaps)
-  -> per-window features -> label each window walk / rest / tremor
+  -> keep 09:00-21:00 (CFG["day_hours"]) -> per-window features -> label each window walk / rest / tremor
   -> aggregate per (day, hour) -> 1 row per hour
 Feature families and why (details: see the reply / README_feature.md):
   tremor        tremor-band (3.5-7.5 Hz) amplitude, tremor time fraction, log amplitude of the peak
                 (+-1 Hz) -> rest tremor monitored from wrist sensors (Powers 2021; Duke 4-7 Hz; PPP tremor time)
   bradykinesia  movement power in non-gait windows, ENMO, jerk -> slowed / reduced movement
-  gait          cadence (+ its SD), autocorrelation regularity (Moe-Nilssen & Helbostad 2004),
-                arm-swing amplitude (+ SD), sample entropy of walking windows
-  generic       SD, IQR, SMA, |axis correlation|, spectral entropy, dominant frequency
+  gait          cadence in steps/s from the stride period (+ its SD), step / stride regularity
+                from the autocorrelation (Moe-Nilssen & Helbostad 2004),
+                arm-swing amplitude, sample entropy of walking windows
+  generic       SD, IQR, SMA, spectral entropy, dominant frequency
+                (no correlation between axes: GENEActiv sensor noise is correlated between x and y,
+                 the noise added to NHANES is not, so it separated the brands with nobody wearing the
+                 watch, AUC 1.00; see README_feature.md 3.7)
 Columns whose size depends on the sensor gain/brand (amplitude-based) start with the prefixes in
 AMPLITUDE_PREFIXES. Shape/ratio/frequency columns are much less brand-sensitive. Check both
 sets with the device-leakage test (README_feature.md section 4) and drop what separates the brands.
@@ -38,10 +42,10 @@ WIN_N = FS * WIN_S           # 500 samples
 CHUNK = 1500                 # windows per batch (keeps RAM low)
 CFG = {
     # walking (untested)
-    "walk_step_ac": 0.5,
+    "walk_stride_reg": 0.5,
     "walk_dyn_rms": 0.12,        # g
     # "clean" walking used for arm swing: strongly periodic, so less likely to be mixed with other arm activity
-    "clean_walk_step_ac": 0.7,   # (untested)
+    "clean_walk_stride_reg": 0.7,   # (untested)
     # resting (untested)
     "rest_swing_deg": 15.0,
     "rest_dyn_rms": 0.08,        # g
@@ -52,10 +56,15 @@ CFG = {
     "min_windows_per_hour": 30,
     # hours need at least this many walking windows before gait SD features are reported
     "min_walk_windows_for_sd": 3,
+    # clock hours used [start, end): HDCZA misses part of the night in PD (fragmented sleep), so 17% of COPS
+    # hours kept as awake were asleep by the diary, mostly 22:00-05:00; inside 09-21 it is 1.7%.
+    # Same window for both datasets (NHANES has no diary to correct with). See README_feature.md 3.9
+    "day_hours": (9, 21),
 }
 TREMOR_BAND = (3.5, 7.5)     # Hz
 REF_BAND = (1.0, 15.0)       # Hz
-STEP_LAG = (0.35, 1.3)       # s  (0.75-2.9 Hz)
+STRIDE_LAG = (0.7, 2.0)      # s  stride = 2 steps (cadence 1.0-2.9 steps/s)
+PEAK_FRAC = 0.8              # stride = first autocorrelation peak reaching this fraction of the highest one
 GRAVITY_SMOOTH = 12          # samples (~0.25 s)
 N_LAGS = 200                 # autocorrelation lags kept (4 s)
 SAMPEN_DS = 5                # 50 Hz -> 10 Hz by block averaging before SampEn
@@ -106,14 +115,6 @@ def window_features(w):
     dyn = w - uniform_filter1d(w, size=FS, axis=1, mode="nearest")
     dyn_rms = np.sqrt((dyn ** 2).sum(axis=2).mean(axis=1))           # g
     sma = np.abs(dyn).sum(axis=2).mean(axis=1)                       # g, signal magnitude area
-    # |correlation| between axes of the dynamic signal (abs: sign depends on how the watch sits)
-    d0 = dyn - dyn.mean(axis=1, keepdims=True)
-    cov = np.einsum("nti,ntj->nij", d0, d0) / WIN_N
-    sd = np.sqrt(np.maximum(np.einsum("nii->ni", cov), 0))
-    def corr(i, j):
-        den = sd[:, i] * sd[:, j]
-        return np.where(den > 1e-6, np.abs(cov[:, i, j]) / np.maximum(den, 1e-12), np.nan)
-    corr_xy, corr_xz, corr_yz = corr(0, 1), corr(0, 2), corr(1, 2)
     # gait: UNBIASED autocorrelation summed over 3 axes (Moe-Nilssen & Helbostad 2004)
     nfft = 1024
     spec = np.fft.rfft(dyn, n=nfft, axis=1)
@@ -121,15 +122,26 @@ def window_features(w):
     lags = np.arange(N_LAGS)
     ac_u = ac * (WIN_N / (WIN_N - lags))[None, :]
     ac_n = ac_u / np.maximum(ac_u[:, :1], 1e-12)
-    lo, hi = int(round(STEP_LAG[0] * FS)), int(round(STEP_LAG[1] * FS))
+    # The wrist swings once per stride (2 steps), so the strongest period is the stride when the arm
+    # swings and the step when it does not. Searching stride lags only gives the stride either way:
+    # a step-only signal also peaks at 2, 3, ... steps, and the first strong peak in range is 2 steps.
+    lo, hi = int(round(STRIDE_LAG[0] * FS)), int(round(STRIDE_LAG[1] * FS))
     seg = ac_n[:, lo:hi + 1]
-    step_ac = seg.max(axis=1)                                        # regularity of the dominant gait period
-    lag1 = lo + seg.argmax(axis=1)
-    step_freq = FS / lag1                                            # Hz (cadence of the dominant period)
-    lo2 = np.round(1.8 * lag1).astype(int)
-    hi2 = np.minimum(np.round(2.2 * lag1).astype(int), N_LAGS - 1)
+    is_peak = np.zeros(seg.shape, bool)
+    is_peak[:, 1:-1] = (seg[:, 1:-1] >= seg[:, :-2]) & (seg[:, 1:-1] > seg[:, 2:])
+    peak_val = np.where(is_peak, seg, -np.inf)
+    best = peak_val.max(axis=1)
+    thr = np.where(best > 0, PEAK_FRAC * best, best)
+    first = (peak_val >= thr[:, None]).argmax(axis=1)
+    idx = np.where(np.isfinite(best), first, seg.argmax(axis=1))    # no inner peak -> highest value
+    stride_lag = lo + idx
+    stride_reg = seg[np.arange(n), idx]                              # regularity of one gait cycle
+    step_freq = 2 * FS / stride_lag                                  # steps/s (cadence)
+    # step regularity: peak near half a stride (low / negative at the wrist when the arm swings)
+    lo2 = np.round(0.4 * stride_lag).astype(int)
+    hi2 = np.round(0.6 * stride_lag).astype(int)
     in2 = (lags[None, :] >= lo2[:, None]) & (lags[None, :] <= hi2[:, None])
-    stride_reg = np.where(in2, ac_n, -np.inf).max(axis=1)            # regularity one period later
+    step_ac = np.where(in2, ac_n, -np.inf).max(axis=1)
     # spectrum (Welch density, Hann), summed over 3 axes
     f, p = welch(dyn, fs=FS, window="hann", nperseg=WIN_N, noverlap=0,
                  detrend="constant", scaling="density", axis=1)
@@ -157,10 +169,14 @@ def window_features(w):
     ang = np.degrees(np.arccos(np.clip((gn * mn[:, None, :]).sum(axis=2), -1.0, 1.0)))
     p5, p95 = np.percentile(ang, [5, 95], axis=1)
     swing = p95 - p5
-    walk = (step_ac > CFG["walk_step_ac"]) & (dyn_rms > CFG["walk_dyn_rms"])
-    walk_clean = walk & (step_ac >= CFG["clean_walk_step_ac"])
-    rest = (~walk) & (swing < CFG["rest_swing_deg"]) & (dyn_rms < CFG["rest_dyn_rms"])
-    tremor = rest & (tremor_ratio > CFG["tremor_ratio"]) & (tremor_rms > CFG["tremor_rms"])
+    # tremor first: a 3.5-7.5 Hz oscillation with the arm held still, at any strength. Tremor is periodic,
+    # so a strong one also passes the walking test (autocorrelation peaks at every multiple of its period)
+    tremor = ((swing < CFG["rest_swing_deg"]) & (tremor_ratio > CFG["tremor_ratio"])
+              & (tremor_rms > CFG["tremor_rms"]))
+    walk = (~tremor) & (stride_reg > CFG["walk_stride_reg"]) & (dyn_rms > CFG["walk_dyn_rms"])
+    walk_clean = walk & (stride_reg >= CFG["clean_walk_stride_reg"])
+    # rest = arm still: low movement, or movement that is only tremor (tremor is a subset of rest)
+    rest = (~walk) & (swing < CFG["rest_swing_deg"]) & ((dyn_rms < CFG["rest_dyn_rms"]) | tremor)
     # sample entropy of walking windows only (needs a clear signal; scale-free because r = 0.2 SD)
     sampen = np.full(n, np.nan)
     iw = np.flatnonzero(walk)
@@ -169,7 +185,6 @@ def window_features(w):
         sampen[iw] = sample_entropy_batch(series)
     return {
         "enmo": enmo, "jerk": jerk, "dyn_rms": dyn_rms, "mag_sd": mag_sd, "mag_iqr": mag_iqr, "sma": sma,
-        "corr_xy": corr_xy, "corr_xz": corr_xz, "corr_yz": corr_yz,
         "step_ac": step_ac, "stride_reg": stride_reg, "step_freq": step_freq,
         "swing": swing, "tremor_rms": tremor_rms, "tremor_ratio": tremor_ratio,
         "tremor_amp_log": tremor_amp_log, "tremor_freq": f0,
@@ -214,7 +229,7 @@ def aggregate_hours(win):
         walk = g[g["walk"]]
         clean = g[g["walk_clean"]]
         rest = g[g["rest"]]
-        nongait = g[~g["walk"]]
+        nongait = g[~g["walk"] & ~g["tremor"]]                          # voluntary movement only
         trem = g[g["tremor"]]
         n_rest = len(rest)
         rows.append({
@@ -232,9 +247,6 @@ def aggregate_hours(win):
             "mag_sd_median": g["mag_sd"].median(),
             "mag_iqr_median": g["mag_iqr"].median(),
             "sma_median": g["sma"].median(),
-            "corr_xy_median": g["corr_xy"].median(),                     # shape features
-            "corr_xz_median": g["corr_xz"].median(),
-            "corr_yz_median": g["corr_yz"].median(),
             "spec_entropy_median": g["spec_entropy"].median(),
             # ---- bradykinesia: movement power outside walking ---
             "dyn_power_nongait_median": _med(nongait["dyn_rms"] ** 2),
@@ -247,7 +259,7 @@ def aggregate_hours(win):
             "sampen_walk_median": _med(walk["sampen"]),
             "dyn_rms_walk_median": _med(walk["dyn_rms"]),
             "swing_walk_median": _med(clean["swing"]),                   # arm swing, clean gait only
-            "swing_walk_sd": _sd(clean["swing"], k),
+            # no swing SD: NaN in 78-80% of hours (needs >= 3 clean walking windows) and unrelated to H&Y
             # ---- resting / tremor ---
             "tremor_rms_rest_p90": _q(rest["tremor_rms"], 0.9),
             "tremor_ratio_rest_median": _med(rest["tremor_ratio"]),
@@ -311,6 +323,10 @@ def process_subject(dataset, sid, clean_dir, out_dir, splits, force=False):
         time_s = df["time_s"].to_numpy(dtype=np.float64)
         xyz = df[["x", "y", "z"]].to_numpy(dtype=np.float32)
         for start_s, w in make_windows(time_s, xyz):
+            day_time = ((start_s // 3600) % 24 >= CFG["day_hours"][0]) & ((start_s // 3600) % 24 < CFG["day_hours"][1])
+            start_s, w = start_s[day_time], w[day_time]
+            if len(w) == 0:
+                continue
             win = pd.DataFrame(window_features(w))
             win["day"] = d
             win["hour_idx"] = (start_s // 3600).astype(int)      # hours since start of the clean array
