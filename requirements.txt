@@ -5,6 +5,7 @@ PyYAML>=6.0
 scipy>=1.11           # resample_poly ในขั้น clean
 requests>=2.31        # โหลดจาก OSF / CDC (tools/download_pilot.py, tools/s3_batch.py ingest)
 pytest>=8.0
+matplotlib>=3.9       # กราฟตรวจสัญญาณจริง tools/audit_signal_hours.py
 s3fs>=2024.6          # อ่าน/เขียน s3:// (ดึง boto/aiobotocore มาด้วย)
 universal_pathlib>=0.2  # Path API แบบเดียวกันสำหรับ s3://
 moto[server]>=5.0     # S3 จำลองสำหรับ tests/test_storage.py เท่านั้น
