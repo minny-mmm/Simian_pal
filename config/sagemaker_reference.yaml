@@ -1,0 +1,11 @@
+# Request preparation only. Nothing in this repository submits a billable job.
+job_name: parkinsons-cohort-reference-CHANGE-RUN-ID
+role_arn: null   # set a real SageMaker execution role for a runnable request
+image_uri: null  # private ECR image built with aws/reference/Dockerfile, preferably pinned @sha256
+instance_type: ml.m5.large
+instance_count: 1
+volume_size_gb: 30
+max_runtime_seconds: 3600
+input_relative: data/daily/reference-v1/CHANGE-TRAIN-RUN-ID
+output_relative: data/models/reference-v1
+network_isolation: true

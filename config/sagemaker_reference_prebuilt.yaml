@@ -1,0 +1,14 @@
+# Preparation only; no job, upload, role, image build or endpoint is created.
+mode: prebuilt_script
+job_name: parkinsons-reference-pilot-CHANGE-RUN-ID
+role_arn: null
+# Official AWS image catalog for ap-southeast-1, checked 2026-10-21.
+image_uri: 121021644041.dkr.ecr.ap-southeast-1.amazonaws.com/sagemaker-scikit-learn:1.9-0
+instance_type: ml.m5.large
+instance_count: 1
+volume_size_gb: 30
+max_runtime_seconds: 3600
+input_relative: data/daily/reference-v1/CHANGE-TRAIN-RUN-ID
+output_relative: data/models/reference-v1
+source_relative: data/models/reference-v1/CHANGE-RUN-ID/source.tar.gz
+network_isolation: true

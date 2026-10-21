@@ -2,7 +2,9 @@
 
 คู่มือสำหรับคนที่จะเขียนขั้นสกัด feature ต่อจากผล clean เพื่อทดลองแยกกลุ่ม PD (COPS) จากกลุ่มควบคุมที่คัดจาก NHANES
 label ของ NHANES เป็นผลจากเกณฑ์คัดเลือก ไม่ใช่หลักฐานยืนยันว่าไม่มี PD และ dataset/อุปกรณ์ซ้อนกับ label ทั้งหมด
-**ใน repo ยังไม่มีโค้ด feature** (โค้ดต้นแบบเดิม `tools/feature_check.py` และ `s3_batch.py features` ถูกเอาออกแล้ว
+อัปเดต 21 ต.ค. 2026: มี `src/features/run.py` แล้ว โดยนำ extractor จาก `origin/Mew_Feature` commit `37d5722` มาใช้ พร้อม exact-window validation งาน reference ให้รันผ่าน `tools/extract_reference_features.py` เพื่อสร้าง provenance ก่อน daily aggregation ดู [README_reference_baseline.md](README_reference_baseline.md)
+
+เนื้อหาต้นแบบเดิมด้านล่างเป็นบริบทประวัติ (โค้ดต้นแบบเดิม `tools/feature_check.py` และ `s3_batch.py features` ถูกเอาออกแล้ว
 เพราะมีปัญหาตามหัวข้อ "ปัญหาที่เจอ" ด้านล่าง ดูโค้ดเดิมได้ใน git history: `git show 65de488:tools/feature_check.py`)
 
 ตรวจต้นทางก่อนทำ feature ด้วย `python tools/audit_sources.py` ดูขั้นตอนและผลตรวจวันที่ 19 ต.ค. 2026 ใน [README_audit.md](README_audit.md)
