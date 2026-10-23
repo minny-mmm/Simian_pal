@@ -2,6 +2,110 @@
 
 เป้าหมายคือวัด **ความห่างของตัวชี้วัดรายวันจาก reference COPS และ NHANES แยกกัน** ไม่ใช่ classifier, โอกาสเป็นโรค หรือคะแนนความรุนแรง และไม่มีการรวมหลายตัวชี้วัดเป็นคะแนนเดียว ข้อความ/กราฟในระบบปลายทางต้องใช้คำว่า “ต่างจากกลุ่มอ้างอิง COPS/NHANES” เท่านั้น
 
+## Real-data run — 23 ต.ค. 2026
+
+ใช้ **ทางที่ 2: clean ใหม่จาก raw** เพราะค้น S3 clean/features/raw และ prefixes metadata/config/reports/logs/manifests รวมประวัติ Git และ QC ของ train/validation 110 ไฟล์แล้ว ไม่พบ config/code/output linkage ของ clean/features เดิม `_source.json` 42 ไฟล์บอกเพียง acquisition source/size/file count ไม่ยืนยัน preprocessing ห้ามใช้การตรงกันของ MD5 หรือ config ปัจจุบันแทนหลักฐานย้อนหลัง
+
+รอบใหม่ `real-20261023-v1` เรียก `src.clean.run.clean_subject/write_parquet`, `tools.extract_reference_features.extract`, daily/fit/analysis เดิมผ่าน `tools/run_real_reference.py` ไม่มีการเปลี่ยนเกณฑ์ clean/QC, สูตร feature, split หรือสร้าง ingestion ใหม่ เปลี่ยนเฉพาะเส้นทาง storage ไป namespace ของ run, บันทึก actual run evidence และกำหนด baseline version ของ run
+
+raw availability ที่ตรวจจาก S3 object inventory (ไม่ใช่จำนวนผ่าน QC):
+
+| Dataset | Train ตาม roster | Train raw พบ | Validation ตาม roster | Validation raw พบ |
+| --- | ---: | ---: | ---: | ---: |
+| COPS | 35 | 35 | 7 | 7 |
+| NHANES | 106 | 60 | 22 | 8 |
+
+NHANES ขาด raw 46 train และ 14 validation ในตำแหน่งที่ตรวจ จึงต้องแยก `blocked_raw_missing` ออกจาก clean/QC excluded ไม่ย้ายคนหรือสร้างข้อมูลมาเติม ตรวจเพียงชื่อ/ขนาด object ของ test สำหรับ availability ไม่อ่านเนื้อหา sensor/QC ของ test
+
+**มี pilot baseline จากข้อมูลจริงแล้ว** ที่ `data/models/reference-v1/real-20261023-v1/checkpoints/checkpoint-01/baseline.json` (`is_demo=false`, `data_origin=real`, version `real-cohort-reference-real-20261023-v1-checkpoint-01`) เป็น snapshot ของ train ที่ clean ใหม่เสร็จและ QC ผ่านทั้งหมด ณ 23 ต.ค. 2026 เวลา 05:33 UTC: COPS 6 คน, NHANES 5 คน ไม่ใช่ผล train ทั้งหมดหรือ clinical baseline ไม่เลือกคนจากผลตัวชี้วัด และไม่เปลี่ยนเกณฑ์ให้ cadence ผ่าน
+
+จำนวนที่เข้า **reference หลังขั้นต่ำวันต่อคน** และผล fit จริง:
+
+| ตัวชี้วัด (หน่วย) | COPS คน / วัน | NHANES คน / วัน | สถานะ |
+| --- | ---: | ---: | --- |
+| ENMO (g) | 6 / 28 | 5 / 30 | ok ทั้งสองกลุ่ม |
+| Cadence ขณะเดิน (steps/s) | 5 / 18 | 4 / 22 | NHANES insufficient_data: คนต่ำกว่า 5 |
+| Rest tremor window fraction (0–1) | 6 / 28 | 5 / 30 | ok ทั้งสองกลุ่ม |
+
+ไฟล์จริงของ checkpoint:
+
+- `data/daily/reference-v1/real-20261023-v1/checkpoints/checkpoint-01/train/daily.csv`: 60 subject-days × 3 ตัวชี้วัด = 180 แถว รวมแถว insufficient_data; `coverage_report.json` แยก daily-usable ออกจาก reference-eligible counts
+- `reports/reference_baseline/real-20261023-v1/checkpoints/checkpoint-01/checkpoint_manifest.json`: snapshot รายชื่อ, exclusions, artifact hash และจำนวนคน/วันราย metric
+- `reports/reference_baseline/real-20261023-v1/checkpoints/checkpoint-01/analysis_TRAIN_REAL.json`: public schema `1.0.0` และ semantic validation ผ่าน ใช้ leave-one-person-out ทุกวันของเจ้าตัว; **ไม่ใช่ validation** จึงมี reference ไม่พอเมื่อเอาเจ้าตัวออก (เช่น NHANES 5 → 4 คน) ไม่เติมระยะห่างที่คำนวณไม่ได้
+
+**Pilot validation จริงเสร็จแล้ว**: COPS 1 คน (4 clean-QC days) และ NHANES 1 คน (7 days) เลือกคนแรกที่มี raw ของแต่ละกลุ่มตาม validation roster ก่อนดูตัวชี้วัด ไม่มีการย้าย split และไม่มีการใช้ validation เข้า reference `analysis_VALIDATION_REAL.json` ในโฟลเดอร์ checkpoint มี 33 metric-day rows (`ok=26`, `insufficient_data=7`) ผ่าน shared JSON Schema `1.0.0`/semantic validation และ baseline SHA256 คงเดิม `cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de` รายชื่อเก็บใน private reports/S3 ไม่ใส่ข้อมูลรายคนเพิ่มใน Git
+
+ENMO/rest-tremor ใช้ได้ COPS 4 วัน, NHANES 7 วัน และเทียบได้ทั้งสอง reference; cadence ใช้ได้ COPS 0/4 วัน, NHANES 4/7 วัน การเทียบ cadence กับ NHANES reference เป็น null ทั้งหมดเพราะ reference คนไม่พอ ส่วน cadence ของวันที่ coverage ไม่ผ่านเป็น null แยกจากเหตุผล reference คนไม่พอ ดู `validation_report.json`, `valid_exclusions.json` และ `data/daily/reference-v1/real-20261023-v1/checkpoints/checkpoint-01/valid/coverage_report.json` นี่เป็นการตรวจ pipeline/coverage ของ **2 คน** ไม่ใช่ผลประเมิน validation ทั้งชุดหรือหลักฐานความแม่นยำทางคลินิก
+
+รันซ้ำ scope เดิมได้โดย reuse clean/bundle/model ที่ตรวจ hash ผ่าน:
+
+```powershell
+$pilotReport = Get-Content reports/reference_baseline/real-20261023-v1/checkpoints/checkpoint-01/validation_report.json -Raw | ConvertFrom-Json
+$validationIds = @($pilotReport.requested_subjects | ForEach-Object { $_.subject_id })
+python -u -X utf8 tools/run_real_reference.py --run-id real-20261023-v1 --stage validation --checkpoint-name checkpoint-01 --ids @validationIds --workers 1
+```
+
+ค่า `validation_evaluated=false` ใน `checkpoint_manifest.json` เป็นสถานะ **ณ train snapshot ก่อน validation** เก็บ snapshot เดิมไว้ไม่แก้ย้อนหลัง ผล validation ภายหลังอยู่ใน `validation_report.json`/`analysis_VALIDATION_REAL.json` แยกจาก fit snapshot
+
+อัปโหลด model/daily/report checkpoint 11 ไฟล์จริงแล้วด้วย `tools/s3_sync.py` ไป path เดียวกันใต้ `storage.s3_root` เดิม โดยไม่เขียนทับข้อมูลทีม ข้อมูล/manifest/model ไม่เข้า Git ส่วน baseline ทั้งชุดและ validation ให้ดูสถานะจริงของ run เพิ่มเติม ไม่ใช้ checkpoint นี้อ้างว่าทำครบแล้ว
+
+คำสั่งรันซ้ำด้วย Python ปกติ เลือก run ID ใหม่เมื่อต้องเปลี่ยน config/split/input snapshot:
+
+```powershell
+aws sso login --profile minny
+python tools/run_real_reference.py --run-id real-NEW-RUN --stage inspect
+python tools/run_real_reference.py --run-id real-NEW-RUN --stage train --workers 1
+python tools/run_real_reference.py --run-id real-NEW-RUN --stage validation
+```
+
+รัน train → fit → validation ต่อเนื่องด้วยฟังก์ชันเดิม (ยังไม่เปิด test):
+
+```powershell
+python -u -X utf8 tools/run_real_reference.py --run-id real-20261023-v1 --stage train-validation --workers 1
+python tools/run_real_reference.py --run-id real-20261023-v1 --stage status
+```
+
+อย่าเริ่ม batch ซ้ำระหว่าง batch เดิมยังทำงานอยู่ `status` อ่านได้ขณะรัน หาก network/resource error ทำให้ batch หยุด ใช้คำสั่งเดิม resume หลังแก้สาเหตุ จะ reuse เฉพาะ completed evidence ที่ตรวจผ่าน
+
+สร้าง snapshot ใหม่ด้วย implementation เดิมขณะ full train ยังไม่ครบ (ชื่อ checkpoint ต้องใหม่ ห้าม overwrite):
+
+```powershell
+python tools/run_real_reference.py --run-id real-20261023-v1 --stage checkpoint --checkpoint-name checkpoint-NEW
+python tools/run_real_reference.py --run-id real-20261023-v1 --stage validation --checkpoint-name checkpoint-01 --workers 1
+```
+
+`validation --ids ...` รองรับ pilot subset จาก validation เดิม โดยบันทึกรายชื่อและ `scope=explicit_validation_subset` ในรายงาน ไม่ย้าย split และไม่เพิ่มคนเข้า reference การเพิ่ม input หลัง bundle ถูกตรึงต้องใช้ output version ใหม่
+
+`train` ทำเฉพาะ train ที่มี raw ตาม roster เดิม แล้ว extract/daily/fit; `validation` ต้องมี baseline ก่อน ใช้ baseline เดิมเปรียบเทียบและตรวจว่า baseline hash ไม่เปลี่ยน ค่า test ถูกล็อกใน worker ส่วนแผน `test_plan_NOT_EXECUTED.json` สร้างหลัง fit เท่านั้น ไม่ใช่ผลประเมิน test เริ่มจาก worker เดียวบนเครื่อง RAM จำกัด รองรับสูงสุด 2 workers โดยตรวจ memory commit/pagefile ด้วย ไม่ถือว่า RAM physical ว่างน้อยแปลว่ารันไม่ได้เสมอ
+
+เส้นทางของ run:
+
+- `reports/reference_baseline/<run>/`: inventory, availability.csv, historical evidence/QC snapshots, original/resolved config hashes, dependencies, actual logs, progress, blockers, exclusions และผล fit/validation เมื่อสำเร็จ
+- `data/raw/reference-runs/<run>/`: cache ใหม่พร้อม downloaded object identity/SHA256 ไม่ลบหรือเขียนทับ raw ทีม
+- `data/clean/reference-runs/<run>/<dataset>/`: parquet/QC ใหม่, `.started.json` ก่อนรัน และ `.clean.manifest.json` **หลังรันสำเร็จจริง** ระบุ inputs, checksums, config/code/dependencies/runtime noise target และสถานะ ไม่สร้าง completed manifest ให้ไฟล์เก่าหรือ worker ที่ยังไม่จบ
+- `data/features/reference-v1/<run>/train|valid/`: hourly features ใหม่พร้อม source manifests
+- `data/daily/reference-v1/<run>/train|valid/`: daily/coverage/hour QC bundles
+- `data/models/reference-v1/<run>/baseline.json`: **ตำแหน่งปลายทางหลัง fit สำเร็จ**; การมี directory/run config ไม่ได้แปลว่ามีโมเดลแล้ว
+- `reports/reference_baseline/<run>/analysis_VALIDATION_REAL.json`: **สร้างเมื่อ validation สำเร็จเท่านั้น** ใช้ shared JSON Schema 1.0.0 กับ semantic validation เดิม ไม่มี synthetic fallback
+
+Config ปัจจุบันกำหนด noise target เป็นตัวเลขตายตัว `[4.93,5.07,6.00]` อยู่แล้ว จึง freeze ตาม config เดิมใน `noise_lock.json` ด้วย mode `fixed_agreed_config_not_refitted` ไม่อ้างว่าได้ fit ค่านี้ใหม่จากข้อมูลรอบนี้ `train_noise_diagnostics.json` คำนวณ median ต่อแกนของ COPS train ที่ clean ใหม่เพื่อตรวจเทียบแยกต่างหาก ไม่แทนที่ target และไม่ใช้ validation/test ปรับค่า ถ้าเปลี่ยนนโยบายเป็น auto ต้องทำเวอร์ชัน runtime dependency signature ที่รองรับก่อน เครื่องมือนี้จะหยุดแทนการเดาหรือเปลี่ยน fixed target เงียบ ๆ
+
+Worker ใช้ UTF-8 รวม subprocess ที่เขียน log ภาษาไทย Failed attempt ที่ยังไม่มี output จะ retry ได้เมื่อ controller บันทึกว่า worker จบแล้ว โดย archive started/failure เดิมไว้ ไม่ overwrite completed parquet/QC หากมี output แต่ไม่มี manifest ให้หยุดตรวจ ไม่ backfill เมื่อ bundle/model ถูกสร้างแล้ว input set/config ต้องคงเดิม การเพิ่มข้อมูลภายหลังต้องสร้างเวอร์ชันใหม่
+
+เมื่อ worker เจอ network endpoint failure 3 ครั้งติดกัน ตัวจัดคิวรุ่นปัจจุบัน defer รายการที่ยังไม่เริ่ม และหยุดก่อน automatic fit/evaluation ถ้ามี processing failure (raw ที่ขาดและ QC excluded แยกต่างหาก) ต้องแก้สาเหตุแล้ว resume ไม่ถือว่า download error คือ clean QC ไม่ผ่าน AWS CLI บนเครื่องนี้ต้องระบุ `--region ap-southeast-1` เพราะ profile region ปัจจุบันผิดรูปแบบ ส่วน Python storage ใช้ region ที่ระบุใน config อยู่แล้ว ไม่มีการแก้ credentials/profile ของผู้ใช้
+
+ทดสอบที่เกี่ยวข้อง:
+
+```powershell
+python -m pytest tests/test_real_reference_run.py tests/test_reference.py tests/test_reference_provenance.py tests/test_reference_extraction.py tests/test_noise_target.py tests/test_clean.py -q
+```
+
+ตรวจรวมชุดข้างต้นกับ `tests/test_reference_output.py tests/test_reference_aws.py` แล้ว **66 passed** (รวม regression ของ S3 read timeout และ inventory snapshot) บน Python 3.13 ของเครื่องนี้ เมื่อ 23 ต.ค. 2026 โดยไม่เรียก paid AWS job และไม่เปิด test sensor/QC
+
+Run นี้ล็อก clean source และ Git revision ไว้ด้วย ห้ามเปลี่ยน HEAD/clean source ระหว่าง resume เพราะ preprocessing signatures ต้องตรงกัน หากต้องเปลี่ยนให้เริ่ม run version ใหม่ ไม่ปรับ manifest ของผลเก่าให้ตรงโค้ดใหม่
+
+ผลจริงปัจจุบันให้อ้าง `STATUS_REAL.json`, progress, checkpoint และ validation report ของ run ไม่อ้าง demo จากหัวข้อถัดไป มี pilot baseline และ validation artifacts ใหม่บน S3 แล้ว งาน train/validation ทั้งชุดยังไม่ครบ และไม่มี AWS training job/endpoint รายชื่อ/ข้อมูลรายคนเก็บใน private reports/data ที่ Git ignore เท่านั้น
+
 ## Demo สำหรับตรวจ output — DEMO-001 / 10 วัน
 
 ```powershell

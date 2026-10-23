@@ -105,9 +105,10 @@ def main():
     p.add_argument('--clean-manifest-root', type=Path, help='Original clean run evidence: <root>/<dataset>/<id>.clean.manifest.json')
     p.add_argument('--out', type=Path)
     p.add_argument('--config', type=Path, default=ROOT/'config/reference_baseline.yaml')
+    p.add_argument('--pipeline-config', type=Path, default=ROOT/'config/config.yaml',help='Actual config recorded by the clean run')
     args = p.parse_args()
     cfg = load_config(args.config)
-    pipeline = yaml.safe_load((ROOT/'config/config.yaml').read_text(encoding='utf-8'))
+    pipeline = yaml.safe_load(args.pipeline_config.read_text(encoding='utf-8'))
     roster = load_roster(pipeline=pipeline)
     for sid in args.ids:
         parquet = args.clean_root / args.dataset / f'{sid}.parquet'
