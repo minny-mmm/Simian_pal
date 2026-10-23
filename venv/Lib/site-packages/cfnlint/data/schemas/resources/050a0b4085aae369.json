@@ -1,0 +1,335 @@
+{
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/OrganizationConfigRuleName"
+ ],
+ "definitions": {
+  "OrganizationCustomPolicyRuleMetadata": {
+   "additionalProperties": false,
+   "properties": {
+    "DebugLogDeliveryAccounts": {
+     "description": "A list of accounts that you can enable debug logging for your organization AWS Config Custom Policy rule. ",
+     "items": {
+      "pattern": "^\\d{12}$",
+      "type": "string"
+     },
+     "maxItems": 1000,
+     "minItems": 0,
+     "type": "array",
+     "uniqueItems": false
+    },
+    "Description": {
+     "description": "The description that you provide for your organization AWS Config rule.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    },
+    "InputParameters": {
+     "description": "A string, in JSON format, that is passed to your organization AWS Config Custom Policy rule.",
+     "maxLength": 1024,
+     "minLength": 1,
+     "type": "string"
+    },
+    "OrganizationConfigRuleTriggerTypes": {
+     "description": "The type of notification that initiates AWS Config to run an evaluation for a rule.",
+     "items": {
+      "enum": [
+       "ConfigurationItemChangeNotification",
+       "OversizedConfigurationItemChangeNotification"
+      ],
+      "type": "string"
+     },
+     "type": "array",
+     "uniqueItems": false
+    },
+    "PolicyText": {
+     "description": "The policy definition containing the logic for your organization AWS Config Custom Policy rule.",
+     "maxLength": 10000,
+     "minLength": 0,
+     "type": "string"
+    },
+    "ResourceIdScope": {
+     "description": "The ID of the AWS resource that was evaluated.",
+     "maxLength": 768,
+     "minLength": 1,
+     "type": "string"
+    },
+    "ResourceTypesScope": {
+     "description": "The type of the AWS resource that was evaluated.",
+     "items": {
+      "maxLength": 256,
+      "minLength": 1,
+      "type": "string"
+     },
+     "maxItems": 100,
+     "minItems": 0,
+     "type": "array",
+     "uniqueItems": false
+    },
+    "Runtime": {
+     "description": "The runtime system for your organization AWS Config Custom Policy rules.",
+     "type": "string"
+    },
+    "TagKeyScope": {
+     "description": "One part of a key-value pair that make up a tag. A key is a general label that acts like a category for more specific tag values.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "TagValueScope": {
+     "description": "The optional part of a key-value pair that make up a tag. A value acts as a descriptor within a tag category (key).",
+     "maxLength": 256,
+     "minLength": 1,
+     "type": "string"
+    }
+   },
+   "required": [
+    "Runtime",
+    "PolicyText"
+   ],
+   "type": "object"
+  },
+  "OrganizationCustomRuleMetadata": {
+   "additionalProperties": false,
+   "properties": {
+    "Description": {
+     "description": "The description that you provide for your organization AWS Config rule.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    },
+    "InputParameters": {
+     "description": "A string, in JSON format, that is passed to your organization AWS Config rule Lambda function.",
+     "maxLength": 1024,
+     "minLength": 1,
+     "type": "string"
+    },
+    "LambdaFunctionArn": {
+     "description": "The lambda function ARN.",
+     "format": "AWS::Lambda::Function.Arn",
+     "maxLength": 256,
+     "minLength": 1,
+     "type": "string"
+    },
+    "MaximumExecutionFrequency": {
+     "description": "The maximum frequency with which AWS Config runs evaluations for a rule.Allowed values: One_Hour | Three_Hours | Six_Hours | Twelve_Hours | TwentyFour_Hours.",
+     "enum": [
+      "One_Hour",
+      "Six_Hours",
+      "Three_Hours",
+      "Twelve_Hours",
+      "TwentyFour_Hours"
+     ],
+     "type": "string"
+    },
+    "OrganizationConfigRuleTriggerTypes": {
+     "description": "The type of notification that triggers AWS Config to run an evaluation for a rule. You can specify the following notification types:",
+     "items": {
+      "enum": [
+       "ConfigurationItemChangeNotification",
+       "OversizedConfigurationItemChangeNotification",
+       "ScheduledNotification"
+      ],
+      "type": "string"
+     },
+     "type": "array",
+     "uniqueItems": false
+    },
+    "ResourceIdScope": {
+     "description": "The ID of the AWS resource that was evaluated.",
+     "maxLength": 768,
+     "minLength": 1,
+     "type": "string"
+    },
+    "ResourceTypesScope": {
+     "description": "The type of the AWS resource that was evaluated.",
+     "items": {
+      "maxLength": 256,
+      "minLength": 1,
+      "type": "string"
+     },
+     "maxItems": 100,
+     "minItems": 0,
+     "type": "array",
+     "uniqueItems": false
+    },
+    "TagKeyScope": {
+     "description": "One part of a key-value pair that make up a tag. A key is a general label that acts like a category for more specific tag values.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "TagValueScope": {
+     "description": "The optional part of a key-value pair that make up a tag. A value acts as a descriptor within a tag category (key).",
+     "maxLength": 256,
+     "minLength": 1,
+     "type": "string"
+    }
+   },
+   "required": [
+    "LambdaFunctionArn",
+    "OrganizationConfigRuleTriggerTypes"
+   ],
+   "type": "object"
+  },
+  "OrganizationManagedRuleMetadata": {
+   "additionalProperties": false,
+   "properties": {
+    "Description": {
+     "description": "The description that you provide for your organization AWS Config rule.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    },
+    "InputParameters": {
+     "description": "A string, in JSON format, that is passed to your organization AWS Config rule Lambda function.",
+     "maxLength": 1024,
+     "minLength": 1,
+     "type": "string"
+    },
+    "MaximumExecutionFrequency": {
+     "description": "The maximum frequency with which AWS Config runs evaluations for a rule. Valid Values: One_Hour | Three_Hours | Six_Hours | Twelve_Hours | TwentyFour_Hours.",
+     "enum": [
+      "One_Hour",
+      "Six_Hours",
+      "Three_Hours",
+      "Twelve_Hours",
+      "TwentyFour_Hours"
+     ],
+     "type": "string"
+    },
+    "ResourceIdScope": {
+     "description": "The ID of the AWS resource that was evaluated.",
+     "maxLength": 768,
+     "minLength": 1,
+     "type": "string"
+    },
+    "ResourceTypesScope": {
+     "description": "The type of the AWS resource that was evaluated.",
+     "items": {
+      "maxLength": 256,
+      "minLength": 1,
+      "type": "string"
+     },
+     "maxItems": 100,
+     "minItems": 0,
+     "type": "array",
+     "uniqueItems": false
+    },
+    "RuleIdentifier": {
+     "description": "Required. For organization config managed rules, a predefined identifier from a list. For example, IAM_PASSWORD_POLICY is a managed rule. ",
+     "maxLength": 256,
+     "minLength": 1,
+     "type": "string"
+    },
+    "TagKeyScope": {
+     "description": "One part of a key-value pair that make up a tag. A key is a general label that acts like a category for more specific tag values.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "TagValueScope": {
+     "description": "The optional part of a key-value pair that make up a tag. A value acts as a descriptor within a tag category (key).\n\n",
+     "maxLength": 256,
+     "minLength": 1,
+     "type": "string"
+    }
+   },
+   "required": [
+    "RuleIdentifier"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Resource Type definition for AWS::Config::OrganizationConfigRule",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "config:PutOrganizationConfigRule",
+    "config:DescribeOrganizationConfigRules",
+    "config:DescribeOrganizationConfigRuleStatuses",
+    "iam:CreateServiceLinkedRole",
+    "organizations:EnableAWSServiceAccess"
+   ],
+   "timeoutInMinutes": 480
+  },
+  "delete": {
+   "permissions": [
+    "config:DescribeOrganizationConfigRuleStatuses",
+    "config:DeleteOrganizationConfigRule"
+   ],
+   "timeoutInMinutes": 480
+  },
+  "list": {
+   "permissions": [
+    "config:DescribeOrganizationConfigRules"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "config:DescribeOrganizationConfigRules",
+    "config:GetOrganizationCustomRulePolicy"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "config:PutOrganizationConfigRule",
+    "config:DescribeOrganizationConfigRules",
+    "config:DescribeOrganizationConfigRuleStatuses",
+    "iam:CreateServiceLinkedRole",
+    "organizations:EnableAWSServiceAccess"
+   ],
+   "timeoutInMinutes": 480
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/OrganizationConfigRuleName"
+ ],
+ "properties": {
+  "ExcludedAccounts": {
+   "description": "A comma-separated list of accounts that you want to exclude from an organization AWS Config rule.",
+   "items": {
+    "pattern": "^\\d{12}$",
+    "type": "string"
+   },
+   "maxItems": 1000,
+   "minItems": 0,
+   "type": "array",
+   "uniqueItems": false
+  },
+  "OrganizationConfigRuleArn": {
+   "description": "The Amazon Resource Name (ARN) of an organization AWS Config rule.",
+   "type": "string"
+  },
+  "OrganizationConfigRuleName": {
+   "description": "The name that you assign to an organization AWS Config rule. Required.",
+   "maxLength": 64,
+   "minLength": 1,
+   "pattern": "^[A-Za-z0-9-_]+$",
+   "type": "string"
+  },
+  "OrganizationCustomPolicyRuleMetadata": {
+   "$ref": "#/definitions/OrganizationCustomPolicyRuleMetadata",
+   "description": "This object specifies metadata for your organization's AWS Config Custom Policy rule."
+  },
+  "OrganizationCustomRuleMetadata": {
+   "$ref": "#/definitions/OrganizationCustomRuleMetadata",
+   "description": "This object specifies organization custom rule metadata such as resource type, resource ID of AWS resource, Lambda function ARN, and organization trigger types that trigger AWS Config to evaluate your AWS resources against a rule."
+  },
+  "OrganizationManagedRuleMetadata": {
+   "$ref": "#/definitions/OrganizationManagedRuleMetadata",
+   "description": "This object specifies organization managed rule metadata such as resource type and ID of AWS resource along with the rule identifier."
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/OrganizationConfigRuleArn"
+ ],
+ "required": [
+  "OrganizationConfigRuleName"
+ ],
+ "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-config/tree/master/aws-config-organizationconfigrule.git",
+ "tagging": {
+  "taggable": false
+ },
+ "typeName": "AWS::Config::OrganizationConfigRule"
+}

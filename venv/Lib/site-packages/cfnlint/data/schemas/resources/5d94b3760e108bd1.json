@@ -1,0 +1,280 @@
+{
+ "additionalIdentifiers": [
+  [
+   "/properties/BrandId"
+  ]
+ ],
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/BrandId"
+ ],
+ "definitions": {
+  "ApplicationTheme": {
+   "additionalProperties": false,
+   "description": "The application theme.",
+   "properties": {
+    "BrandColorPalette": {
+     "$ref": "#/definitions/BrandColorPalette"
+    },
+    "BrandElementStyle": {
+     "$ref": "#/definitions/BrandElementStyle"
+    }
+   },
+   "type": "object"
+  },
+  "BrandColorPalette": {
+   "additionalProperties": false,
+   "description": "The color palette.",
+   "properties": {
+    "Accent": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Danger": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Dimension": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Info": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Measure": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Primary": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Secondary": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Success": {
+     "$ref": "#/definitions/Palette"
+    },
+    "Warning": {
+     "$ref": "#/definitions/Palette"
+    }
+   },
+   "type": "object"
+  },
+  "BrandDefinition": {
+   "additionalProperties": false,
+   "properties": {
+    "ApplicationTheme": {
+     "$ref": "#/definitions/ApplicationTheme"
+    },
+    "BrandName": {
+     "description": "The name of the brand.",
+     "maxLength": 512,
+     "minLength": 1,
+     "pattern": "^[ -\u00ff]+$",
+     "type": "string"
+    },
+    "Description": {
+     "description": "The description of the brand.",
+     "maxLength": 2048,
+     "minLength": 1,
+     "pattern": "^[ -\u00ff]+$",
+     "type": "string"
+    }
+   },
+   "type": "object"
+  },
+  "BrandElementStyle": {
+   "additionalProperties": false,
+   "description": "The element style.",
+   "properties": {
+    "NavbarStyle": {
+     "$ref": "#/definitions/NavbarStyle"
+    }
+   },
+   "type": "object"
+  },
+  "NavbarStyle": {
+   "additionalProperties": false,
+   "description": "The navigation bar style.",
+   "properties": {
+    "ContextualNavbar": {
+     "$ref": "#/definitions/Palette"
+    },
+    "GlobalNavbar": {
+     "$ref": "#/definitions/Palette"
+    }
+   },
+   "type": "object"
+  },
+  "Palette": {
+   "additionalProperties": false,
+   "description": "The palette colors.",
+   "properties": {
+    "Background": {
+     "description": "The background color.",
+     "pattern": "^#[A-F0-9]{6}$",
+     "type": "string"
+    },
+    "Foreground": {
+     "description": "The foreground color.",
+     "pattern": "^#[A-F0-9]{6}$",
+     "type": "string"
+    }
+   },
+   "type": "object"
+  },
+  "Tag": {
+   "additionalProperties": false,
+   "properties": {
+    "Key": {
+     "description": "Tag key.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "Value": {
+     "description": "Tag value.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    }
+   },
+   "required": [
+    "Key",
+    "Value"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Definition of the AWS::QuickSight::Brand Resource Type.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "quicksight:CreateBrand",
+    "quicksight:DescribeBrand",
+    "quicksight:TagResource",
+    "quicksight:ListTagsForResource"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "quicksight:DeleteBrand",
+    "quicksight:DescribeBrand",
+    "quicksight:ListTagsForResource"
+   ]
+  },
+  "list": {
+   "permissions": [
+    "quicksight:ListBrands"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "quicksight:DescribeBrand",
+    "quicksight:ListTagsForResource"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "quicksight:UpdateBrand",
+    "quicksight:DescribeBrand",
+    "quicksight:TagResource",
+    "quicksight:UntagResource",
+    "quicksight:ListTagsForResource"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/Arn"
+ ],
+ "properties": {
+  "Arn": {
+   "description": "The Amazon Resource Name (ARN) of the brand.",
+   "type": "string"
+  },
+  "AwsAccountId": {
+   "description": "The ID of the Amazon Web Services account that owns the brand.",
+   "maxLength": 12,
+   "minLength": 12,
+   "pattern": "^[0-9]{12}$",
+   "type": "string"
+  },
+  "BrandDefinition": {
+   "$ref": "#/definitions/BrandDefinition"
+  },
+  "BrandId": {
+   "description": "The ID of the QuickSight brand.",
+   "maxLength": 512,
+   "minLength": 1,
+   "pattern": "^[\\w\\-]+$",
+   "type": "string"
+  },
+  "BrandStatus": {
+   "description": "The status of the brand.",
+   "enum": [
+    "CREATE_IN_PROGRESS",
+    "CREATE_SUCCEEDED",
+    "CREATE_FAILED",
+    "DELETE_IN_PROGRESS",
+    "DELETE_FAILED"
+   ],
+   "type": "string"
+  },
+  "CreatedTime": {
+   "description": "The time that the brand was created.",
+   "format": "date-time",
+   "type": "string"
+  },
+  "LastUpdatedTime": {
+   "description": "The last time the brand was updated.",
+   "format": "date-time",
+   "type": "string"
+  },
+  "Tags": {
+   "description": "The tags for the brand.",
+   "items": {
+    "$ref": "#/definitions/Tag"
+   },
+   "maxItems": 200,
+   "minItems": 1,
+   "type": "array"
+  },
+  "VersionId": {
+   "description": "The ID of the version.",
+   "maxLength": 512,
+   "minLength": 1,
+   "pattern": "^[\\w\\-]+$",
+   "type": "string"
+  },
+  "VersionStatus": {
+   "description": "The status of the version.",
+   "enum": [
+    "CREATE_IN_PROGRESS",
+    "CREATE_SUCCEEDED",
+    "CREATE_FAILED"
+   ],
+   "type": "string"
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/Arn",
+  "/properties/BrandStatus",
+  "/properties/CreatedTime",
+  "/properties/LastUpdatedTime",
+  "/properties/VersionId",
+  "/properties/VersionStatus",
+  "/properties/AwsAccountId"
+ ],
+ "required": [
+  "BrandId"
+ ],
+ "tagging": {
+  "cloudFormationSystemTags": false,
+  "permissions": [
+   "quicksight:TagResource",
+   "quicksight:UntagResource",
+   "quicksight:ListTagsForResource"
+  ],
+  "tagOnCreate": true,
+  "tagProperty": "/properties/Tags",
+  "tagUpdatable": true,
+  "taggable": true
+ },
+ "typeName": "AWS::QuickSight::Brand"
+}

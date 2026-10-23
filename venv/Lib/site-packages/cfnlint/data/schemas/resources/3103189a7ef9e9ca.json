@@ -1,0 +1,358 @@
+{
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/IdcInstanceArn",
+  "/properties/RedshiftIdcApplicationName",
+  "/properties/ApplicationType",
+  "/properties/SsoTagKeys"
+ ],
+ "definitions": {
+  "AuthorizedTokenIssuer": {
+   "additionalProperties": false,
+   "description": "The authorized token issuer for the Amazon Redshift IAM Identity Center application.",
+   "properties": {
+    "AuthorizedAudiencesList": {
+     "description": "The list of audiences for the authorized token issuer.",
+     "items": {
+      "maxLength": 2147483647,
+      "minLength": 0,
+      "type": "string"
+     },
+     "type": "array"
+    },
+    "TrustedTokenIssuerArn": {
+     "description": "The ARN for the authorized token issuer for integrating Amazon Redshift with IDC Identity Center.",
+     "maxLength": 2147483647,
+     "minLength": 0,
+     "pattern": "^arn:aws[a-zA-Z-]*:[a-zA-Z0-9-]+:[a-z0-9-]*:[0-9]*:.+$",
+     "type": "string"
+    }
+   },
+   "type": "object"
+  },
+  "Connect": {
+   "additionalProperties": false,
+   "description": "The Amazon Redshift connect integration scope.",
+   "properties": {
+    "Authorization": {
+     "description": "Determines whether the Amazon Redshift connect integration is enabled or disabled.",
+     "enum": [
+      "Enabled",
+      "Disabled"
+     ],
+     "type": "string"
+    }
+   },
+   "required": [
+    "Authorization"
+   ],
+   "type": "object"
+  },
+  "LakeFormationQuery": {
+   "additionalProperties": false,
+   "description": "The Lake Formation scope.",
+   "properties": {
+    "Authorization": {
+     "description": "Determines whether the query scope is enabled or disabled.",
+     "enum": [
+      "Enabled",
+      "Disabled"
+     ],
+     "type": "string"
+    }
+   },
+   "required": [
+    "Authorization"
+   ],
+   "type": "object"
+  },
+  "LakeFormationScopeUnion": {
+   "additionalProperties": false,
+   "description": "A list of scopes set up for Lake Formation integration.",
+   "properties": {
+    "LakeFormationQuery": {
+     "$ref": "#/definitions/LakeFormationQuery"
+    }
+   },
+   "type": "object"
+  },
+  "ReadWriteAccess": {
+   "additionalProperties": false,
+   "description": "The S3 Access Grants scope.",
+   "properties": {
+    "Authorization": {
+     "description": "Determines whether the read/write scope is enabled or disabled.",
+     "enum": [
+      "Enabled",
+      "Disabled"
+     ],
+     "type": "string"
+    }
+   },
+   "required": [
+    "Authorization"
+   ],
+   "type": "object"
+  },
+  "RedshiftScopeUnion": {
+   "additionalProperties": false,
+   "description": "A union structure that defines the scope of Amazon Redshift service integrations.",
+   "properties": {
+    "Connect": {
+     "$ref": "#/definitions/Connect"
+    }
+   },
+   "type": "object"
+  },
+  "S3AccessGrantsScopeUnion": {
+   "additionalProperties": false,
+   "description": "A list of scopes set up for S3 Access Grants integration.",
+   "properties": {
+    "ReadWriteAccess": {
+     "$ref": "#/definitions/ReadWriteAccess"
+    }
+   },
+   "type": "object"
+  },
+  "ServiceIntegrationsUnion": {
+   "additionalProperties": false,
+   "description": "A list of service integrations.",
+   "properties": {
+    "LakeFormation": {
+     "description": "A list of scopes set up for Lake Formation integration.",
+     "items": {
+      "$ref": "#/definitions/LakeFormationScopeUnion"
+     },
+     "type": "array"
+    },
+    "Redshift": {
+     "description": "A list of scopes set up for Amazon Redshift integration.",
+     "items": {
+      "$ref": "#/definitions/RedshiftScopeUnion"
+     },
+     "type": "array"
+    },
+    "S3AccessGrants": {
+     "description": "A list of scopes set up for S3 Access Grants integration.",
+     "items": {
+      "$ref": "#/definitions/S3AccessGrantsScopeUnion"
+     },
+     "type": "array"
+    }
+   },
+   "type": "object"
+  },
+  "Tag": {
+   "additionalProperties": false,
+   "properties": {
+    "Key": {
+     "description": "The key name of the tag.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "Value": {
+     "description": "The value for the tag.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    }
+   },
+   "required": [
+    "Key",
+    "Value"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Resource Type definition for AWS::Redshift::RedshiftIdcApplication. Creates an Amazon Redshift application for use with IAM Identity Center.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "redshift:CreateRedshiftIdcApplication",
+    "redshift:DescribeRedshiftIdcApplications",
+    "redshift:CreateTags",
+    "sso:CreateApplication",
+    "sso:PutApplicationGrant",
+    "sso:PutApplicationAuthenticationMethod",
+    "sso:PutApplicationAccessScope",
+    "sso:PutApplicationAssignmentConfiguration",
+    "sso:TagResource",
+    "sso:GetApplicationGrant"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "redshift:DeleteRedshiftIdcApplication",
+    "sso:DeleteApplication",
+    "sso:UntagResource"
+   ]
+  },
+  "list": {
+   "permissions": [
+    "redshift:DescribeRedshiftIdcApplications",
+    "sso:GetApplicationGrant",
+    "sso:ListApplicationAccessScopes",
+    "sso:GetApplicationAuthenticationMethod",
+    "sso:ListApplicationAuthenticationMethods"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "redshift:DescribeRedshiftIdcApplications",
+    "sso:GetApplicationGrant",
+    "sso:ListApplicationAccessScopes",
+    "sso:GetApplicationAuthenticationMethod",
+    "sso:ListApplicationAuthenticationMethods"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "redshift:ModifyRedshiftIdcApplication",
+    "redshift:DescribeRedshiftIdcApplications",
+    "redshift:CreateTags",
+    "redshift:DeleteTags",
+    "sso:CreateApplication",
+    "sso:DeleteApplication",
+    "sso:PutApplicationGrant",
+    "sso:PutApplicationAuthenticationMethod",
+    "sso:PutApplicationAccessScope",
+    "sso:PutApplicationAssignmentConfiguration",
+    "sso:DescribeApplication",
+    "sso:GetApplicationGrant",
+    "sso:ListApplicationAccessScopes",
+    "sso:GetApplicationAuthenticationMethod",
+    "sso:ListApplicationAuthenticationMethods",
+    "sso:DeleteApplicationGrant",
+    "sso:DeleteApplicationAuthenticationMethod",
+    "sso:DeleteApplicationAccessScope",
+    "sso:UpdateApplication",
+    "sso:TagResource",
+    "sso:UntagResource"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/RedshiftIdcApplicationArn"
+ ],
+ "properties": {
+  "ApplicationType": {
+   "description": "The type of application being created.",
+   "enum": [
+    "None",
+    "Lakehouse"
+   ],
+   "type": "string"
+  },
+  "AuthorizedTokenIssuerList": {
+   "description": "The token issuer list for the Amazon Redshift IAM Identity Center application instance.",
+   "items": {
+    "$ref": "#/definitions/AuthorizedTokenIssuer"
+   },
+   "type": "array"
+  },
+  "IamRoleArn": {
+   "description": "The IAM role ARN for the Amazon Redshift IAM Identity Center application instance. It has the required permissions to be assumed and invoke the IDC Identity Center API.",
+   "format": "AWS::IAM::Role.Arn",
+   "maxLength": 2147483647,
+   "minLength": 0,
+   "pattern": "^arn:aws[a-zA-Z-]*:[a-zA-Z0-9-]+:[a-z0-9-]*:[0-9]*:.+$",
+   "type": "string"
+  },
+  "IdcDisplayName": {
+   "description": "The display name for the Amazon Redshift IAM Identity Center application instance. It appears in the console.",
+   "maxLength": 127,
+   "minLength": 1,
+   "pattern": "^[\\w+=,.@-]+$",
+   "type": "string"
+  },
+  "IdcInstanceArn": {
+   "description": "The Amazon resource name (ARN) of the IAM Identity Center instance where Amazon Redshift creates a new managed application.",
+   "maxLength": 2147483647,
+   "minLength": 0,
+   "pattern": "^arn:aws[a-zA-Z-]*:[a-zA-Z0-9-]+:[a-z0-9-]*:[0-9]*:.+$",
+   "type": "string"
+  },
+  "IdcManagedApplicationArn": {
+   "description": "The ARN for the Amazon Redshift IAM Identity Center application.",
+   "pattern": "^arn:aws[a-zA-Z-]*:[a-zA-Z0-9-]+:[a-z0-9-]*:[0-9]*:.+$",
+   "type": "string"
+  },
+  "IdcOnboardStatus": {
+   "description": "The onboarding status for the Amazon Redshift IAM Identity Center application.",
+   "type": "string"
+  },
+  "IdentityNamespace": {
+   "description": "The namespace for the Amazon Redshift IAM Identity Center application instance. It determines which managed application verifies the connection token.",
+   "maxLength": 127,
+   "minLength": 1,
+   "pattern": "^[a-zA-Z0-9_+.#@$-]+$",
+   "type": "string"
+  },
+  "RedshiftIdcApplicationArn": {
+   "description": "The ARN for the Redshift application that integrates with IAM Identity Center.",
+   "pattern": "^arn:aws[a-zA-Z-]*:[a-zA-Z0-9-]+:[a-z0-9-]*:[0-9]*:.+$",
+   "type": "string"
+  },
+  "RedshiftIdcApplicationName": {
+   "description": "The name of the Redshift application in IAM Identity Center.",
+   "maxLength": 63,
+   "minLength": 1,
+   "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+   "type": "string"
+  },
+  "ServiceIntegrations": {
+   "description": "A collection of service integrations for the Redshift IAM Identity Center application.",
+   "items": {
+    "$ref": "#/definitions/ServiceIntegrationsUnion"
+   },
+   "type": "array"
+  },
+  "SsoTagKeys": {
+   "description": "A list of tag keys that Redshift Identity Center applications copy to IAM Identity Center.",
+   "items": {
+    "maxLength": 2147483647,
+    "minLength": 0,
+    "type": "string"
+   },
+   "type": "array"
+  },
+  "Tags": {
+   "description": "An array of key-value pairs to apply to this resource.",
+   "insertionOrder": false,
+   "items": {
+    "$ref": "#/definitions/Tag"
+   },
+   "type": "array",
+   "uniqueItems": true
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/RedshiftIdcApplicationArn",
+  "/properties/IdcManagedApplicationArn",
+  "/properties/IdcOnboardStatus"
+ ],
+ "required": [
+  "IdcInstanceArn",
+  "RedshiftIdcApplicationName",
+  "IdcDisplayName",
+  "IamRoleArn"
+ ],
+ "tagging": {
+  "cloudFormationSystemTags": false,
+  "permissions": [
+   "redshift:CreateTags",
+   "redshift:DeleteTags",
+   "redshift:DescribeRedshiftIdcApplications"
+  ],
+  "tagOnCreate": true,
+  "tagProperty": "/properties/Tags",
+  "tagUpdatable": true,
+  "taggable": true
+ },
+ "typeName": "AWS::Redshift::RedshiftIdcApplication",
+ "writeOnlyProperties": [
+  "/properties/SsoTagKeys",
+  "/properties/ServiceIntegrations"
+ ]
+}

@@ -1,0 +1,203 @@
+{
+ "additionalIdentifiers": [
+  [
+   "/properties/WorkspaceName",
+   "/properties/ApplicationId"
+  ]
+ ],
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/WorkspaceName",
+  "/properties/Name",
+  "/properties/Description",
+  "/properties/IdcInstanceArn"
+ ],
+ "definitions": {
+  "Tag": {
+   "additionalProperties": false,
+   "description": "A key-value pair to associate with a resource.",
+   "properties": {
+    "Key": {
+     "description": "The key name of the tag.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "Value": {
+     "description": "The value for the tag.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    }
+   },
+   "required": [
+    "Key",
+    "Value"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Represents an AWS IoT SiteWise application that provides IAM Identity Center based access to a workspace.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "iotsitewise:CreateApplication",
+    "iotsitewise:DescribeApplication",
+    "iotsitewise:TagResource",
+    "iotsitewise:ListTagsForResource",
+    "sso:CreateApplication",
+    "sso:DeleteApplication",
+    "sso:PutApplicationAccessScope",
+    "sso:PutApplicationAssignmentConfiguration",
+    "sso:PutApplicationAuthenticationMethod",
+    "sso:PutApplicationGrant"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "iotsitewise:DeleteApplication",
+    "iotsitewise:DescribeApplication",
+    "iotsitewise:ListTagsForResource",
+    "sso:DeleteApplication"
+   ]
+  },
+  "list": {
+   "permissions": [
+    "iotsitewise:ListApplications"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "iotsitewise:DescribeApplication",
+    "iotsitewise:ListTagsForResource"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "iotsitewise:DescribeApplication",
+    "iotsitewise:TagResource",
+    "iotsitewise:UntagResource",
+    "iotsitewise:ListTagsForResource"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/Arn"
+ ],
+ "properties": {
+  "ApplicationId": {
+   "description": "The unique identifier of the application.",
+   "maxLength": 36,
+   "minLength": 36,
+   "pattern": "^[a-z0-9-]{36}$",
+   "type": "string"
+  },
+  "Arn": {
+   "description": "The ARN of the application.",
+   "maxLength": 1600,
+   "minLength": 1,
+   "pattern": "^arn:aws(-cn|-us-gov)?:[a-zA-Z0-9-:\\/_\\.]+$",
+   "type": "string"
+  },
+  "CreatedAt": {
+   "description": "The time the application was created.",
+   "format": "date-time",
+   "type": "string"
+  },
+  "Description": {
+   "description": "A description of the application.",
+   "maxLength": 2048,
+   "minLength": 1,
+   "pattern": "^[^\\u0000-\\u001F\\u007F]+$",
+   "type": "string"
+  },
+  "DnsSubdomain": {
+   "description": "The DNS-compliant subdomain label assigned to the application.",
+   "maxLength": 63,
+   "minLength": 1,
+   "pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$",
+   "type": "string"
+  },
+  "IdcApplicationArn": {
+   "description": "The ARN of the IAM Identity Center application created for the application.",
+   "maxLength": 1600,
+   "minLength": 1,
+   "pattern": "^arn:aws(-cn|-us-gov)?:[a-zA-Z0-9-:\\/_\\.]+$",
+   "type": "string"
+  },
+  "IdcInstanceArn": {
+   "description": "The ARN of the IAM Identity Center instance used to create the application.",
+   "maxLength": 1600,
+   "minLength": 1,
+   "pattern": "^arn:aws(-cn|-us-gov)?:[a-zA-Z0-9-:\\/_\\.]+$",
+   "type": "string"
+  },
+  "Name": {
+   "description": "The name of the application.",
+   "maxLength": 256,
+   "minLength": 1,
+   "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9 ._()\\-]*[A-Za-z0-9._()\\-])?$",
+   "type": "string"
+  },
+  "Status": {
+   "description": "The current status of the application.",
+   "enum": [
+    "CREATING",
+    "ACTIVE",
+    "DELETING"
+   ],
+   "type": "string"
+  },
+  "Tags": {
+   "description": "An array of key-value pairs to apply to this resource.",
+   "insertionOrder": false,
+   "items": {
+    "$ref": "#/definitions/Tag"
+   },
+   "maxItems": 50,
+   "type": "array"
+  },
+  "UpdatedAt": {
+   "description": "The time the application was last updated.",
+   "format": "date-time",
+   "type": "string"
+  },
+  "WorkspaceName": {
+   "description": "The name of the workspace that the application belongs to.",
+   "maxLength": 64,
+   "minLength": 1,
+   "pattern": "^[a-zA-Z0-9_-]+$",
+   "type": "string"
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/Arn",
+  "/properties/ApplicationId",
+  "/properties/IdcApplicationArn",
+  "/properties/DnsSubdomain",
+  "/properties/Status",
+  "/properties/CreatedAt",
+  "/properties/UpdatedAt"
+ ],
+ "replacementStrategy": "delete_then_create",
+ "required": [
+  "WorkspaceName",
+  "Name"
+ ],
+ "tagging": {
+  "cloudFormationSystemTags": true,
+  "permissions": [
+   "iotsitewise:TagResource",
+   "iotsitewise:UntagResource",
+   "iotsitewise:ListTagsForResource"
+  ],
+  "tagOnCreate": true,
+  "tagProperty": "/properties/Tags",
+  "tagUpdatable": true,
+  "taggable": true
+ },
+ "typeName": "AWS::IoTSiteWise::Application",
+ "writeOnlyProperties": [
+  "/properties/IdcInstanceArn"
+ ]
+}
