@@ -28,6 +28,14 @@
 - เป้าหมาย: ทุก cohort × ตัวชี้วัด ต้องมี **≥ 6 คนที่มี ≥ 2 วัน ok** (LOO/jackknife) และในทางปฏิบัติมากกว่านั้นสำหรับ bootstrap
   — synthetic 8 คน/กลุ่ม กับ bootstrap 200 รอบ **ยัง fail** gate bootstrap ของ COPS cadence/tremor (`synthetic-flow-A`) ดังนั้นตัวเลข "6–7 คน" ใน README เป็นค่าขั้นต่ำที่มองโลกในแง่ดี
 
+#### Pilot `aws-real-pilot-20261024-v1` (8 COPS + 8 NHANES, baseline `4b623bce…` = local py312 compatibility fit, ไม่ใช่ AWS)
+
+- `real-pilot-20261024-v1`: **gate ความนิ่งผ่านครบ 12/12** (jackknife สูงสุด 0.36, bootstrap สูงสุด 1.70) NHANES cadence มี reference แล้ว (6 คน)
+  audit 8 หมวด pass (`official_reports` not_evaluable เพราะรันด้วย `--baseline`), no-lookahead 0, device flag ยังขึ้น
+- ยังไม่พร้อมเปิด test เพราะ valid 1+1 (`descriptive_only`/`unavailable`) อย่างเดียว และ pilot ไม่มี test plan
+- `compare-pilot-local-py312-vs-ckpt01`: `new_version_more_train` (+COPS-13, COPS-16, NHANES-73746, 73781, 73899; ค่าเดิมไม่เปลี่ยน, preprocessing/policy เดิม)
+  validate ซ้ำ (`…-validate`) audit pass → ยืนยันว่าเพิ่มคน 8+8 ก็พอให้ reference นิ่งตาม gate ที่ลงทะเบียนไว้
+
 ### Valid
 
 - 1 COPS + 1 NHANES → `descriptive_only` ทุก cell (COPS cadence `unavailable`) ต้อง ≥ 3 คนที่ ok ต่อ cohort × ตัวชี้วัด จึงเป็น `distribution`
@@ -48,7 +56,10 @@
 
 ### Track B (symptom, exploratory)
 
-- `blocked`: ไม่มี `data/features/cops/*.csv` ในเครื่อง และ `symptom.labels_path: null`
+- `real-symptom-v1` (snapshot `20261024T085631Z` จาก `prepare_symptom`): train 31 คน (4 คนไม่มี legacy features), valid 0 คน
+  (ทั้ง 7 คนไม่มี legacy features → `insufficient_valid`); candidate 2,244 ชม. ตรง README_signal_audit.md, จับคู่ features ได้ 1,579 (70%)
+- CV 5 fold ตามคน: balanced accuracy 0.48 (CI 0.42–0.55) vs dummy 0.50, PR-AUC 0.276 (CI 0.17–0.41) vs prevalence 0.275
+  → **ไม่มีสัญญาณเหนือ chance** ด้วย legacy features + logistic L2 (exploratory, COPS-only)
 - การกัน leakage ในโค้ด: GroupKFold ตาม `subject_id` (assert ไม่มีคนซ้ำข้าม fold), impute median ของ fold + missing indicator (ไม่เติม 0,
   คอลัมน์ไม่มีค่าเลยถูกตัด), standardize/class weight จาก fold, ไม่ใช้ `exclude_columns`, ไม่อ่าน split test
 
@@ -96,6 +107,10 @@ aws sso login --profile minny
   (เช่น `git worktree add --detach D:\AWS\Simianpal-refrun <commit>`) แล้วตั้ง `real.data_root` ของ backtest ไปที่ worktree นั้น
 - clean evidence ของ `real-20261023-v1` อยู่บนเครื่อง `C:\working\a` เท่านั้น (S3 มีแค่ bundle/report) จึงต่อ run นั้นจากเครื่องอื่นไม่ได้
 - `--workers` สูงสุด 2 และมี memory guard; รันซ้ำคำสั่งเดิมเพื่อ resume
+- memory guard ดู **available commit** (ไม่ใช่ RAM ว่าง) ต่อคนต้องการ ~4.9–5.8 GiB + 1 GiB; เครื่องที่เปิดแอปอื่นเยอะ commit ว่างแค่ 4–9 GB
+  → ใช้ `--workers 1` (หรือปิดแอป/เพิ่ม page file) ไม่งั้นทุกคน fail ทันที
+- ห้าม kill controller ระหว่างที่ worker ทำงาน: worker ที่ไม่มีแถว `failed` ใน `train_progress.json` จะ retry ใน run เดิมไม่ได้
+  (`real-20261024-full-v1` ถูกทิ้งด้วยเหตุนี้ ใช้ `real-20261024-full-v2` แทน)
 
 ### ขั้น 3 — valid บน baseline ตัวเดียวกัน (ทุกคนใน split valid: COPS 7 / NHANES 22)
 
