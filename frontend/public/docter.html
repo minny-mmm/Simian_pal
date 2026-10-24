@@ -57,6 +57,8 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:2px}
 .cal span{padding:9px 0;border-radius:8px}.cal .h{color:var(--mute);font-size:12px}.cal .d{cursor:pointer}.cal .d:hover{background:var(--pri2)}.cal .d.on{background:var(--pri);color:#fff}.cal .today{font-weight:700;outline:1px solid var(--pri)}.cal .d small{display:block;font-size:10px;line-height:1.2;color:var(--pri)}.cal .d.on small{color:#fff}
 select.pill{border:0;font:inherit;font-size:12px;cursor:pointer;background:var(--wait);color:var(--ink)}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mute);margin:6px 0 10px}.leg i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}.pl{width:100%;height:230px}.pl text{fill:var(--mute);font-size:11px}.nd{color:var(--bad)}
+#rp-ask[hidden]{display:none}.hr{border:0;border-top:3px solid #b8700f;margin:14px 0 18px}.band{opacity:.13}.lg2{font-size:13px;margin:8px 0 12px}.lg2 b{font-weight:500}.rp p{margin:0 0 10px;line-height:1.7}.ex summary{cursor:pointer;font-weight:600;margin-top:12px}.ex div{display:grid;gap:6px;margin-top:8px;font-size:13px}.rt td{white-space:nowrap;color:var(--ink)}.rt td.nd{color:var(--bad)}
 .back{color:var(--pri);cursor:pointer;font-size:13px}
 .dr{position:relative;display:inline-block}.dr>.sel{cursor:pointer}.dr>.sel:focus-visible{outline:2px solid var(--pri)}.pop{display:none;position:absolute;right:0;top:calc(100% + 6px);z-index:20;width:310px;max-width:86vw;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 10px 28px rgba(0,0,0,.16)}.dr.open .pop{display:block}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.chips .tab{font-size:12px;padding:5px 10px}.pop .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pop .acts{margin-top:14px}.pop .btn{padding:7px 12px;font-size:13px}.rng{font-size:12px;color:var(--mute);margin-top:10px}
 .frm{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.fld{display:grid;gap:5px;font-size:13px;align-content:start}.fld.w{grid-column:1/-1}.fld>span{color:var(--mute)}.fld input,.fld select,.fld textarea{border:1px solid var(--line);border-radius:9px;padding:9px 12px;background:var(--card);color:var(--ink);font:inherit;width:100%}.fld input:focus,.fld select:focus,.fld textarea:focus{outline:2px solid var(--pri);outline-offset:0}.acts{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.drop{border:1.5px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--mute);cursor:pointer}.drop:hover{background:var(--pri2)}.tot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:14px;border-radius:10px;background:var(--pri2);color:var(--pri);font-weight:600}
@@ -66,7 +68,7 @@ select.pill{border:0;font:inherit;font-size:12px;cursor:pointer;background:var(-
 <body>
 <div class="app">
 <nav class="side" id="nav">
- <div class="logo">🌿 pakinson</div>
+ <div class="logo"> pakinson</div>
  <a class="nav" href="#home">⌂ หน้าหลัก</a>
  <a class="nav" href="#patients">☺ ผู้ป่วย</a>
  <a class="nav" href="#device">▤ ข้อมูลจากอุปกรณ์</a>
@@ -146,14 +148,13 @@ select.pill{border:0;font:inherit;font-size:12px;cursor:pointer;background:var(-
  
 <!-- รายงาน -->
 <section class="pg" id="reports">
- <div class="flex sp wrap"><h1>รายงานและวิเคราะห์ <span class="mute sm">(Reports &amp; Analytics)</span></h1><span class="sel">📅 เลือกช่วงวันที่ <span>⌄</span></span></div>
- <div class="tabs"><button class="tab on">ภาพรวม</button><button class="tab">เปรียบเทียบรายบุคคล</button><button class="tab">กลุ่มผู้ป่วย</button><button class="tab">แนวโน้มระยะยาว</button></div>
+ <div class="flex sp wrap"><h1>รายงานและวิเคราะห์ <span class="mute sm">(Reports &amp; Analytics)</span></h1></div>
+ <p class="sm mute" style="margin:-6px 0 12px">ระยะห่างจากกลุ่มอ้างอิง COPS / NHANES ตามผลของโมเดลล่าสุด · ไม่ใช่การวินิจฉัยและไม่ใช่คะแนนความรุนแรง</p>
+ <div class="card flex wrap" style="margin-bottom:14px"><label class="fld" style="display:flex;align-items:center;gap:8px"><span style="white-space:nowrap">ผู้ป่วย</span><select class="sel" id="rp-pick" aria-label="เลือกผู้ป่วย"></select></label><span class="sm mute" id="rp-stat">กำลังโหลด…</span></div>
+ <div class="card flex wrap" id="rp-ask" style="margin-bottom:14px" hidden><span>คำอธิบายจาก AI</span><select class="sel" id="rp-day" aria-label="เลือกวัน"></select><button class="btn" id="rp-ask-btn">ขอคำอธิบายจาก AI</button><span class="sm mute" id="rp-ask-stat">เรียกเมื่อกดเท่านั้น (LLM ใช้ได้ 20 ครั้ง/วัน รวมทั้งระบบ)</span></div>
  <div class="sm" id="rp-err" style="color:var(--bad);margin-bottom:8px"></div>
- <div class="g c3" id="rp-cards"><div class="card"><div class="sm">Rest Tremor (เฉลี่ย)</div><div class="big">—</div></div><div class="card"><div class="sm">Walking Cadence (เฉลี่ย)</div><div class="big">—</div></div><div class="card"><div class="sm">Activity Level (เฉลี่ย)</div><div class="big">—</div></div></div>
- <div class="flex sp wrap"><h3>เปรียบเทียบกับกลุ่มอ้างอิง (Percentile) <span class="mute sm">7 วันล่าสุดของผู้ป่วย</span></h3><select class="sel" id="rp-pick" aria-label="เลือกผู้ป่วย"></select></div>
- <div class="seg" id="rp-cohort" style="margin-bottom:10px"><span class="on" data-c="COPS">COPS (PD)</span><span data-c="NHANES">NHANES (ปกติ)</span></div>
- <div class="g c3" id="rp-pct"><div><div class="sm">Rest Tremor (%)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div><div><div class="sm">Walking Cadence (ก้าว/นาที)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div><div><div class="sm">Activity Level (mg)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div></div>
- <h3>Rest Tremor × Walking Cadence <span class="mute sm">(ค่าเฉลี่ยรายผู้ป่วยในช่วงที่เลือก · คลิกจุดเพื่อดูโปรไฟล์)</span></h3><div class="chart" id="rp-scatter" style="height:auto;min-height:220px;padding:8px">ยังไม่มีข้อมูลกราฟ</div>
+ <div id="rhead"></div>
+ <div id="rcharts"></div>
 </section>
  
 <!-- การแจ้งเตือน -->
@@ -428,7 +429,9 @@ let CUR=null;  // ผู้ป่วยที่กำลังดูอยู�
 const WORSE_UP={tremor:true,cadence:false,activity:false};  // ทิศที่แย่ลง: tremor เพิ่ม = แย่, อื่นๆ ลด = แย่
 const num=v=>v==null?'—':(+v).toLocaleString('th-TH',{maximumFractionDigits:2});
 const pfCard=(k,c,foot)=>{if(!c)return '';  // foot = บรรทัดล่างสุด (ไม่ส่ง = จำนวนวันที่มีข้อมูล)const up=c.change_pct>0,bad=up===WORSE_UP[k];
-  return '<div class="card"><div class="sm">'+esc(c.label)+'</div><div class="big">'+num(c.value)+' <span class="sm mute">'+esc(c.unit)+'</span></div>'
+  // ใต้ชื่อการ์ด = ชื่อตัวชี้วัดในโมเดล/หน้ารายงาน (ทีมดูได้ว่าเป็นตัวเดียวกัน) · ตัวเลขหลัก = ค่ารวมถ่วงน้ำหนักทั้งช่วง · วันล่าสุด = บรรทัดรอง
+  return '<div class="card"><div class="sm">'+esc(c.label)+(c.model_metric?'<div class="mute" style="font-size:11px">'+esc(c.model_metric)+'</div>':'')+'</div><div class="big">'+num(c.value)+' <span class="sm mute">'+esc(c.unit)+'</span></div>'
+    +(c.latest?'<div class="sm">วันล่าสุด ('+new Date(c.latest.date+'T00:00').toLocaleDateString('th-TH',{day:'numeric',month:'short'})+'): '+num(c.latest.value)+' '+esc(c.unit)+'</div>':'')
     +(c.change_pct==null?'<div class="sm mute">ยังไม่มีช่วงก่อนหน้าให้เทียบ</div>':'<div class="sm" style="color:var(--'+(c.change_pct===0?'mute':bad?'bad':'ok')+')">'+(up?'↑':c.change_pct<0?'↓':'')+' '+Math.abs(c.change_pct)+'% จากช่วงก่อนหน้า</div>')
     +'<div class="sm mute">'+(foot||'มีข้อมูล '+c.valid_days+' วัน')+'</div></div>'};
 // วันที่ -> เลขวัน (นับแบบ UTC จะได้จำนวนเต็ม และแปลงกลับด้วย toISOString ได้วันเดิม)
@@ -596,63 +599,114 @@ $('#na-save').addEventListener('click',async()=>{
     CUR=pid;location.hash='clinical/'+encodeURIComponent(pid);
   }catch(e){err.textContent='บันทึกไม่สำเร็จ: '+e.message}finally{btn.disabled=false}
 });
-// ===== หน้า 6 รายงาน: ภาพรวมทั้งกลุ่ม + เทียบกลุ่มอ้างอิง (รายคน) + กราฟกระจาย =====
-const RP={range:null,cohort:'COPS'};
-// แถบเทียบกลุ่มอ้างอิง: แถบ P25–P75 (ถ้ามี) + เส้น P50 + จุดค่าผู้ป่วย
-function pctBar(m){
-  const head='<div class="sm">'+esc(m.label)+' ('+esc(m.unit)+')</div>',vals=[m.value,m.p25,m.p50,m.p75].filter(v=>v!=null);
-  if(!vals.length)return '<div class="card">'+head+'<div class="bar"></div><div class="sm mute">ไม่มีข้อมูล</div></div>';
-  const W=300,max=Math.max(...vals)*1.25||1,x=v=>(10+v/max*(W-20)).toFixed(1);
-  let s='<svg viewBox="0 0 '+W+' 46" width="100%" style="font-size:10px;fill:var(--mute)"><rect x="10" y="14" width="'+(W-20)+'" height="10" rx="5" style="fill:var(--wait)"/>';
-  if(m.p25!=null&&m.p75!=null)s+='<rect x="'+x(m.p25)+'" y="14" width="'+(x(m.p75)-x(m.p25))+'" height="10" style="fill:color-mix(in srgb,var(--pri) 30%,transparent)"/>';
-  [['P25',m.p25],['P50',m.p50],['P75',m.p75]].forEach(([l,v])=>{if(v!=null)s+='<line x1="'+x(v)+'" x2="'+x(v)+'" y1="9" y2="29" stroke="var(--ink)" stroke-width="'+(l==='P50'?2:1)+'"/><text x="'+x(v)+'" y="42" text-anchor="middle">'+l+' '+num(v)+'</text>'});
-  if(m.value!=null)s+='<circle cx="'+x(m.value)+'" cy="19" r="6" style="fill:var(--pri);stroke:var(--card)" stroke-width="2"><title>ผู้ป่วย '+num(m.value)+'</title></circle>';
-  const cmp=m.vs_median_pct==null?'':' · '+(m.vs_median_pct>0?'สูงกว่า':'ต่ำกว่า')+'ค่ากลาง '+Math.abs(m.vs_median_pct)+'%';
-  return '<div class="card">'+head+s+'</svg><div class="sm"><span style="color:var(--pri)">●</span> ผู้ป่วย '+num(m.value)+cmp+'</div>'
-    +(m.p25==null||m.p75==null?'<div class="sm mute">กลุ่มอ้างอิงมีแค่ค่ากลาง (P50) จาก '+(m.n_people??'—')+' คน ยังไม่มี P25/P75</div>':'')+'</div>'}
-// กราฟกระจาย: 1 จุด = ผู้ป่วย 1 คน (ค่าเฉลี่ยในช่วง)
-function scatterChart(sc){
-  if(!sc.points.length)return 'ไม่มีผู้ป่วยที่มีข้อมูลครบทั้ง 2 ค่าในช่วงนี้';
-  const W=900,H=330,L=60,R=24,T=16,B=46;
-  const rng=a=>{const lo=Math.min(...a),hi=Math.max(...a),pad=(hi-lo||Math.abs(hi)||1)*0.25;return [Math.max(0,lo-pad),hi+pad]};
-  const [x0,x1]=rng(sc.points.map(p=>p.x)),[y0,y1]=rng(sc.points.map(p=>p.y));
-  const X=v=>(L+(v-x0)/(x1-x0)*(W-L-R)).toFixed(1),Y=v=>(T+(1-(v-y0)/(y1-y0))*(H-T-B)).toFixed(1);
-  let g='';
-  for(let i=0;i<=4;i++){const vx=x0+(x1-x0)*i/4,vy=y0+(y1-y0)*i/4;
-    g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(vy)+'" y2="'+Y(vy)+'" stroke="var(--line)"/><text x="'+(L-6)+'" y="'+(+Y(vy)+4)+'" text-anchor="end">'+num(vy)+'</text>'
-      +'<text x="'+X(vx)+'" y="'+(H-B+16)+'" text-anchor="middle">'+num(vx)+'</text>'}
-  g+='<text x="'+((L+W-R)/2)+'" y="'+(H-6)+'" text-anchor="middle">'+esc(sc.x.label)+' ('+esc(sc.x.unit)+')</text>'
-    +'<text transform="translate(12 '+((T+H-B)/2)+') rotate(-90)" text-anchor="middle">'+esc(sc.y.label)+' ('+esc(sc.y.unit)+')</text>';
-  g+=sc.points.map(p=>'<g data-go="profile/'+encodeURIComponent(p.patient_id)+'" style="cursor:pointer"><circle cx="'+X(p.x)+'" cy="'+Y(p.y)+'" r="6" style="fill:var(--pri)"/>'
-    +'<text x="'+(+X(p.x)+9)+'" y="'+(+Y(p.y)-8)+'" style="fill:var(--ink)">'+esc(p.hn||p.patient_id)+'</text><title>'+esc(p.hn)+': '+num(p.x)+' '+esc(sc.x.unit)+', '+num(p.y)+' '+esc(sc.y.unit)+'</title></g>').join('');
-  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="font-size:11px;fill:var(--mute)">'+g+'</svg>'}
-async function loadPercentiles(){
+// ===== หน้า 6 รายงาน: ผลวิเคราะห์จากเดโม AI ของทีม (หน้าออกแบบโดย Panita: docter_2.html) =====
+// ข้อมูล = GET /api/patients/<id>/ai/analysis (แถว schema 1.0.0 ของเดโม + date) เฉพาะผู้ป่วยที่ has_ai
+// คำอธิบาย = GET /ai/explanation?date= เรียกเมื่อกดปุ่มเท่านั้น (LLM 20 ครั้ง/วัน รวมทั้งระบบ)
+// ผลที่เคยได้ backend เก็บไว้ใน pd_ai_results: analysis + คำอธิบายที่เก็บไว้ (/ai/explanations) แสดงทันที ไม่กินโควตาเดโม
+// ระยะห่างจากกลุ่มอ้างอิงไม่ใช่การวินิจฉัย · null = วัดไม่ได้ ไม่ใช่ 0 · ตัวเลขทุกตัวมาจาก analysis ไม่ดึงจากข้อความ LLM
+(()=>{
+const RP={id:null,A:null,X:{},busy:false};   // X: วันที่ -> คำอธิบายที่ขอแล้ว
+const MET={
+ enmo_hourly_median_mean_g:['Activity Level (ENMO)','g'],
+ walking_cadence_hourly_median_mean_hz:['Walking Cadence','steps/s'],
+ rest_tremor_window_fraction:['Rest Tremor','สัดส่วน 0–1']};
+const nm=v=>v==null?'null':String(Number(Number(v).toPrecision(6)));
+const day=d=>d?new Date(d+'T00:00').toLocaleDateString('th-TH',{day:'numeric',month:'short'}):'—';
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.append(e);return e};
+// เหมือน get() แต่เก็บข้อความ error ภาษาไทยจาก backend (เช่น เดโมหมดอายุ / โควตาเต็ม)
+async function aiGet(path,q){
+  const r=await api(path+(q?'?'+new URLSearchParams(q):''));let j={};try{j=await r.json()}catch(_){}
+  if(!r.ok)throw new Error(typeof j.detail==='string'?j.detail:'HTTP '+r.status);return j}
+const aiPath=(id,p)=>'/api/patients/'+encodeURIComponent(id)+'/ai/'+p;
+// แกน X = วันที่ของเรา (เรียงตาม day ของเดโม) วันที่ไม่มีค่า = "ขาด"
+function plot(rows,box,days){
+  const byDay=new Map(rows.map(r=>[r.day,r]));
+  const svg=el('svg',{viewBox:'0 0 800 250',class:'pl',style:'height:260px',role:'img','aria-label':'กราฟรายวัน'},box);
+  const ref=k=>{const r=rows.find(r=>r.reference_comparisons[k].reference_median!=null);return r?r.reference_comparisons[k]:null};
+  const R={cops:ref('cops'),nhanes:ref('nhanes')},q=(c,k)=>c&&c.reference_quantiles?c.reference_quantiles[k]:null;
+  const vals=[...rows.map(r=>r.value),...['cops','nhanes'].flatMap(k=>[R[k]&&R[k].reference_median,q(R[k],'0.25'),q(R[k],'0.75')])].filter(v=>v!=null);
+  if(!vals.length)return;let lo=Math.min(...vals),hi=Math.max(...vals),pad=(hi-lo||.02)*.12;lo-=pad;hi+=pad;
+  const x=i=>70+i*700/Math.max(days.length-1,1),y=v=>195-(v-lo)/(hi-lo)*170;
+  for(let k=0;k<5;k++){const v=lo+(hi-lo)*k/4;el('line',{x1:62,x2:775,y1:y(v),y2:y(v),stroke:'var(--line)'},svg);el('text',{x:2,y:y(v)+4},svg).textContent=nm(v)}
+  [['cops','#d6336c'],['nhanes','#0a7f5a']].forEach(([k,c])=>{const m=R[k];if(!m)return;const a=q(m,'0.25'),b=q(m,'0.75');
+    if(a!=null&&b!=null)el('rect',{x:62,width:713,y:y(b),height:Math.max(y(a)-y(b),1),fill:c,class:'band'},svg);
+    el('line',{x1:62,x2:775,y1:y(m.reference_median),y2:y(m.reference_median),stroke:c,'stroke-width':1.5,'stroke-dasharray':'6 4'},svg)});
+  let prev=null;days.forEach((d,i)=>{const r=byDay.get(d.day),t=el('text',{x:x(i),y:218,'text-anchor':'middle'},svg);t.textContent=day(d.date);
+    if(!r||r.value==null){prev=null;const t=el('text',{x:x(i),y:236,'text-anchor':'middle'},svg);t.textContent='ขาด';t.style.fill='#b3361b';return}
+    if(prev)el('line',{x1:x(prev.i),y1:y(prev.v),x2:x(i),y2:y(r.value),stroke:'#1f5fd1','stroke-width':2},svg);
+    el('circle',{cx:x(i),cy:y(r.value),r:4.5,fill:'#1f5fd1'},svg);prev={i,v:r.value}})}
+function head(){
+  const h=$('#rhead'),notes='<p>Δ กลุ่ม = ค่ารายวัน − median กลุ่ม (หน่วยเดียวกับตัวชี้วัด); z = Δ/(1.4826×MAD) ไม่มีหน่วย ไม่ใช่โอกาสเป็นโรค; Δ วันก่อน = วันนี้ − วันก่อนหน้าที่ติดกันเท่านั้น</p><p>null = วัดไม่ได้/เปรียบเทียบไม่ได้ตาม QC และเหตุผล ไม่ใช่ศูนย์; fraction ใช้ 0–1 ไม่ใช่ %</p>';
+  const A=RP.A;if(!A){h.innerHTML='<div class="rp"><hr class="hr">'+notes+'</div>';return}
+  const p=(PICK||[]).find(p=>p.patient_id===RP.id)||{},d=A.days,alias=A.rows.length?A.rows[0].subject_id:'—';
+  h.innerHTML='<div class="rp"><h1 style="font-size:28px">'+(A.data_origin==='real'?'ข้อมูลจริง':'ข้อมูลจำลอง')+' — '+esc(p.hn)+' '+esc(p.display_name)+' / '+d.length+' วัน'
+    +(d.length?' <span class="mute" style="font-size:16px;font-weight:400">('+fmt(d[0].date)+' – '+fmt(d[d.length-1].date)+')</span>':'')+'</h1>'
+    +'<p style="margin:0 0 4px"><b>data_origin='+esc(A.data_origin)+' · baseline_version='+esc(A.baseline_version)+' · schema '+esc(A.schema_version)+' · ชื่อในเดโม '+esc(alias)+'</b></p><hr class="hr">'+notes+'</div>'}
+// ข้อความ LLM ใช้ชื่อตัวแปร -> แสดงชื่อที่หมอคุ้น (ไม่แก้ความหมาย)
+const plain=t=>Object.keys(MET).reduce((s,m)=>s.split(m).join(MET[m][0]),String(t||''));
+function render(){
+  head();const box=$('#rcharts');box.replaceChildren();
+  const A=RP.A,days=A?A.days:[];
+  Object.keys(MET).forEach(m=>{
+    const c=document.createElement('div');c.className='card';c.style.margin='0 0 16px';c.style.padding='20px';
+    const rows=A?A.rows.filter(r=>r.metric===m).sort((a,b)=>a.day-b.day):[];
+    let sum='';if(rows.length){const f=rows[0].reference_comparisons;sum='<p class="sm" style="margin:6px 0 10px">COPS: '+f.cops.n_participants+' คน / '+f.cops.n_days+' วัน; NHANES: '+f.nhanes.n_participants+' คน / '+f.nhanes.n_days+' วัน</p>'}
+    c.innerHTML='<h2 style="font-size:17px;margin:0">'+MET[m][0]+' <span class="mute sm" style="font-weight:400">('+MET[m][1]+') · '+m+'</span></h2><div class="leg"><span><i style="background:#1f5fd1"></i>ค่ารายวัน</span><span><i style="background:#d6336c"></i>มัธยฐาน COPS</span><span><i style="background:#0a7f5a"></i>มัธยฐาน NHANES</span></div>'+sum;box.append(c);
+    if(!rows.length){const d=document.createElement('div');d.className='chart';d.style.marginTop='10px';d.textContent=RP.id?'ยังไม่มีข้อมูล':'เลือกผู้ป่วยที่มีผลวิเคราะห์ AI';c.append(d);return}
+    plot(rows,c,days);
+    const lg=document.createElement('div');lg.className='lg2';lg.textContent='พื้นที่สี = Q25–Q75 ไม่ใช่ช่วงความเชื่อมั่น · แกน X = วันที่ · ขาด = null ไม่แทนด้วยศูนย์';c.append(lg);
+    const w=document.createElement('div');w.className='scroll';
+    w.innerHTML='<table class="rt"><tr><th>วันที่</th><th>ค่ารายวัน</th><th>Δ COPS</th><th>z COPS</th><th>Δ NHANES</th><th>z NHANES</th><th>Δ วันก่อน</th><th>QC/เหตุผล</th></tr>'+rows.map(r=>{const C=r.reference_comparisons.cops,N=r.reference_comparisons.nhanes;
+      return '<tr><td>'+day(r.date)+' <span class="mute sm">(D'+r.display_day+')</span></td><td'+(r.value==null?' class="nd"':'')+'>'+nm(r.value)+'</td><td>'+nm(C.signed_distance)+'</td><td>'+nm(C.standardized_deviation)+'</td><td>'+nm(N.signed_distance)+'</td><td>'+nm(N.standardized_deviation)+'</td><td>'+nm(r.previous_day.delta)+'</td><td style="white-space:normal;min-width:200px">'+esc([r.qc.measurement_state,r.qc.reasons.join(', ')].filter(Boolean).join('; '))+'</td></tr>'}).join('')+'</table>';c.append(w);
+    const ex=Object.values(RP.X).flatMap(x=>x.explanations.filter(e=>e.metric===m).map(e=>({...e,x}))).sort((a,b)=>a.x.date<b.x.date?-1:1);
+    if(ex.length){const d=document.createElement('details');d.className='ex';d.open=true;
+      d.innerHTML='<summary>คำอธิบายจาก AI ('+ex.length+' วัน) — LLM ต้องให้ทีมตรวจความหมาย · template ไม่ใช่ LLM</summary><div>'
+        +ex.map(e=>'<span><b>'+day(e.x.date)+' · '+(e.x.label==='LLM'?'LLM ('+esc(e.x.model_version)+')':'Template fallback — ไม่ใช่ LLM')+'</b> '+esc(plain(e.text))+'</span>').join('')+'</div>';c.append(d)}});
+}
+const savedNote=x=>x.source==='saved'?'ผลที่บันทึกไว้'+(x.saved_at?' '+fmt(x.saved_at.slice(0,10)):'')+' (ไม่ใช้โควตาเดโม)':'ดึงจากเดโมตอนนี้';
+function dayOptions(){
+  $('#rp-day').innerHTML=RP.A.days.map(d=>'<option value="'+esc(d.date)+'">'+fmt(d.date)+' (D'+d.display_day+')'+(RP.X[d.date]?' ✓ มีคำอธิบายแล้ว':'')+'</option>').join('')}
+function fail(msg){$('#rp-err').innerHTML=esc(msg)+' <button class="btn l" id="rp-retry">ลองใหม่</button>'}
+async function loadAI(id){
+  Object.assign(RP,{id,A:null,X:{}});$('#rp-err').textContent='';$('#rp-ask').hidden=true;render();
+  $('#rp-stat').textContent='กำลังโหลดผลวิเคราะห์… (ครั้งแรกอาจรอราว 20 วินาที)';
   try{
-    const opts=await patientOptions(),pick=$('#rp-pick');
-    if(!opts.length){$('#rp-pct').innerHTML='<div class="mute">ยังไม่มีผู้ป่วย</div>';return}
-    const id=opts.some(p=>p.patient_id===CUR)?CUR:opts[0].patient_id;
-    pick.innerHTML=opts.map(p=>'<option value="'+esc(p.patient_id)+'">'+esc(p.hn)+'  '+esc(p.display_name)+'</option>').join('');pick.value=id;
-    const r=await get('/api/reports/percentiles',{patient_id:id,cohort:RP.cohort});
-    if(id===$('#rp-pick').value)$('#rp-pct').innerHTML=['tremor','cadence','activity'].map(k=>pctBar(r.metrics[k])).join('');
-  }catch(e){$('#rp-err').textContent='ดึงข้อมูลเทียบกลุ่มอ้างอิงไม่ได้ ('+e.message+')'}
+    const A=await aiGet(aiPath(id,'analysis'));if(RP.id!==id)return;   // เปลี่ยนผู้ป่วยระหว่างรอ: ทิ้งผลเก่า
+    RP.A=A;$('#rp-stat').textContent='schema '+A.schema_version+' · '+(A.data_origin==='real'?'ข้อมูลจริง':'ข้อมูลจำลอง')+' · '+A.baseline_version+' · '+savedNote(A);
+    try{(await aiGet(aiPath(id,'explanations'))).items.forEach(x=>RP.X[x.date]=x)}catch(_){}   // ไม่มีก็ยังดูกราฟได้
+    if(RP.id!==id)return;
+    dayOptions();$('#rp-day').selectedIndex=A.days.length-1;$('#rp-ask').hidden=!A.days.length;render();
+  }catch(e){if(RP.id===id){$('#rp-stat').textContent='';fail('ดึงผลวิเคราะห์ AI ไม่ได้: '+e.message)}}
+}
+async function ask(){
+  const id=RP.id,date=$('#rp-day').value,b=$('#rp-ask-btn'),st=$('#rp-ask-stat');
+  if(!date||RP.busy)return;
+  if(RP.X[date]){st.textContent='มีคำอธิบายของ '+fmt(date)+' แล้ว (ดูใต้กราฟแต่ละตัวชี้วัด)';return}
+  RP.busy=true;b.disabled=true;b.textContent='กำลังขอคำอธิบาย…';$('#rp-err').textContent='';
+  try{
+    const x=await aiGet(aiPath(id,'explanation'),{date});if(RP.id!==id)return;
+    RP.X[date]=x;st.textContent='ได้คำอธิบายของ '+fmt(date)+' · '+(x.label==='LLM'?'LLM':'Template fallback'+(x.fallback_reason?' ('+x.fallback_reason+')':''))+' · '+savedNote(x);
+    dayOptions();$('#rp-day').value=date;render();
+  }catch(e){if(RP.id===id)fail('ขอคำอธิบายไม่ได้: '+e.message)}
+  finally{RP.busy=false;b.disabled=false;b.textContent='ขอคำอธิบายจาก AI'}
 }
 async function loadReports(){
-  $('#rp-err').textContent='';
-  const q=RP.range?{from:RP.range.from,to:RP.range.to}:{};
-  loadPercentiles();
   try{
-    const [o,sc]=await Promise.all([get('/api/reports/overview',q),get('/api/reports/scatter',{x:'tremor',y:'cadence',...q})]);
-    if(!RP.range)$('#reports .dr .lb').textContent=fmt(o.from)+' – '+fmt(o.to);  // ยังไม่เลือก = 30 วันล่าสุดที่มีข้อมูล
-    $('#rp-cards').innerHTML=['tremor','cadence','activity'].map(k=>{const c=o.metrics[k];
-      return pfCard(k,{...c,label:c.label+' (เฉลี่ย)'},'เฉลี่ยจากผู้ป่วย '+c.n_patients+' คน · เทียบ '+fmt(o.compare_from)+' – '+fmt(o.compare_to))}).join('');
-    $('#rp-scatter').innerHTML=scatterChart(sc);
-  }catch(e){$('#rp-err').textContent='ดึงรายงานไม่ได้ ('+e.message+')'}
+    const opts=(await patientOptions()).filter(p=>p.has_ai),pick=$('#rp-pick');
+    if(!opts.length){pick.innerHTML='';$('#rp-stat').textContent='ยังไม่มีผู้ป่วยที่มีผลวิเคราะห์ AI';render();return}
+    const id=opts.some(p=>p.patient_id===CUR)?CUR:RP.id||opts[0].patient_id;
+    pick.innerHTML=opts.map(p=>'<option value="'+esc(p.patient_id)+'">'+esc(p.hn)+'  '+esc(p.display_name)+'</option>').join('');pick.value=id;
+    if(id!==RP.id||!RP.A)loadAI(id);   // กลับมาหน้าเดิม: ไม่โหลดซ้ำ คำอธิบายที่ขอแล้วยังอยู่
+  }catch(e){fail('ดึงรายชื่อผู้ป่วยไม่ได้ ('+e.message+')')}
 }
-$('#reports').addEventListener('range',e=>{RP.range=e.detail;loadReports()});
-$('#rp-cohort').addEventListener('click',e=>{const s=e.target.closest('[data-c]');if(s){RP.cohort=s.dataset.c;loadPercentiles()}});
-$('#rp-pick').addEventListener('change',e=>{CUR=e.target.value;loadPercentiles()});
+$('#rp-pick').addEventListener('change',e=>{CUR=e.target.value;loadAI(CUR)});
+$('#rp-ask-btn').addEventListener('click',ask);
+$('#rp-err').addEventListener('click',e=>{if(e.target.id==='rp-retry')RP.A?ask():loadAI(RP.id||$('#rp-pick').value)});
 addEventListener('hashchange',()=>{if(location.hash==='#reports')loadReports()});
 if(location.hash==='#reports')loadReports();
+render();
+})();
 // ===== หน้า 7 การแจ้งเตือน: รายการ + แท็บตามประเภท (นับจำนวนให้) + ปุ่มรับทราบ (PATCH status) =====
 const AL={type:'',items:[],list:[]};
 const alPath=a=>'/api/alerts/'+encodeURIComponent(a.patient_id)+'/'+encodeURIComponent(a.created_at);
