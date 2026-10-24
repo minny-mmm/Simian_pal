@@ -54,6 +54,14 @@
 - `real-checkpoint01-readiness-v1` (รันซ้ำด้วยโค้ดใหม่ ผล gate เหมือนเดิม): **ไม่พร้อมเปิด test ทั้ง 5 cell** ที่ reference ok
   — ทุก cell ติด valid `descriptive_only`/`unavailable`; COPS tremor jackknife fail; NHANES ทุกตัว jackknife not_evaluable; NHANES ENMO bootstrap fail
 
+#### Test ของ baseline v1 — `real-20261024-full-v2-test` (เปิดแล้ว)
+
+- baseline `e2a35a02…` (fit ตัวเต็มของ `real-20261024-full-v2`), readiness จาก `real-full-v2-validate-v1` ready
+- `prepare_test`: 29 คนตาม plan → included 18 (COPS 7/7, NHANES 11/22); excluded NHANES-78804 (`clean_qc_excluded`)
+  + 10 NHANES ที่ไม่มี raw ใน inventory ของ run v2 (`raw_or_required_diary_missing`)
+- `backtest.run --tracks test`: overall pass (schema 303 แถว, baseline unchanged, protected paths), `compared_once` 2026-10-24 16:16 UTC
+- ตารางระยะห่างและข้อจำกัด: `README_reference_baseline.md` หัวข้อ "Test hold-out — baseline v1"
+
 ### Track B (symptom, exploratory)
 
 - `real-symptom-v1` (snapshot `20261024T085631Z` จาก `prepare_symptom`): train 31 คน (4 คนไม่มี legacy features), valid 0 คน
@@ -184,6 +192,12 @@ Remove-Item backtest/config/backtest_config.test-unlock.yaml
   **ห้ามใช้ผล test นั้นปรับหรือเลือกโมเดล/config/threshold รอบถัดไป** — ใช้ train/valid, LOO, walk-forward เท่านั้น
   ถ้าจำเป็นต้องรัน test ชุดเดิมกับ baseline ใหม่ ต้องรายงานว่าเป็น "test ที่ถูกใช้ซ้ำหลังเห็นผล" (ไม่ใช่ held-out, มีแนวโน้มดีเกินจริง)
   held-out ที่สะอาดจริงต้องมาจากคนที่ไม่เคยอยู่ใน split ใดเลย
+- รอบจริง (baseline v1) ใช้ config `backtest/workspace/configs/real-full-v2-unlock.yaml` (`real.data_root` = worktree ของ run)
+  และ run ID `real-20261024-full-v2-test`; `--approved-baseline-sha256` ต้องตามด้วย SHA เสมอ ไม่งั้น argparse error ก่อนตรวจล็อก
+- เครื่องดับกลาง 6.2 → รันคำสั่งเดิมซ้ำได้: คนที่ `included`/`excluded` ใน `progress.json` ถูกข้าม, คนที่มีแค่ `<id>.started.json`
+  (ไม่มี `.clean.manifest.json`) ถูก clean ใหม่ทั้งคน, raw ที่มี `.download.json` ตรง SHA ใช้ cache
+  (raw ที่ไม่มี proof จะทำให้คนนั้น `failed` ด้วย `Unverified existing cache` → ตรวจแล้วค่อยลบไฟล์นั้น)
+- หลังเปิด test: สำรอง `outputs/<test run>/`, `outputs/_test_opened/`, `outputs/_test_prepared/` (gitignored, มีเฉพาะเครื่องนี้)
 
 ### ขั้น 7 — Track B (ถ้าต้องการ)
 

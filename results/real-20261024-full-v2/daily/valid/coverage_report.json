@@ -1,0 +1,83 @@
+{
+  "data_kind": "real",
+  "preprocessing_version": "3d6be89a1c3b7beae0f6818f39895f7143fb6cc2cda21eebd76e9a8fad003d11",
+  "by_cohort_split_metric": [
+    {
+      "dataset": "cops",
+      "split": "valid",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_people_observed": 7,
+      "n_days_observed": 34,
+      "n_people_daily_usable": 7,
+      "n_days_daily_usable": 34,
+      "n_people_meeting_reference_day_minimum": 7,
+      "n_days_meeting_reference_day_minimum": 34,
+      "insufficient_reasons": {}
+    },
+    {
+      "dataset": "cops",
+      "split": "valid",
+      "metric": "rest_tremor_window_fraction",
+      "n_people_observed": 7,
+      "n_days_observed": 34,
+      "n_people_daily_usable": 7,
+      "n_days_daily_usable": 34,
+      "n_people_meeting_reference_day_minimum": 7,
+      "n_days_meeting_reference_day_minimum": 34,
+      "insufficient_reasons": {}
+    },
+    {
+      "dataset": "cops",
+      "split": "valid",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_people_observed": 7,
+      "n_days_observed": 34,
+      "n_people_daily_usable": 6,
+      "n_days_daily_usable": 21,
+      "n_people_meeting_reference_day_minimum": 5,
+      "n_days_meeting_reference_day_minimum": 20,
+      "insufficient_reasons": {
+        "metric_coverage_below_minimum": 13
+      }
+    },
+    {
+      "dataset": "nhanes",
+      "split": "valid",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_people_observed": 8,
+      "n_days_observed": 47,
+      "n_people_daily_usable": 8,
+      "n_days_daily_usable": 47,
+      "n_people_meeting_reference_day_minimum": 8,
+      "n_days_meeting_reference_day_minimum": 47,
+      "insufficient_reasons": {}
+    },
+    {
+      "dataset": "nhanes",
+      "split": "valid",
+      "metric": "rest_tremor_window_fraction",
+      "n_people_observed": 8,
+      "n_days_observed": 47,
+      "n_people_daily_usable": 8,
+      "n_days_daily_usable": 47,
+      "n_people_meeting_reference_day_minimum": 8,
+      "n_days_meeting_reference_day_minimum": 47,
+      "insufficient_reasons": {}
+    },
+    {
+      "dataset": "nhanes",
+      "split": "valid",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_people_observed": 8,
+      "n_days_observed": 47,
+      "n_people_daily_usable": 8,
+      "n_days_daily_usable": 41,
+      "n_people_meeting_reference_day_minimum": 8,
+      "n_days_meeting_reference_day_minimum": 41,
+      "insufficient_reasons": {
+        "metric_coverage_below_minimum": 5,
+        "no_eligible_windows|metric_coverage_below_minimum": 1
+      }
+    }
+  ]
+}

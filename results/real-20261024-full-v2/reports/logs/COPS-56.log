@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 591, in <module>
+    main()
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 569, in main
+    clean_one(a.run_id,a.ids[0])
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 260, in clean_one
+    resources=resource_check(c,subject,inputs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 216, in resource_check
+    raise MemoryError(f'clean memory guard: need {need/2**30:.2f} GiB + 1 GiB headroom; available commit {memory["available_commit"]/2**30:.2f} GiB')
+MemoryError: clean memory guard: need 4.96 GiB + 1 GiB headroom; available commit 5.92 GiB
+Traceback (most recent call last):
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 591, in <module>
+    main()
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 569, in main
+    clean_one(a.run_id,a.ids[0])
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 260, in clean_one
+    resources=resource_check(c,subject,inputs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 216, in resource_check
+    raise MemoryError(f'clean memory guard: need {need/2**30:.2f} GiB + 1 GiB headroom; available commit {memory["available_commit"]/2**30:.2f} GiB')
+MemoryError: clean memory guard: need 4.96 GiB + 1 GiB headroom; available commit 5.51 GiB
+  อ่าน 169 ไฟล์ -> 185.0 ชม. ที่ 50 Hz (113 วิ)
+COPS-56 completed ok included True valid_days 5

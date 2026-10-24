@@ -1,0 +1,96 @@
+{
+  "data_kind": "real",
+  "preprocessing_version": "3d6be89a1c3b7beae0f6818f39895f7143fb6cc2cda21eebd76e9a8fad003d11",
+  "by_cohort_split_metric": [
+    {
+      "dataset": "cops",
+      "split": "train",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_people_observed": 31,
+      "n_days_observed": 149,
+      "n_people_daily_usable": 31,
+      "n_days_daily_usable": 146,
+      "n_people_meeting_reference_day_minimum": 31,
+      "n_days_meeting_reference_day_minimum": 146,
+      "insufficient_reasons": {
+        "day_coverage_below_minimum|metric_coverage_below_minimum": 3
+      }
+    },
+    {
+      "dataset": "cops",
+      "split": "train",
+      "metric": "rest_tremor_window_fraction",
+      "n_people_observed": 31,
+      "n_days_observed": 149,
+      "n_people_daily_usable": 31,
+      "n_days_daily_usable": 146,
+      "n_people_meeting_reference_day_minimum": 31,
+      "n_days_meeting_reference_day_minimum": 146,
+      "insufficient_reasons": {
+        "day_coverage_below_minimum": 3
+      }
+    },
+    {
+      "dataset": "cops",
+      "split": "train",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_people_observed": 31,
+      "n_days_observed": 149,
+      "n_people_daily_usable": 27,
+      "n_days_daily_usable": 103,
+      "n_people_meeting_reference_day_minimum": 24,
+      "n_days_meeting_reference_day_minimum": 100,
+      "insufficient_reasons": {
+        "metric_coverage_below_minimum": 41,
+        "day_coverage_below_minimum": 2,
+        "no_eligible_windows|metric_coverage_below_minimum": 2,
+        "day_coverage_below_minimum|metric_coverage_below_minimum": 1
+      }
+    },
+    {
+      "dataset": "nhanes",
+      "split": "train",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_people_observed": 58,
+      "n_days_observed": 364,
+      "n_people_daily_usable": 58,
+      "n_days_daily_usable": 357,
+      "n_people_meeting_reference_day_minimum": 58,
+      "n_days_meeting_reference_day_minimum": 357,
+      "insufficient_reasons": {
+        "day_coverage_below_minimum|metric_coverage_below_minimum": 7
+      }
+    },
+    {
+      "dataset": "nhanes",
+      "split": "train",
+      "metric": "rest_tremor_window_fraction",
+      "n_people_observed": 58,
+      "n_days_observed": 364,
+      "n_people_daily_usable": 58,
+      "n_days_daily_usable": 357,
+      "n_people_meeting_reference_day_minimum": 58,
+      "n_days_meeting_reference_day_minimum": 357,
+      "insufficient_reasons": {
+        "day_coverage_below_minimum": 7
+      }
+    },
+    {
+      "dataset": "nhanes",
+      "split": "train",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_people_observed": 58,
+      "n_days_observed": 364,
+      "n_people_daily_usable": 54,
+      "n_days_daily_usable": 278,
+      "n_people_meeting_reference_day_minimum": 50,
+      "n_days_meeting_reference_day_minimum": 274,
+      "insufficient_reasons": {
+        "metric_coverage_below_minimum": 78,
+        "day_coverage_below_minimum": 4,
+        "day_coverage_below_minimum|metric_coverage_below_minimum": 3,
+        "no_eligible_windows|metric_coverage_below_minimum": 1
+      }
+    }
+  ]
+}

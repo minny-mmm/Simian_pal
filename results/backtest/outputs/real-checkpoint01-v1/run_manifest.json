@@ -1,0 +1,91 @@
+{
+  "run_id": "real-checkpoint01-v1",
+  "mode": "real",
+  "tracks": [
+    "stability",
+    "loo",
+    "walkforward",
+    "valid",
+    "symptom"
+  ],
+  "status": "completed",
+  "created_utc": "2026-10-23T17:33:17.099441+00:00",
+  "config_path": "D:\\AWS\\Simianpal\\backtest\\config\\backtest_config.yaml",
+  "backtest_config_fingerprint": "a0e926c6d442299d9b7db28ebe6f3b89bd2f03fc7dbf552cd0df057cc9b0a8ec",
+  "gates": {
+    "jackknife_median_shift_max_scale": 0.5,
+    "bootstrap_median_ci_width_max_scale": 2.0,
+    "no_lookahead_mismatches_max": 0,
+    "baseline_unchanged": true,
+    "protected_paths_unchanged": true,
+    "known_answer_tolerance_sd": 0.75,
+    "device_flag_ratio": 2.0
+  },
+  "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+  "code_version": {
+    "git_commit": "37d572284819885235cfb547effa8fac8cc46ba8",
+    "dirty": true,
+    "files": {
+      "src/reference/__init__.py": "67c975615dc4c8d47b9585ba2704685bdc3308e40d34cf0066ec841b93a3244f",
+      "src/reference/common.py": "317fc8ba1b8427a37b0f708ffcbca354166a818ca587b4f4e2cb589e1c5b96b0",
+      "src/reference/daily.py": "c33d7a0493cd057c2be6d45b6f4b53205a84ea81703858902f7c60e0effd3b35",
+      "src/reference/io.py": "9014de080fff394e85c9b36d6ffa28e6c74a91e41a3776cd0e024c2d1c581c08",
+      "src/reference/model.py": "a759aa5bf89c0fca8343c87e7aede46fc42d9be413f33c350520fd9353435765",
+      "src/reference/output.py": "cf9c3a20aab8cd5bb145e99f57102501898f44f5ba0e577972c1e0cb0116a046",
+      "src/reference/provenance.py": "24c337427495d90ce742a970699279e18ec73020d9b6a67a291a3bed2754f8f1",
+      "tools/audit_reference_provenance.py": "0f446c2d72b99703213ecf1223a85816731eb86ea2cd96ba111b6908d1b0e024",
+      "tools/extract_reference_features.py": "c4b34a5bb79807f452fb1bb2f35ba29bd8059d89097fe3aa829a424871308446",
+      "tools/prepare_reference_aws.py": "371b79981b923527c2d5e1f5f8022a09e72b270c6530b93e2be58a5af79ea1a0",
+      "tools/prepare_reference_training.py": "8a17da21b182fe6074a8caa31d965354fbfa8b4867323f0eff7df3da27fbe0bf",
+      "tools/reference_baseline.py": "aaf2d6a1823d14830d5e828742c64180f0a9bb385bd384319f809893ace717b2",
+      "tools/reference_demo.py": "213fcde4dd27651d0cc07878d38e85722d82089c02b01dcb2b0ee1214c5ffb91",
+      "tools/reference_demo_review.py": "004c0265404c013e33e7d7a239e5177ec7a052bb8a117eb405e585b56df485fc",
+      "tools/run_real_reference.py": "b4c64c124a3d2eb646735d6f857ed9123e5be048127a33d202163af18a7393a4",
+      "tools/sagemaker_fit_reference.py": "3af28121b2f8f3451af5fcc69d21b4b1ab8efa17de2622ab134884af09b2c59b"
+    }
+  },
+  "backtest_code": {
+    "backtest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/config/backtest_config.yaml": "bfb1e8d669e768d45b71c7e5004ec29814879d125490cab66cb4b3ce0fda4f0b",
+    "backtest/evaluators/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/evaluators/metrics.py": "36bcf91f82a998f64880007cb10387e5959b60c90d392481392ef35d5e9657b5",
+    "backtest/evaluators/report_builder.py": "7743bb9989e9f81570b937a1511e9311460e85224a5aff832283f5008c6f2c56",
+    "backtest/run.py": "63c0a9de02e60501d7c8e6b1fb2129460b0588a7576192372e0506d1e8badd8d",
+    "backtest/runners/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/runners/data_loader.py": "fb3ae59984f51bb0c6be76d53a2ffa0c6f02761b6dcc2dc23c7951f9cd08612f",
+    "backtest/runners/reference_backtest.py": "d65d8ef1f9091021a713f596f89696bedfaa17491a9f46cb43677ed8237a5fcf",
+    "backtest/runners/symptom_cv_backtest.py": "c5ab3d7752d5a57643ffd13e5a1b38ef2d64074335120c1ac2e2fe684835d5b8",
+    "backtest/runners/temporal_walkforward.py": "b46964ea8944d7e883840c3d31ac69c55902dbf8436f4408dd0d486e6ccec505",
+    "backtest/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/tests/test_backtest_suite.py": "cdf375d4fb7fdb83d8dafaa0b35700e37488c2a3dffaac9d4d08116e17223691"
+  },
+  "runtime": {
+    "python": "3.12.10",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "pyyaml": "6.0.3"
+  },
+  "inputs": {
+    "baseline": {
+      "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\real\\data\\models\\reference-v1\\real-20261023-v1\\checkpoints\\checkpoint-01\\baseline.json",
+      "sha256": "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de"
+    },
+    "train_bundle": {
+      "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\real\\data\\daily\\reference-v1\\real-20261023-v1\\checkpoints\\checkpoint-01\\train",
+      "manifest_sha256": "e344f528bd3c80a9ce36af6e4b85a92a6e8589b714cc5e22374894f8d9ed86af"
+    },
+    "valid_bundle": {
+      "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\real\\data\\daily\\reference-v1\\real-20261023-v1\\checkpoints\\checkpoint-01\\valid",
+      "manifest_sha256": "4533eb2024db5b90e06ae00ac56092c1e9aa6fd3c7c2715c8eb990f157552295"
+    }
+  },
+  "unavailable": [
+    {
+      "input": "test_bundle",
+      "path": null,
+      "status": "blocked_no_test_features"
+    }
+  ],
+  "overall": "fail",
+  "finished_utc": "2026-10-23T17:33:24.888562+00:00"
+}

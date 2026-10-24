@@ -2,6 +2,37 @@
 
 เป้าหมายคือวัด **ความห่างของตัวชี้วัดรายวันจาก reference COPS และ NHANES แยกกัน** ไม่ใช่ classifier, โอกาสเป็นโรค หรือคะแนนความรุนแรง และไม่มีการรวมหลายตัวชี้วัดเป็นคะแนนเดียว ข้อความ/กราฟในระบบปลายทางต้องใช้คำว่า “ต่างจากกลุ่มอ้างอิง COPS/NHANES” เท่านั้น
 
+## Test hold-out — baseline v1 `e2a35a02…` (real-20261024-full-v2) — 24 ต.ค. 2026
+
+**เปิด test แล้ว 1 ครั้ง** (`compared_once`, 2026-10-24 16:16:20 UTC) ด้วย `backtest.run --mode real --tracks test`, run `real-20261024-full-v2-test` ไม่ fit
+baseline SHA256 `e2a35a02ff067505c6594a3abb944d063fe4d3a31a6c7cad586af55631510bc9` ตรงกันก่อน/หลัง readiness จาก validation run `real-full-v2-validate-v1` (ready, ไม่มี reason ค้าง)
+
+- reference (train): COPS 31 คน / 146 วัน (cadence 24 / 100), NHANES 58 / 357 (cadence 50 / 274) ทุก cell `ok`, jackknife/bootstrap evaluable; valid ok COPS 7 (cadence 6), NHANES 8 → `distribution`
+- test bundle จาก `backtest.prepare_test` (bundle manifest SHA256 `0647710cd13ff486409d1a7772c1b9a083d129998e394a39b6cae2953399e1b3`): test plan 29 คน → **included 18** (COPS 7/7, NHANES 11/22), excluded 11
+  - NHANES-78804 `clean_qc_excluded`
+  - NHANES-78876, 81465, 82182, 82291, 82756, 82998, 83122, 83146, 83381, 83687 `raw_or_required_diary_missing` = ไม่อยู่ใน inventory ที่ล็อกของ run v2 (มี NHANES raw 80/150 คน) เติมภายหลังไม่ได้เพราะจะปน input คนละชุด
+- gates: `schema_and_semantic_validation` pass (303 แถว = 101 วัน × 3 ตัวชี้วัด), `baseline_unchanged` pass, `protected_paths_unchanged` pass → overall pass (test ไม่มี gate pass/fail ของผลระยะห่าง)
+
+`standardized_deviation` (signed) ค่ามัธยฐานระดับวัน / มัธยฐานของค่ามัธยฐานรายคน, วงเล็บ = สัดส่วนคนที่ |ค่ามัธยฐานรายคน| > 2:
+
+| test cohort | ตัวชี้วัด | เทียบ COPS reference | เทียบ NHANES reference |
+| --- | --- | --- | --- |
+| COPS (7 คน, 29 วัน) | ENMO | 0.36 / 0.30 (0%) | −0.24 / −0.30 (0%) |
+| | rest tremor fraction | 0.77 / 1.16 (29%) | 1.66 / 2.39 (57%) |
+| | walking cadence | 0.51 / 0.51 (14%) | 0.56 / 0.56 (14%) |
+| NHANES (11 คน, 72 วัน) | ENMO | 1.26 / 1.46 (27%) | 0.61 / 0.80 (18%) |
+| | rest tremor fraction | −0.02 / −0.01 (9%) | 0.19 / 0.21 (9%) |
+| | walking cadence | 0.26 / 0.20 (9%) | 0.31 / 0.25 (9%) |
+
+cadence เป็น `insufficient_data` COPS 2/29 วัน, NHANES 12/72 วัน (ไม่นับเป็น 0); ENMO และ tremor `ok` ทุกวัน
+
+ข้อจำกัด:
+- เป็นระยะห่างจาก reference COPS/NHANES เท่านั้น ไม่ใช่ diagnosis/severity/probability และไม่รวมเป็นคะแนนเดียว cohort = ยี่ห้อนาฬิกา 100% ความต่าง COPS-vs-NHANES (เช่น tremor ของ COPS test ห่างจาก NHANES reference) อาจมาจากอุปกรณ์
+- n เล็ก (7 + 11 คน) และ NHANES test ได้แค่ครึ่งหนึ่งของแผน
+- แม้เทียบ cohort ตัวเอง NHANES ENMO ยังเลื่อนบวก (ระดับคน 0.80) บันทึกเป็นข้อสังเกตเท่านั้น
+- คน test ชุดนี้ถูกใช้แล้ว: **ห้ามใช้ผลนี้ปรับหรือเลือกโมเดล/config/threshold รอบถัดไป** ถ้ารันชุดเดิมกับ baseline ใหม่ต้องรายงานเป็น reused test (ดู `backtest/RUNBOOK.md` ขั้น 6)
+- ไฟล์ผลอยู่เฉพาะเครื่องที่รัน (gitignored): `backtest/outputs/real-20261024-full-v2-test/` (`results.json`, `analysis_TEST_REAL.json`, `dashboard.html`), `backtest/outputs/_test_opened/`, `_test_prepared/` และ `backtest/workspace/real/test/real-20261024-full-v2/e2a35a02ff06/`
+
 ## AWS real-data pilot — 24 ต.ค. 2026
 
 **ลำดับงานล่าสุด:** deployment demo ใช้ baseline local จริงที่ล็อกไว้ Deploy แล้วที่ https://a7cklo11v6.execute-api.ap-southeast-1.amazonaws.com (ข้อมูลต้องล็อกอิน) Backend/Analysis จริง 33 แถวเทียบ local ต่างสูงสุด 0.0 และ Layer B เชื่อม Bedrock Nova Lite `apac.amazon.nova-lite-v1:0` ผ่าน runtime IAM พร้อม semantic guards แล้ว ดู [README_reference_deployment.md](README_reference_deployment.md) สถานะ AWS training แยกต่างหาก ไม่ submit/poll training ระหว่าง deploy และไม่สลับไปใช้ AWS artifact อัตโนมัติ ต้องตรวจ compatibility และ validate ก่อน promote อย่างชัดเจน

@@ -1,0 +1,28 @@
+gate,value,threshold,status
+jackknife_median_shift[cops/enmo_hourly_median_mean_g],0.04871653673795202,0.5,pass
+jackknife_median_shift[cops/walking_cadence_hourly_median_mean_hz],0.03527027539359191,0.5,pass
+jackknife_median_shift[cops/rest_tremor_window_fraction],0.04511881977912535,0.5,pass
+jackknife_median_shift[nhanes/enmo_hourly_median_mean_g],0.028581633456997,0.5,pass
+jackknife_median_shift[nhanes/walking_cadence_hourly_median_mean_hz],0.027197630220683774,0.5,pass
+jackknife_median_shift[nhanes/rest_tremor_window_fraction],0.03204894682418883,0.5,pass
+bootstrap_median_ci_width[cops/enmo_hourly_median_mean_g],0.44736936083567364,2.0,pass
+bootstrap_median_ci_width[cops/walking_cadence_hourly_median_mean_hz],0.8961597581234279,2.0,pass
+bootstrap_median_ci_width[cops/rest_tremor_window_fraction],1.0430442939138194,2.0,pass
+bootstrap_median_ci_width[nhanes/enmo_hourly_median_mean_g],0.5061556243361505,2.0,pass
+bootstrap_median_ci_width[nhanes/walking_cadence_hourly_median_mean_hz],0.5057352072087279,2.0,pass
+bootstrap_median_ci_width[nhanes/rest_tremor_window_fraction],0.3614039837066525,2.0,pass
+no_lookahead[train],0,0,pass
+no_lookahead[valid],0,0,pass
+schema_and_semantic_validation,1539,build_analysis/validate_output,pass
+schema_and_semantic_validation,243,build_analysis/validate_output,pass
+baseline_unchanged,True,True,pass
+audit[baseline_lock],0 failed / 3 checked,0 failed,pass
+audit[hash_chain],0 failed / 9 checked,0 failed,pass
+audit[reference_formulas],0 failed / 54 checked,0 failed,pass
+audit[distances],0 failed / 4860 checked,0 failed,pass
+audit[null_handling],0 failed / 486 checked,0 failed,pass
+audit[previous_day],0 failed / 972 checked,0 failed,pass
+audit[coverage],0 failed / 2742 checked,0 failed,pass
+audit[official_reports],0 failed / 269 checked,0 failed,pass
+audit[test_lock],0 failed / 3 checked,0 failed,pass
+protected_paths_unchanged,[],"['src', 'tools', 'config', 'metadata', 'tests']",pass

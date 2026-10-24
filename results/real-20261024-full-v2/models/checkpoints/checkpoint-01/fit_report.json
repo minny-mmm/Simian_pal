@@ -1,0 +1,162 @@
+{
+  "data_kind": "real",
+  "artifact_id": "53d53136798bd021eb806896c9d66a8622a11097f1d0f3337e5c7af7388baf89",
+  "is_demo": false,
+  "data_origin": "real",
+  "baseline_version": "real-cohort-reference-real-20261024-full-v2-checkpoint-01",
+  "schema_version": "1.0.0",
+  "fit_split": "train",
+  "references": {
+    "cops": {
+      "enmo_hourly_median_mean_g": {
+        "status": "ok",
+        "reason": "",
+        "n_participants": 9,
+        "n_days": 43,
+        "subject_ids": [
+          "COPS-13",
+          "COPS-15",
+          "COPS-23",
+          "COPS-26",
+          "COPS-34",
+          "COPS-37",
+          "COPS-43",
+          "COPS-52",
+          "COPS-54"
+        ],
+        "median": 0.0228486103644946,
+        "quantiles": {
+          "0.05": 0.0097917959926427,
+          "0.25": 0.0159925901418679,
+          "0.5": 0.0228486103644946,
+          "0.75": 0.0334827158001074,
+          "0.95": 0.0500107352343404
+        },
+        "mad": 0.009128476757594199,
+        "scale": 0.01353387964080916,
+        "days_per_subject": {
+          "COPS-13": 5,
+          "COPS-15": 7,
+          "COPS-23": 5,
+          "COPS-26": 4,
+          "COPS-34": 5,
+          "COPS-37": 5,
+          "COPS-43": 4,
+          "COPS-52": 5,
+          "COPS-54": 3
+        }
+      },
+      "walking_cadence_hourly_median_mean_hz": {
+        "status": "ok",
+        "reason": "",
+        "n_participants": 7,
+        "n_days": 33,
+        "subject_ids": [
+          "COPS-13",
+          "COPS-15",
+          "COPS-23",
+          "COPS-34",
+          "COPS-37",
+          "COPS-43",
+          "COPS-52"
+        ],
+        "median": 1.7339108109191603,
+        "quantiles": {
+          "0.05": 1.5802338279323975,
+          "0.25": 1.6362910440002194,
+          "0.5": 1.7339108109191603,
+          "0.75": 1.8546214984572944,
+          "0.95": 2.0058088479565264
+        },
+        "mad": 0.10079005518817952,
+        "scale": 0.14943133582199494,
+        "days_per_subject": {
+          "COPS-13": 5,
+          "COPS-15": 7,
+          "COPS-23": 4,
+          "COPS-34": 5,
+          "COPS-37": 5,
+          "COPS-43": 3,
+          "COPS-52": 4
+        }
+      },
+      "rest_tremor_window_fraction": {
+        "status": "ok",
+        "reason": "",
+        "n_participants": 9,
+        "n_days": 43,
+        "subject_ids": [
+          "COPS-13",
+          "COPS-15",
+          "COPS-23",
+          "COPS-26",
+          "COPS-34",
+          "COPS-37",
+          "COPS-43",
+          "COPS-52",
+          "COPS-54"
+        ],
+        "median": 0.0492040520984081,
+        "quantiles": {
+          "0.05": 0.0112244897959183,
+          "0.25": 0.0279627163781624,
+          "0.5": 0.0492040520984081,
+          "0.75": 0.1059957173447537,
+          "0.95": 0.2247899159663865
+        },
+        "mad": 0.028320517961862,
+        "scale": 0.0419879999302566,
+        "days_per_subject": {
+          "COPS-13": 5,
+          "COPS-15": 7,
+          "COPS-23": 5,
+          "COPS-26": 4,
+          "COPS-34": 5,
+          "COPS-37": 5,
+          "COPS-43": 4,
+          "COPS-52": 5,
+          "COPS-54": 3
+        }
+      }
+    },
+    "nhanes": {
+      "enmo_hourly_median_mean_g": {
+        "status": "insufficient_data",
+        "reason": "reference_participants_or_days_below_minimum",
+        "n_participants": 0,
+        "n_days": 0,
+        "subject_ids": [],
+        "median": null,
+        "quantiles": {},
+        "mad": null,
+        "scale": null,
+        "days_per_subject": {}
+      },
+      "walking_cadence_hourly_median_mean_hz": {
+        "status": "insufficient_data",
+        "reason": "reference_participants_or_days_below_minimum",
+        "n_participants": 0,
+        "n_days": 0,
+        "subject_ids": [],
+        "median": null,
+        "quantiles": {},
+        "mad": null,
+        "scale": null,
+        "days_per_subject": {}
+      },
+      "rest_tremor_window_fraction": {
+        "status": "insufficient_data",
+        "reason": "reference_participants_or_days_below_minimum",
+        "n_participants": 0,
+        "n_days": 0,
+        "subject_ids": [],
+        "median": null,
+        "quantiles": {},
+        "mad": null,
+        "scale": null,
+        "days_per_subject": {}
+      }
+    }
+  },
+  "warning": "Cohort distances only. No diagnostic probability, severity score, classifier or combined indicator."
+}

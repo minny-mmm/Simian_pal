@@ -1,0 +1,4020 @@
+{
+  "run_id": "compare-pilot-local-py312-vs-ckpt01-validate",
+  "mode": "real",
+  "created_utc": "2026-10-24T08:56:19.790922+00:00",
+  "caveat": "Distances from the COPS/NHANES cohort references only, not diagnosis, severity or probability. Cohort = device brand for 100% of subjects, so any COPS-vs-NHANES difference may be the device.",
+  "data_kind": "real",
+  "baseline_sha256": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+  "unavailable": [
+    {
+      "input": "train_bundle",
+      "path": null,
+      "status": "unavailable"
+    },
+    {
+      "input": "test_bundle",
+      "path": null,
+      "status": "blocked_no_test_features"
+    }
+  ],
+  "evaluability": [
+    {
+      "dataset": "cops",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_reference_participants": 8,
+      "n_reference_days": 40,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "cops",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_reference_participants": 7,
+      "n_reference_days": 29,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 0,
+      "valid_level": "unavailable",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "cops",
+      "metric": "rest_tremor_window_fraction",
+      "n_reference_participants": 8,
+      "n_reference_days": 40,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_reference_participants": 8,
+      "n_reference_days": 51,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_reference_participants": 6,
+      "n_reference_days": 36,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "rest_tremor_window_fraction",
+      "n_reference_participants": 8,
+      "n_reference_days": 51,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    }
+  ],
+  "tracks": {
+    "stability": {
+      "jackknife": [
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-10",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0229226427118863,
+          "scale": 0.007812487224831805,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.23483095918415958
+        },
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-13",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0211329671121317,
+          "scale": 0.008208283229365891,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.0
+        },
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-16",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0211329671121317,
+          "scale": 0.0073892983608177115,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.0
+        },
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-41",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0211329671121317,
+          "scale": 0.0073892983608177115,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.0
+        },
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-5",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0218696785449315,
+          "scale": 0.009300531599634874,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.09666704537405307
+        },
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-6",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0197375367758536,
+          "scale": 0.006685181096869224,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.1831003587397587
+        },
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-8",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0229226427118863,
+          "scale": 0.007812487224831805,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.23483095918415958
+        },
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "COPS-9",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0197375367758536,
+          "scale": 0.006857263305962153,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_shift_in_full_scale": 0.1831003587397587
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "COPS-10",
+          "status": "ok",
+          "n_participants": 6,
+          "median": 1.8585231052562765,
+          "scale": 0.10606333657986823,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_shift_in_full_scale": 0.3645946784675046
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "COPS-13",
+          "status": "ok",
+          "n_participants": 6,
+          "median": 1.7889473778810108,
+          "scale": 0.1385189611747301,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_shift_in_full_scale": 0.23989886392524565
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "COPS-16",
+          "status": "ok",
+          "n_participants": 6,
+          "median": 1.7889473778810108,
+          "scale": 0.14642996046797885,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_shift_in_full_scale": 0.23989886392524565
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "COPS-41",
+          "status": "ok",
+          "n_participants": 6,
+          "median": 1.8165591500234075,
+          "scale": 0.158672054027661,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_shift_in_full_scale": 0.0
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "COPS-5",
+          "status": "ok",
+          "n_participants": 6,
+          "median": 1.7889473778810108,
+          "scale": 0.14642996046797885,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_shift_in_full_scale": 0.23989886392524565
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "COPS-8",
+          "status": "ok",
+          "n_participants": 6,
+          "median": 1.8585231052562765,
+          "scale": 0.10606333657986823,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_shift_in_full_scale": 0.3645946784675046
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "COPS-9",
+          "status": "ok",
+          "n_participants": 6,
+          "median": 1.7928519602419624,
+          "scale": 0.14430789498307692,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_shift_in_full_scale": 0.20597475113508654
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-10",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0511596180081855,
+          "scale": 0.04221577326408613,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.05014648010613354
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-13",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0421810699588477,
+          "scale": 0.03920187257911991,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.1335412115040775
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-16",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0421810699588477,
+          "scale": 0.02890417792613791,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.1335412115040775
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-41",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0421810699588477,
+          "scale": 0.02890417792613791,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.1335412115040775
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-5",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0510688836104513,
+          "scale": 0.05260733619228799,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.04829018975964859
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-6",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0511596180081855,
+          "scale": 0.049261851424096594,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.05014648010613354
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-8",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0511596180081855,
+          "scale": 0.052513467917068124,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.05014648010613354
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "COPS-9",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0421810699588477,
+          "scale": 0.03943026367242049,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_shift_in_full_scale": 0.1335412115040775
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-73558",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0270013286893173,
+          "scale": 0.007598018064127131,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.12889356674238275
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-73596",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0270013286893173,
+          "scale": 0.00860676898563877,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.12889356674238275
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-73616",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0246584211571505,
+          "scale": 0.005112915124854968,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.19996376404823732
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-73640",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0255775863634741,
+          "scale": 0.007682609806403895,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.07094705632198936
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-73746",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0246584211571505,
+          "scale": 0.005112915124854968,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.19996376404823732
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-73781",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0255775863634741,
+          "scale": 0.007072475732456091,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.07094705632198936
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-73899",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0270013286893173,
+          "scale": 0.007598018064127131,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.12889356674238275
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "left_out": "NHANES-75654",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0255775863634741,
+          "scale": 0.006940627218019499,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_shift_in_full_scale": 0.07094705632198936
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "NHANES-73558",
+          "status": "ok",
+          "n_participants": 5,
+          "median": 1.883524470942048,
+          "scale": 0.1517887163798384,
+          "full_median": 1.8335235009628708,
+          "full_scale": 0.14593411469569878,
+          "median_shift_in_full_scale": 0.3426270141388055
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "NHANES-73596",
+          "status": "ok",
+          "n_participants": 5,
+          "median": 1.883524470942048,
+          "scale": 0.16473023238648649,
+          "full_median": 1.8335235009628708,
+          "full_scale": 0.14593411469569878,
+          "median_shift_in_full_scale": 0.3426270141388055
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "NHANES-73616",
+          "status": "ok",
+          "n_participants": 5,
+          "median": 1.7811443843510333,
+          "scale": 0.15481540996936294,
+          "full_median": 1.8335235009628708,
+          "full_scale": 0.14593411469569878,
+          "median_shift_in_full_scale": 0.35892304360127303
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "NHANES-73781",
+          "status": "ok",
+          "n_participants": 5,
+          "median": 1.7811443843510333,
+          "scale": 0.1517887163798384,
+          "full_median": 1.8335235009628708,
+          "full_scale": 0.14593411469569878,
+          "median_shift_in_full_scale": 0.35892304360127303
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "NHANES-73899",
+          "status": "ok",
+          "n_participants": 5,
+          "median": 1.883524470942048,
+          "scale": 0.1517887163798384,
+          "full_median": 1.8335235009628708,
+          "full_scale": 0.14593411469569878,
+          "median_shift_in_full_scale": 0.3426270141388055
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "left_out": "NHANES-75654",
+          "status": "ok",
+          "n_participants": 5,
+          "median": 1.7811443843510333,
+          "scale": 0.15557503371139825,
+          "full_median": 1.8335235009628708,
+          "full_scale": 0.14593411469569878,
+          "median_shift_in_full_scale": 0.35892304360127303
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-73558",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0477502295684113,
+          "scale": 0.028027182665818974,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.34146063899114254
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-73596",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0419580419580419,
+          "scale": 0.023509439989048406,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.08104470873760079
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-73616",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0401554404145077,
+          "scale": 0.023037613866887217,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.0
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-73640",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0432098765432098,
+          "scale": 0.023788599635288944,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.13732701344686837
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-73746",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.036697247706422,
+          "scale": 0.017114946811504498,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.15547985176790868
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-73781",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0401554404145077,
+          "scale": 0.02265658881757026,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.0
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-73899",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.0477502295684113,
+          "scale": 0.0301405057822912,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.34146063899114254
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "left_out": "NHANES-75654",
+          "status": "ok",
+          "n_participants": 7,
+          "median": 0.036697247706422,
+          "scale": 0.019559903552105365,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_shift_in_full_scale": 0.15547985176790868
+        }
+      ],
+      "jackknife_summary": [
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_left_out": 8,
+          "n_insufficient": 0,
+          "max_median_shift_in_full_scale": 0.23483095918415958,
+          "evaluable": true
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_left_out": 7,
+          "n_insufficient": 0,
+          "max_median_shift_in_full_scale": 0.3645946784675046,
+          "evaluable": true
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "n_left_out": 8,
+          "n_insufficient": 0,
+          "max_median_shift_in_full_scale": 0.1335412115040775,
+          "evaluable": true
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_left_out": 8,
+          "n_insufficient": 0,
+          "max_median_shift_in_full_scale": 0.19996376404823732,
+          "evaluable": true
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_left_out": 6,
+          "n_insufficient": 0,
+          "max_median_shift_in_full_scale": 0.35892304360127303,
+          "evaluable": true
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "n_left_out": 8,
+          "n_insufficient": 0,
+          "max_median_shift_in_full_scale": 0.34146063899114254,
+          "evaluable": true
+        }
+      ],
+      "bootstrap": [
+        {
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_bootstrap": 200,
+          "n_insufficient": 0,
+          "full_median": 0.0211329671121317,
+          "full_scale": 0.0076211228961131075,
+          "median_ci_low": 0.0161489536487446,
+          "median_ci_high": 0.024362697511023,
+          "ci_width_in_full_scale": 1.0777603214439093,
+          "status": "ok"
+        },
+        {
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_bootstrap": 200,
+          "n_insufficient": 0,
+          "full_median": 1.8165591500234075,
+          "full_scale": 0.11509755273789368,
+          "median_ci_low": 1.695517618556358,
+          "median_ci_high": 1.8911739462106096,
+          "ci_width_in_full_scale": 1.6999173570598034,
+          "status": "ok"
+        },
+        {
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "n_bootstrap": 200,
+          "n_insufficient": 0,
+          "full_median": 0.0487084870848708,
+          "full_scale": 0.048879421210161755,
+          "median_ci_low": 0.0235294117647058,
+          "median_ci_high": 0.08906625579965345,
+          "ci_width_in_full_scale": 1.3407860079432141,
+          "status": "ok"
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_bootstrap": 200,
+          "n_insufficient": 0,
+          "full_median": 0.0260830407872579,
+          "full_scale": 0.007124388945607852,
+          "median_ci_low": 0.0236760024899142,
+          "median_ci_high": 0.03285289030616594,
+          "ci_width_in_full_scale": 1.2880947245179875,
+          "status": "ok"
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_bootstrap": 200,
+          "n_insufficient": 0,
+          "full_median": 1.8335235009628708,
+          "full_scale": 0.14593411469569878,
+          "median_ci_low": 1.7350922891082243,
+          "median_ci_high": 1.9429095195565413,
+          "ci_width_in_full_scale": 1.4240483171577576,
+          "status": "ok"
+        },
+        {
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "n_bootstrap": 200,
+          "n_insufficient": 0,
+          "full_median": 0.0401554404145077,
+          "full_scale": 0.022242063320512356,
+          "median_ci_low": 0.030946065428824,
+          "median_ci_high": 0.0675675675675675,
+          "ci_width_in_full_scale": 1.646497521880983,
+          "status": "ok"
+        }
+      ],
+      "sensitivity": [
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 3,
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "status": "ok",
+          "median": 0.0211329671121317,
+          "scale": 0.0076211228961131075,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 3,
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "status": "ok",
+          "median": 1.8165591500234075,
+          "scale": 0.11509755273789368,
+          "n_participants": 7,
+          "loo_insufficient": 0,
+          "loo_total": 7
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 3,
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "status": "ok",
+          "median": 0.0487084870848708,
+          "scale": 0.048879421210161755,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 3,
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "status": "ok",
+          "median": 0.0260830407872579,
+          "scale": 0.007124388945607852,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 3,
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "status": "ok",
+          "median": 1.8335235009628708,
+          "scale": 0.14593411469569878,
+          "n_participants": 6,
+          "loo_insufficient": 0,
+          "loo_total": 6
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 3,
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "status": "ok",
+          "median": 0.0401554404145077,
+          "scale": 0.022242063320512356,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 4,
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "status": "ok",
+          "median": 0.0211329671121317,
+          "scale": 0.0076211228961131075,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 4,
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "status": "ok",
+          "median": 1.8165591500234075,
+          "scale": 0.11509755273789368,
+          "n_participants": 7,
+          "loo_insufficient": 0,
+          "loo_total": 7
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 4,
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "status": "ok",
+          "median": 0.0487084870848708,
+          "scale": 0.048879421210161755,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 4,
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "status": "ok",
+          "median": 0.0260830407872579,
+          "scale": 0.007124388945607852,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 4,
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "status": "ok",
+          "median": 1.8335235009628708,
+          "scale": 0.14593411469569878,
+          "n_participants": 6,
+          "loo_insufficient": 0,
+          "loo_total": 6
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 4,
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "status": "ok",
+          "median": 0.0401554404145077,
+          "scale": 0.022242063320512356,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 5,
+          "dataset": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "status": "ok",
+          "median": 0.0211329671121317,
+          "scale": 0.0076211228961131075,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 5,
+          "dataset": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "status": "ok",
+          "median": 1.8165591500234075,
+          "scale": 0.11509755273789368,
+          "n_participants": 7,
+          "loo_insufficient": 0,
+          "loo_total": 7
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 5,
+          "dataset": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "status": "ok",
+          "median": 0.0487084870848708,
+          "scale": 0.048879421210161755,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 5,
+          "dataset": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "status": "ok",
+          "median": 0.0260830407872579,
+          "scale": 0.007124388945607852,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 5,
+          "dataset": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "status": "ok",
+          "median": 1.8335235009628708,
+          "scale": 0.14593411469569878,
+          "n_participants": 6,
+          "loo_insufficient": 0,
+          "loo_total": 6
+        },
+        {
+          "label": "sensitivity_only_not_production",
+          "min_participants": 5,
+          "dataset": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "status": "ok",
+          "median": 0.0401554404145077,
+          "scale": 0.022242063320512356,
+          "n_participants": 8,
+          "loo_insufficient": 0,
+          "loo_total": 8
+        }
+      ],
+      "deviation_spread": [
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.9572957464662858,
+          "jackknife_min": -1.162925950473615,
+          "jackknife_max": -0.8604362895526774,
+          "jackknife_range": 0.30248966092093754,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -1.7188480724963136,
+          "jackknife_min": -2.1164291431635394,
+          "jackknife_max": -1.5281640066246889,
+          "jackknife_range": 0.5882651365388505,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": 1.5855320927387477,
+          "jackknife_min": 1.4283082915086114,
+          "jackknife_max": 2.9070990478938383,
+          "jackknife_range": 1.478790756385227,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": 3.868927825333938,
+          "jackknife_min": 2.6030800241502066,
+          "jackknife_max": 5.229997578577739,
+          "jackknife_range": 2.626917554427532,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.6760996145467391,
+          "jackknife_min": -0.8886176261721134,
+          "jackknife_max": -0.5479165300434852,
+          "jackknife_range": 0.3407010961286282,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -1.4180460955644298,
+          "jackknife_min": -1.6972885497958197,
+          "jackknife_max": -1.2492183965685641,
+          "jackknife_range": 0.4480701532272555,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": 0.9711795859187692,
+          "jackknife_min": 0.8572956026940828,
+          "jackknife_max": 1.8681767499094608,
+          "jackknife_range": 1.010881147215378,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": 2.518819495920155,
+          "jackknife_min": 1.6067730885839189,
+          "jackknife_max": 3.4754379364649632,
+          "jackknife_range": 1.8686648478810444,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -1.0414046485688646,
+          "jackknife_min": -1.244974632427741,
+          "jackknife_max": -0.9325686549430253,
+          "jackknife_range": 0.31240597748471577,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -1.808821301705827,
+          "jackknife_min": -2.2417987735853,
+          "jackknife_max": -1.603974082672306,
+          "jackknife_range": 0.6378246909129941,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": 0.20774364585149305,
+          "jackknife_min": 0.146691097570636,
+          "jackknife_max": 0.5771416968841597,
+          "jackknife_range": 0.4304505993135237,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": 0.8410836517320898,
+          "jackknife_min": 0.36869476464785944,
+          "jackknife_max": 1.2951035601734435,
+          "jackknife_range": 0.9264087955255841,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.9636689842621847,
+          "jackknife_min": -1.1691430778865488,
+          "jackknife_max": -0.8675194692880198,
+          "jackknife_range": 0.301623608598529,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -1.725665671712123,
+          "jackknife_min": -2.125928856595625,
+          "jackknife_max": -1.5344862369230716,
+          "jackknife_range": 0.5914426196725535,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": 2.3241044655257355,
+          "jackknife_min": 2.114543191745511,
+          "jackknife_max": 4.1560876956905926,
+          "jackknife_range": 2.0415445039450817,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": 5.492023200228869,
+          "jackknife_min": 3.8008366366107253,
+          "jackknife_max": 7.339322866073056,
+          "jackknife_range": 3.5384862294623307,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.11957384147256953,
+          "jackknife_min": -0.34572377055445985,
+          "jackknife_max": 0.07242038596112708,
+          "jackknife_range": 0.41814415651558695,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -0.82271766194945,
+          "jackknife_min": -0.8922917083097581,
+          "jackknife_max": -0.6971467154170379,
+          "jackknife_range": 0.19514499289272025,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": -0.5198368807483473,
+          "jackknife_min": -0.6599537240193415,
+          "jackknife_max": -0.4788684368311479,
+          "jackknife_range": 0.1810852871881936,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": -0.7578559120801796,
+          "jackknife_min": -0.8724055011078696,
+          "jackknife_max": -0.6849771237642003,
+          "jackknife_range": 0.18742837734366935,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.1299855907847306,
+          "jackknife_min": -0.3558804874600941,
+          "jackknife_max": 0.06055096613214724,
+          "jackknife_range": 0.4164314535922413,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -0.8338553499220331,
+          "jackknife_min": -0.9027351187362397,
+          "jackknife_max": -0.7074751354554158,
+          "jackknife_range": 0.19525998328082383,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "standardized_deviation": -2.147829812548366,
+          "jackknife_min": -2.726426677487371,
+          "jackknife_max": -1.4996806819969786,
+          "jackknife_range": 1.2267459954903925,
+          "n_jackknife": 7
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "standardized_deviation": -1.810229956252,
+          "jackknife_min": -2.0698197042147015,
+          "jackknife_max": -1.3613700373179762,
+          "jackknife_range": 0.7084496668967253,
+          "n_jackknife": 6
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": -0.48504025820874364,
+          "jackknife_min": -0.6196645468162026,
+          "jackknife_max": -0.4357330729914698,
+          "jackknife_range": 0.18393147382473285,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": -0.6813864431601927,
+          "jackknife_min": -0.811720173221575,
+          "jackknife_max": -0.5980217476666926,
+          "jackknife_range": 0.2136984255548824,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.21221143264698478,
+          "jackknife_min": -0.43609223412085,
+          "jackknife_max": -0.032353879672653484,
+          "jackknife_range": 0.40373835444819656,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -0.9218142262344963,
+          "jackknife_min": -1.005833918146173,
+          "jackknife_max": -0.7890428919678251,
+          "jackknife_range": 0.216791026178348,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "standardized_deviation": -0.4586540732944874,
+          "jackknife_min": -0.8933710712653193,
+          "jackknife_max": -0.1719469783820041,
+          "jackknife_range": 0.7214240928833152,
+          "n_jackknife": 7
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "standardized_deviation": -0.4779849624220949,
+          "jackknife_min": -0.7889603731045796,
+          "jackknife_max": -0.11168370208628654,
+          "jackknife_range": 0.677276671018293,
+          "n_jackknife": 6
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": -0.3280258777913553,
+          "jackknife_min": -0.4378658625077669,
+          "jackknife_max": -0.24109141144350962,
+          "jackknife_range": 0.19677445106425726,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": -0.33632978515687817,
+          "jackknife_min": -0.5378870117517282,
+          "jackknife_max": -0.20564905441545156,
+          "jackknife_range": 0.3322379573362766,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.0186835849802292,
+          "jackknife_min": -0.2473047880178129,
+          "jackknife_max": 0.18743552655448895,
+          "jackknife_range": 0.43474031457230183,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -0.714793031553952,
+          "jackknife_min": -0.7910946543860872,
+          "jackknife_max": -0.5970639228342909,
+          "jackknife_range": 0.1940307315517963,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "standardized_deviation": -2.5284652381920636,
+          "jackknife_min": -3.139483699731301,
+          "jackknife_max": -1.7988694944293664,
+          "jackknife_range": 1.3406142053019348,
+          "n_jackknife": 7
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "standardized_deviation": -2.1104353336463735,
+          "jackknife_min": -2.3584459408797827,
+          "jackknife_max": -1.6429718144913423,
+          "jackknife_range": 0.7154741263884403,
+          "n_jackknife": 6
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": -0.332983784371299,
+          "jackknife_min": -0.443606361503858,
+          "jackknife_max": -0.2472374419660294,
+          "jackknife_range": 0.19636891953782862,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": -0.3472253392495691,
+          "jackknife_min": -0.5465336034170849,
+          "jackknife_max": -0.2180386658159441,
+          "jackknife_range": 0.3284949376011408,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.16830730087028134,
+          "jackknife_min": -0.3932635197449868,
+          "jackknife_max": 0.016864122362429033,
+          "jackknife_range": 0.4101276421074158,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -0.8748489655683616,
+          "jackknife_min": -0.9411733614050863,
+          "jackknife_max": -0.7454901420105783,
+          "jackknife_range": 0.19568321939450806,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": 0.09948852433520063,
+          "jackknife_min": 0.045927466970032374,
+          "jackknife_max": 0.39407308665508023,
+          "jackknife_range": 0.34814561968504787,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": 0.6031809173274019,
+          "jackknife_min": 0.19313541202873222,
+          "jackknife_max": 0.9859324163171715,
+          "jackknife_range": 0.7927970042884394,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.4517109780576625,
+          "jackknife_min": -0.6697253162123594,
+          "jackknife_max": -0.2985322933775787,
+          "jackknife_range": 0.37119302283478073,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -1.1780124045025788,
+          "jackknife_min": -1.3628231160041704,
+          "jackknife_max": -1.026625629492324,
+          "jackknife_range": 0.33619748651184644,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": 0.7388168802426415,
+          "jackknife_min": 0.6410129038974042,
+          "jackknife_max": 1.4752316679458763,
+          "jackknife_range": 0.8342187640484722,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": 2.008176467860712,
+          "jackknife_min": 1.2299461485745231,
+          "jackknife_max": 2.811821818380289,
+          "jackknife_range": 1.5818756698057659,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "standardized_deviation": -0.22559468327320398,
+          "jackknife_min": -0.449147666384177,
+          "jackknife_max": -0.04722794724465671,
+          "jackknife_range": 0.4019197191395203,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "standardized_deviation": -0.9361305975823546,
+          "jackknife_min": -1.0257824984142236,
+          "jackknife_max": -0.802319031241081,
+          "jackknife_range": 0.2234634671731427,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "standardized_deviation": -2.1842669927358376,
+          "jackknife_min": -2.765967487756804,
+          "jackknife_max": -1.528321202385323,
+          "jackknife_range": 1.2376462853714811,
+          "n_jackknife": 7
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "standardized_deviation": -1.8389677896022933,
+          "jackknife_min": -2.09744909833747,
+          "jackknife_max": -1.3883269992944554,
+          "jackknife_range": 0.7091220990430145,
+          "n_jackknife": 6
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "standardized_deviation": -0.10765762927251095,
+          "jackknife_min": -0.18271306989359673,
+          "jackknife_max": 0.04377133719414687,
+          "jackknife_range": 0.2264844070877436,
+          "n_jackknife": 8
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "standardized_deviation": 0.14795408210306238,
+          "jackknife_min": -0.1535646712178461,
+          "jackknife_max": 0.39433349370467735,
+          "jackknife_range": 0.5478981649225234,
+          "n_jackknife": 8
+        }
+      ],
+      "deviation_spread_summary": [
+        {
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "jackknife_range": {
+            "n": 11,
+            "median": 0.4019197191395203,
+            "q25": 0.326553536806672,
+            "q75": 0.41327954784982857,
+            "mad": 0.030726696304739565,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "jackknife_range": {
+            "n": 11,
+            "median": 0.2234634671731427,
+            "q25": 0.19547160133766595,
+            "q75": 0.518167644883053,
+            "mad": 0.029432735621346406,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "jackknife_range": {
+            "n": 11,
+            "median": 0.34814561968504787,
+            "q25": 0.19657168530104294,
+            "q75": 0.9225499556319251,
+            "mad": 0.16421414586031502,
+            "frac_abs_gt_2": 0.09090909090909091
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "jackknife_range": {
+            "n": 11,
+            "median": 0.7927970042884394,
+            "q25": 0.3303664474687087,
+            "q75": 1.725270258843405,
+            "mad": 0.579098578733557,
+            "frac_abs_gt_2": 0.18181818181818182
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "jackknife_range": {
+            "n": 4,
+            "median": 1.2321961404309367,
+            "q25": 1.1004155198386232,
+            "q75": 1.2633882653540947,
+            "mad": 0.05693410490577122,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "jackknife_range": {
+            "n": 4,
+            "median": 0.7087858829698699,
+            "q25": 0.7006564179271172,
+            "q75": 0.710710105879371,
+            "mad": 0.0035122297458575202,
+            "frac_abs_gt_2": 0.0
+          }
+        }
+      ]
+    },
+    "loo": {
+      "status": "unavailable"
+    },
+    "valid": {
+      "status": "ok",
+      "check": {
+        "baseline_sha256_before": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+        "baseline_sha256_after": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+        "unchanged": true,
+        "schema_validation": "passed",
+        "n_rows": 33
+      },
+      "rows": [
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0138372985803858,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.007295668531745899,
+          "standardized_deviation": -0.9572957464662858,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0138372985803858,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.0122457422068721,
+          "standardized_deviation": -1.7188480724963136,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "cops",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "nhanes",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.1262083780880773,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": 0.0774998910032065,
+          "standardized_deviation": 1.5855320927387477,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.1262083780880773,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": 0.08605293767356961,
+          "standardized_deviation": 3.868927825333938,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0159803288596563,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.005152638252475399,
+          "standardized_deviation": -0.6760996145467391,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0021430302792704997,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0159803288596563,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.0101027119276016,
+          "standardized_deviation": -1.4180460955644298,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0021430302792704997,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "cops",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "nhanes",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0961791831357048,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": 0.047470696050833996,
+          "standardized_deviation": 0.9711795859187692,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.03002919495237251,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0961791831357048,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": 0.056023742721197096,
+          "standardized_deviation": 2.518819495920155,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.03002919495237251,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0131962943008049,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.007936672811326798,
+          "standardized_deviation": -1.0414046485688646,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.0027840345588513987,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0131962943008049,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.012886746486452999,
+          "standardized_deviation": -1.808821301705827,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.0027840345588513987,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "cops",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "nhanes",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0588628762541806,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": 0.010154389169309802,
+          "standardized_deviation": 0.20774364585149305,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.037316306881524194,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0588628762541806,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": 0.018707435839672902,
+          "standardized_deviation": 0.8410836517320898,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.037316306881524194,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0137887273518971,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.007344239760234598,
+          "standardized_deviation": -0.9636689842621847,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0005924330510921998,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0137887273518971,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.012294313435360799,
+          "standardized_deviation": -1.725665671712123,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0005924330510921998,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "cops",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "nhanes",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.1623093681917211,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": 0.1136008811068503,
+          "standardized_deviation": 2.3241044655257355,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.10344649193754049,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "COPS-7",
+          "dataset": "cops",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.1623093681917211,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": 0.1221539277772134,
+          "standardized_deviation": 5.492023200228869,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.10344649193754049,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0202216801711089,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0009112869410227986,
+          "standardized_deviation": -0.11957384147256953,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0202216801711089,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.005861360616148999,
+          "standardized_deviation": -0.82271766194945,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "cops",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "nhanes",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0232991612301957,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.025409325854675098,
+          "standardized_deviation": -0.5198368807483473,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 1,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0232991612301957,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.016856279184311998,
+          "standardized_deviation": -0.7578559120801796,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_missing",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0201423309500374,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0009906361620942994,
+          "standardized_deviation": -0.1299855907847306,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -7.934922107150078e-05,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0201423309500374,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.0059407098372205,
+          "standardized_deviation": -0.8338553499220331,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -7.934922107150078e-05,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.5693491949016016,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.24720995512180588,
+          "standardized_deviation": -2.147829812548366,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.5693491949016016,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.2641743060612691,
+          "standardized_deviation": -1.810229956252,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.025,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.023708487084870798,
+          "standardized_deviation": -0.48504025820874364,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0017008387698042998,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 2,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.025,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.015155440414507698,
+          "standardized_deviation": -0.6813864431601927,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0017008387698042998,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0195156777039688,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0016172894081629002,
+          "standardized_deviation": -0.21221143264698478,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.0006266532460686008,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0195156777039688,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.006567363083289101,
+          "standardized_deviation": -0.9218142262344963,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.0006266532460686008,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.7637691886339455,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.052789961389462015,
+          "standardized_deviation": -0.4586540732944874,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.19441999373234387,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.7637691886339455,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.06975431232892526,
+          "standardized_deviation": -0.4779849624220949,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.19441999373234387,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0326747720364741,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0160337150483967,
+          "standardized_deviation": -0.3280258777913553,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.007674772036474098,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 3,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0326747720364741,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.0074806683780336,
+          "standardized_deviation": -0.33632978515687817,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.007674772036474098,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0209905772148574,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0001423898972742997,
+          "standardized_deviation": -0.0186835849802292,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0014748995108886005,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0209905772148574,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.0050924635724005005,
+          "standardized_deviation": -0.714793031553952,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0014748995108886005,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.5255389889246656,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.29102016109874196,
+          "standardized_deviation": -2.5284652381920636,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.23823019970927994,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.5255389889246656,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.3079845120382052,
+          "standardized_deviation": -2.1104353336463735,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.23823019970927994,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0324324324324324,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0162760546524384,
+          "standardized_deviation": -0.332983784371299,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.00024233960404169974,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 4,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0324324324324324,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.0077230079820753,
+          "standardized_deviation": -0.3472253392495691,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.00024233960404169974,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0198502764878862,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0012826906242454986,
+          "standardized_deviation": -0.16830730087028134,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.0011403007269711989,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0198502764878862,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.006232764299371699,
+          "standardized_deviation": -0.8748489655683616,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.0011403007269711989,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "cops",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "nhanes",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0535714285714285,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": 0.0048629414865576995,
+          "standardized_deviation": 0.09948852433520063,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0211389961389961,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 5,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0535714285714285,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": 0.0134159881569208,
+          "standardized_deviation": 0.6031809173274019,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0211389961389961,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0176904222348308,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0034425448773008974,
+          "standardized_deviation": -0.4517109780576625,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.002159854253055399,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0176904222348308,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.008392618552427098,
+          "standardized_deviation": -1.1780124045025788,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.002159854253055399,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "cops",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": null,
+          "status": "insufficient_data",
+          "reference": "nhanes",
+          "comparison_status": "insufficient_data",
+          "signed_distance": null,
+          "standardized_deviation": null,
+          "excluded_train_subject": null,
+          "previous_day_status": "current_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "insufficient_coverage"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0848214285714285,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": 0.036112941486557706,
+          "standardized_deviation": 0.7388168802426415,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.03125000000000001,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 6,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0848214285714285,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": 0.044665988156920806,
+          "standardized_deviation": 2.008176467860712,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.03125000000000001,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0194136823061969,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.0017192848059347995,
+          "standardized_deviation": -0.22559468327320398,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0017232600713660978,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "enmo_hourly_median_mean_g",
+          "value": 0.0194136823061969,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.006669358481061,
+          "standardized_deviation": -0.9361305975823546,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": 0.0017232600713660978,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.565155364633354,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.2514037853900535,
+          "standardized_deviation": -2.1842669927358376,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "value": 1.565155364633354,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": -0.2683681363295167,
+          "standardized_deviation": -1.8389677896022933,
+          "excluded_train_subject": null,
+          "previous_day_status": "previous_day_insufficient_data",
+          "previous_day_delta": null,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0434462444771723,
+          "status": "ok",
+          "reference": "cops",
+          "comparison_status": "ok",
+          "signed_distance": -0.005262242607698503,
+          "standardized_deviation": -0.10765762927251095,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.04137518409425621,
+          "measurement_state": "observed"
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "dataset": "nhanes",
+          "split": "valid",
+          "day": 7,
+          "metric": "rest_tremor_window_fraction",
+          "value": 0.0434462444771723,
+          "status": "ok",
+          "reference": "nhanes",
+          "comparison_status": "ok",
+          "signed_distance": 0.003290804062664597,
+          "standardized_deviation": 0.14795408210306238,
+          "excluded_train_subject": null,
+          "previous_day_status": "ok",
+          "previous_day_delta": -0.04137518409425621,
+          "measurement_state": "observed"
+        }
+      ],
+      "distribution": [
+        {
+          "query_dataset": "cops",
+          "reference": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_subjects": 1,
+          "n_metric_days": 4,
+          "n_comparable_days": 4,
+          "comparison_status_counts": {
+            "ok": 4
+          },
+          "day_level": {
+            "n": 4,
+            "median": -0.9604823653642353,
+            "q25": -0.9831029003388547,
+            "q75": -0.8869967134863991,
+            "mad": 0.04205445105128941,
+            "frac_abs_gt_2": 0.0
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -0.9604823653642353,
+            "q25": -0.9604823653642353,
+            "q75": -0.9604823653642353,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "query_dataset": "cops",
+          "reference": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "n_subjects": 1,
+          "n_metric_days": 4,
+          "n_comparable_days": 4,
+          "comparison_status_counts": {
+            "ok": 4
+          },
+          "day_level": {
+            "n": 4,
+            "median": 1.2783558393287584,
+            "q25": 0.7803206009019501,
+            "q75": 1.7701751859354946,
+            "mad": 0.6764624398034832,
+            "frac_abs_gt_2": 0.25
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": 1.2783558393287584,
+            "q25": 1.2783558393287584,
+            "q75": 1.2783558393287584,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "query_dataset": "cops",
+          "reference": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_subjects": 1,
+          "n_metric_days": 4,
+          "n_comparable_days": 0,
+          "comparison_status_counts": {
+            "insufficient_data": 4
+          },
+          "day_level": {
+            "n": 0,
+            "median": null,
+            "q25": null,
+            "q75": null,
+            "mad": null,
+            "frac_abs_gt_2": null
+          },
+          "subject_median_level": {
+            "n": 0,
+            "median": null,
+            "q25": null,
+            "q75": null,
+            "mad": null,
+            "frac_abs_gt_2": null
+          }
+        },
+        {
+          "query_dataset": "cops",
+          "reference": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_subjects": 1,
+          "n_metric_days": 4,
+          "n_comparable_days": 4,
+          "comparison_status_counts": {
+            "ok": 4
+          },
+          "day_level": {
+            "n": 4,
+            "median": -1.7222568721042184,
+            "q25": -1.746454579210549,
+            "q75": -1.6436475782633426,
+            "mad": 0.044986614604756725,
+            "frac_abs_gt_2": 0.0
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -1.7222568721042184,
+            "q25": -1.7222568721042184,
+            "q75": -1.7222568721042184,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "query_dataset": "cops",
+          "reference": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "n_subjects": 1,
+          "n_metric_days": 4,
+          "n_comparable_days": 4,
+          "comparison_status_counts": {
+            "ok": 4
+          },
+          "day_level": {
+            "n": 4,
+            "median": 3.1938736606270464,
+            "q25": 2.0993855348731385,
+            "q75": 4.274701669057671,
+            "mad": 1.486601852154357,
+            "frac_abs_gt_2": 0.75
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": 3.1938736606270464,
+            "q25": 3.1938736606270464,
+            "q75": 3.1938736606270464,
+            "mad": 0.0,
+            "frac_abs_gt_2": 1.0
+          }
+        },
+        {
+          "query_dataset": "cops",
+          "reference": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_subjects": 1,
+          "n_metric_days": 4,
+          "n_comparable_days": 0,
+          "comparison_status_counts": {
+            "insufficient_data": 4
+          },
+          "day_level": {
+            "n": 0,
+            "median": null,
+            "q25": null,
+            "q75": null,
+            "mad": null,
+            "frac_abs_gt_2": null
+          },
+          "subject_median_level": {
+            "n": 0,
+            "median": null,
+            "q25": null,
+            "q75": null,
+            "mad": null,
+            "frac_abs_gt_2": null
+          }
+        },
+        {
+          "query_dataset": "nhanes",
+          "reference": "cops",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_subjects": 1,
+          "n_metric_days": 7,
+          "n_comparable_days": 7,
+          "comparison_status_counts": {
+            "ok": 7
+          },
+          "day_level": {
+            "n": 7,
+            "median": -0.16830730087028134,
+            "q25": -0.21890305796009438,
+            "q75": -0.12477971612865006,
+            "mad": 0.048733459397711815,
+            "frac_abs_gt_2": 0.0
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -0.16830730087028134,
+            "q25": -0.16830730087028134,
+            "q75": -0.16830730087028134,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "query_dataset": "nhanes",
+          "reference": "cops",
+          "metric": "rest_tremor_window_fraction",
+          "n_subjects": 1,
+          "n_metric_days": 7,
+          "n_comparable_days": 7,
+          "comparison_status_counts": {
+            "ok": 7
+          },
+          "day_level": {
+            "n": 7,
+            "median": -0.3280258777913553,
+            "q25": -0.40901202129002134,
+            "q75": -0.0040845524686551615,
+            "mad": 0.19181100295699205,
+            "frac_abs_gt_2": 0.0
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -0.3280258777913553,
+            "q25": -0.3280258777913553,
+            "q75": -0.3280258777913553,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "query_dataset": "nhanes",
+          "reference": "cops",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_subjects": 1,
+          "n_metric_days": 7,
+          "n_comparable_days": 4,
+          "comparison_status_counts": {
+            "ok": 4,
+            "insufficient_data": 3
+          },
+          "day_level": {
+            "n": 4,
+            "median": -2.166048402642102,
+            "q25": -2.270316554099894,
+            "q75": -1.7255358777348966,
+            "mad": 0.19031771282184873,
+            "frac_abs_gt_2": 0.75
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -2.166048402642102,
+            "q25": -2.166048402642102,
+            "q75": -2.166048402642102,
+            "mad": 0.0,
+            "frac_abs_gt_2": 1.0
+          }
+        },
+        {
+          "query_dataset": "nhanes",
+          "reference": "nhanes",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_subjects": 1,
+          "n_metric_days": 7,
+          "n_comparable_days": 7,
+          "comparison_status_counts": {
+            "ok": 7
+          },
+          "day_level": {
+            "n": 7,
+            "median": -0.8748489655683616,
+            "q25": -0.9289724119084255,
+            "q75": -0.8282865059357416,
+            "mad": 0.052131303618911606,
+            "frac_abs_gt_2": 0.0
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -0.8748489655683616,
+            "q25": -0.8748489655683616,
+            "q75": -0.8748489655683616,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "query_dataset": "nhanes",
+          "reference": "nhanes",
+          "metric": "rest_tremor_window_fraction",
+          "n_subjects": 1,
+          "n_metric_days": 7,
+          "n_comparable_days": 7,
+          "comparison_status_counts": {
+            "ok": 7
+          },
+          "day_level": {
+            "n": 7,
+            "median": -0.33632978515687817,
+            "q25": -0.5143058912048809,
+            "q75": 0.3755674997152321,
+            "mad": 0.4215261269233014,
+            "frac_abs_gt_2": 0.14285714285714285
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -0.33632978515687817,
+            "q25": -0.33632978515687817,
+            "q75": -0.33632978515687817,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "query_dataset": "nhanes",
+          "reference": "nhanes",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_subjects": 1,
+          "n_metric_days": 7,
+          "n_comparable_days": 4,
+          "comparison_status_counts": {
+            "ok": 4,
+            "insufficient_data": 3
+          },
+          "day_level": {
+            "n": 4,
+            "median": -1.8245988729271465,
+            "q25": -1.9068346756133134,
+            "q75": -1.4771687077945237,
+            "mad": 0.1501026886971869,
+            "frac_abs_gt_2": 0.25
+          },
+          "subject_median_level": {
+            "n": 1,
+            "median": -1.8245988729271465,
+            "q25": -1.8245988729271465,
+            "q75": -1.8245988729271465,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        }
+      ],
+      "device_confound": {
+        "caveat": "Distances from the COPS/NHANES cohort references only, not diagnosis, severity or probability. Cohort = device brand for 100% of subjects, so any COPS-vs-NHANES difference may be the device.",
+        "gaps": [
+          {
+            "metric": "enmo_hourly_median_mean_g",
+            "signal_type": "amplitude",
+            "reference_gap_in_pooled_scale": 0.6714007256256048,
+            "valid_gap_in_pooled_scale": 0.8188611675944557,
+            "status": "ok"
+          },
+          {
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "signal_type": "frequency",
+            "reference_gap_in_pooled_scale": 0.12997925582174083,
+            "valid_gap_in_pooled_scale": null,
+            "status": "ok"
+          },
+          {
+            "metric": "rest_tremor_window_fraction",
+            "signal_type": "threshold_classification",
+            "reference_gap_in_pooled_scale": 0.24051935155189966,
+            "valid_gap_in_pooled_scale": 2.2080250178566607,
+            "status": "ok"
+          }
+        ],
+        "flags": [
+          "reference_gap_in_pooled_scale: amplitude metric separates cohorts >= 2.0x more than non-amplitude metrics -> possible device (brand/gain) effect; do not attribute the gap to disease"
+        ]
+      }
+    },
+    "audit": {
+      "baseline_sha256": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+      "artifact_id": "9b65d11f9b86263b3a24eaae154657b72324302be5a4e148108c6f1f0510b76e",
+      "baseline_version": "real-data-pilot-aws-real-pilot-20261024-v1",
+      "fit_called_during_validation": false,
+      "fixture_fitted": false,
+      "limitations": [
+        "no hourly features: daily metric values cannot be recomputed from hourly rows",
+        "valid people per cohort {'cops': 1, 'nhanes': 1}: verifies pipeline correctness, not performance"
+      ],
+      "null_cases": {
+        "daily_insufficient_all_null": {
+          "n_exercised": 7,
+          "n_violations": 0,
+          "status": "pass"
+        },
+        "reference_insufficient_null_distance": {
+          "n_exercised": 0,
+          "n_violations": 0,
+          "status": "not_exercised"
+        },
+        "zero_scale_distance_without_z": {
+          "n_exercised": 0,
+          "n_violations": 0,
+          "status": "not_exercised"
+        },
+        "ok_comparison_complete": {
+          "n_exercised": 52,
+          "n_violations": 0,
+          "status": "pass"
+        },
+        "csv_null_not_zero": {
+          "n_exercised": 7,
+          "n_violations": 0,
+          "status": "pass"
+        },
+        "tremor_zero_requires_windows": {
+          "n_exercised": 0,
+          "n_violations": 0,
+          "status": "not_exercised"
+        }
+      },
+      "previous_day_cases": {
+        "no_previous_day": {
+          "n": 0,
+          "status": "not_exercised"
+        },
+        "previous_day_missing": {
+          "n": 6,
+          "status": "exercised"
+        },
+        "current_day_insufficient_data": {
+          "n": 5,
+          "status": "exercised"
+        },
+        "previous_day_insufficient_data": {
+          "n": 2,
+          "status": "exercised"
+        },
+        "ok": {
+          "n": 20,
+          "status": "exercised"
+        }
+      },
+      "official_reports": {
+        "exact_rows": 0,
+        "roundoff_rows": 0,
+        "mismatch_rows": 0,
+        "max_relative_roundoff": 0.0
+      },
+      "float_parse_check": {
+        "n_values": 26,
+        "n_not_round_trip": 20,
+        "max_relative_difference": 4.6324077381355536e-15
+      },
+      "sha_after": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+      "categories": {
+        "baseline_lock": {
+          "status": "pass",
+          "n_checked": 3,
+          "n_failed": 0,
+          "examples": [],
+          "notes": []
+        },
+        "hash_chain": {
+          "status": "pass",
+          "n_checked": 2,
+          "n_failed": 0,
+          "examples": [],
+          "notes": [
+            "train bundle unavailable: training_daily_hash and entries not checked"
+          ]
+        },
+        "reference_formulas": {
+          "status": "pass",
+          "n_checked": 54,
+          "n_failed": 0,
+          "examples": [],
+          "notes": []
+        },
+        "distances": {
+          "status": "pass",
+          "n_checked": 660,
+          "n_failed": 0,
+          "examples": [],
+          "notes": []
+        },
+        "null_handling": {
+          "status": "pass",
+          "n_checked": 66,
+          "n_failed": 0,
+          "examples": [],
+          "notes": []
+        },
+        "previous_day": {
+          "status": "pass",
+          "n_checked": 132,
+          "n_failed": 0,
+          "examples": [],
+          "notes": []
+        },
+        "coverage": {
+          "status": "pass",
+          "n_checked": 381,
+          "n_failed": 0,
+          "examples": [],
+          "notes": []
+        },
+        "official_reports": {
+          "status": "not_evaluable",
+          "n_checked": 0,
+          "n_failed": 0,
+          "examples": [],
+          "notes": [
+            "official analysis not available"
+          ]
+        },
+        "test_lock": {
+          "status": "pass",
+          "n_checked": 3,
+          "n_failed": 0,
+          "examples": [],
+          "notes": []
+        }
+      },
+      "category_table": [
+        {
+          "category": "baseline_lock",
+          "status": "pass",
+          "n_checked": 3,
+          "n_failed": 0
+        },
+        {
+          "category": "hash_chain",
+          "status": "pass",
+          "n_checked": 2,
+          "n_failed": 0
+        },
+        {
+          "category": "reference_formulas",
+          "status": "pass",
+          "n_checked": 54,
+          "n_failed": 0
+        },
+        {
+          "category": "distances",
+          "status": "pass",
+          "n_checked": 660,
+          "n_failed": 0
+        },
+        {
+          "category": "null_handling",
+          "status": "pass",
+          "n_checked": 66,
+          "n_failed": 0
+        },
+        {
+          "category": "previous_day",
+          "status": "pass",
+          "n_checked": 132,
+          "n_failed": 0
+        },
+        {
+          "category": "coverage",
+          "status": "pass",
+          "n_checked": 381,
+          "n_failed": 0
+        },
+        {
+          "category": "official_reports",
+          "status": "not_evaluable",
+          "n_checked": 0,
+          "n_failed": 0
+        },
+        {
+          "category": "test_lock",
+          "status": "pass",
+          "n_checked": 3,
+          "n_failed": 0
+        }
+      ]
+    },
+    "walkforward": {
+      "no_lookahead": {
+        "train": {
+          "n_checked": 0,
+          "n_mismatches": null,
+          "status": "unavailable"
+        },
+        "valid": {
+          "n_checked": 33,
+          "n_mismatches": 0,
+          "mismatches": []
+        }
+      },
+      "first_usable": [
+        {
+          "dataset": "cops",
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_days": 4,
+          "n_ok": 4,
+          "days_until_first_ok": 0,
+          "frac_insufficient": 0.0
+        },
+        {
+          "dataset": "cops",
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "n_days": 4,
+          "n_ok": 4,
+          "days_until_first_ok": 0,
+          "frac_insufficient": 0.0
+        },
+        {
+          "dataset": "cops",
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_days": 4,
+          "n_ok": 0,
+          "days_until_first_ok": null,
+          "frac_insufficient": 1.0
+        },
+        {
+          "dataset": "nhanes",
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "n_days": 7,
+          "n_ok": 7,
+          "days_until_first_ok": 0,
+          "frac_insufficient": 0.0
+        },
+        {
+          "dataset": "nhanes",
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "n_days": 7,
+          "n_ok": 7,
+          "days_until_first_ok": 0,
+          "frac_insufficient": 0.0
+        },
+        {
+          "dataset": "nhanes",
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "n_days": 7,
+          "n_ok": 4,
+          "days_until_first_ok": 1,
+          "frac_insufficient": 0.42857142857142855
+        }
+      ],
+      "within_subject": [
+        {
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "n_z": 4,
+          "z_median": -0.9604823653642353,
+          "z_sd": 0.16030516054415955,
+          "z_step_abs_median": 0.28119613191954673,
+          "n_previous_day_delta": 3,
+          "previous_day_delta_abs_median": 0.0021430302792704997
+        },
+        {
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "n_z": 4,
+          "z_median": -1.7222568721042184,
+          "z_sd": 0.1714821213040814,
+          "z_step_abs_median": 0.3008019769318837,
+          "n_previous_day_delta": 3,
+          "previous_day_delta_abs_median": 0.0021430302792704997
+        },
+        {
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "n_z": 4,
+          "z_median": 1.2783558393287584,
+          "z_sd": 0.8996963580543137,
+          "z_step_abs_median": 0.7634359400672761,
+          "n_previous_day_delta": 3,
+          "previous_day_delta_abs_median": 0.037316306881524194
+        },
+        {
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "n_z": 4,
+          "z_median": 3.1938736606270464,
+          "z_sd": 1.9771833490838335,
+          "z_step_abs_median": 1.677735844188065,
+          "n_previous_day_delta": 3,
+          "previous_day_delta_abs_median": 0.037316306881524194
+        },
+        {
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "n_z": 0,
+          "z_median": null,
+          "z_sd": null,
+          "z_step_abs_median": null,
+          "n_previous_day_delta": 0,
+          "previous_day_delta_abs_median": null
+        },
+        {
+          "subject_id": "COPS-7",
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "n_z": 0,
+          "z_median": null,
+          "z_sd": null,
+          "z_step_abs_median": null,
+          "n_previous_day_delta": 0,
+          "previous_day_delta_abs_median": null
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "n_z": 7,
+          "z_median": -0.16830730087028134,
+          "z_sd": 0.13455619414795714,
+          "z_step_abs_median": 0.17157578177840385,
+          "n_previous_day_delta": 6,
+          "previous_day_delta_abs_median": 0.0013076001189298997
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "n_z": 7,
+          "z_median": -0.8748489655683616,
+          "z_sd": 0.1439378590730975,
+          "z_step_abs_median": 0.1835385643474769,
+          "n_previous_day_delta": 6,
+          "previous_day_delta_abs_median": 0.0013076001189298997
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "n_z": 7,
+          "z_median": -0.3280258777913553,
+          "z_sd": 0.44090040032786976,
+          "z_step_abs_median": 0.29474334456194395,
+          "n_previous_day_delta": 6,
+          "previous_day_delta_abs_median": 0.014406884087735099
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "n_z": 7,
+          "z_median": -0.33632978515687817,
+          "z_sd": 0.9689279303273942,
+          "z_step_abs_median": 0.6477314572901427,
+          "n_previous_day_delta": 6,
+          "previous_day_delta_abs_median": 0.014406884087735099
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "n_z": 4,
+          "z_median": -2.166048402642102,
+          "z_sd": 0.9300473245885379,
+          "z_step_abs_median": 1.8794934520757274,
+          "n_previous_day_delta": 2,
+          "previous_day_delta_abs_median": 0.2163250967208119
+        },
+        {
+          "subject_id": "NHANES-81262",
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "n_z": 4,
+          "z_median": -1.8245988729271465,
+          "z_sd": 0.7335239687702797,
+          "z_step_abs_median": 1.4823476825270918,
+          "n_previous_day_delta": 2,
+          "previous_day_delta_abs_median": 0.2163250967208119
+        }
+      ],
+      "stability_summary": [
+        {
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "cops",
+          "n_subjects": 2,
+          "z_sd": {
+            "n": 2,
+            "median": 0.14743067734605836,
+            "q25": 0.14099343574700773,
+            "q75": 0.15386791894510896,
+            "mad": 0.012874483198101208,
+            "frac_abs_gt_2": 0.0
+          },
+          "z_step_abs_median": {
+            "n": 2,
+            "median": 0.22638595684897528,
+            "q25": 0.19898086931368958,
+            "q75": 0.25379104438426103,
+            "mad": 0.05481017507057144,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "enmo_hourly_median_mean_g",
+          "reference": "nhanes",
+          "n_subjects": 2,
+          "z_sd": {
+            "n": 2,
+            "median": 0.15770999018858944,
+            "q25": 0.1508239246308435,
+            "q75": 0.1645960557463354,
+            "mad": 0.013772131115491942,
+            "frac_abs_gt_2": 0.0
+          },
+          "z_step_abs_median": {
+            "n": 2,
+            "median": 0.2421702706396803,
+            "q25": 0.21285441749357858,
+            "q75": 0.271486123785782,
+            "mad": 0.058631706292203406,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "cops",
+          "n_subjects": 2,
+          "z_sd": {
+            "n": 2,
+            "median": 0.6702983791910917,
+            "q25": 0.5555993897594808,
+            "q75": 0.7849973686227028,
+            "mad": 0.22939797886322197,
+            "frac_abs_gt_2": 0.0
+          },
+          "z_step_abs_median": {
+            "n": 2,
+            "median": 0.5290896423146101,
+            "q25": 0.41191649343827696,
+            "q75": 0.6462627911909431,
+            "mad": 0.23434629775266608,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "rest_tremor_window_fraction",
+          "reference": "nhanes",
+          "n_subjects": 2,
+          "z_sd": {
+            "n": 2,
+            "median": 1.4730556397056138,
+            "q25": 1.220991785016504,
+            "q75": 1.7251194943947237,
+            "mad": 0.5041277093782197,
+            "frac_abs_gt_2": 0.0
+          },
+          "z_step_abs_median": {
+            "n": 2,
+            "median": 1.1627336507391037,
+            "q25": 0.9052325540146233,
+            "q75": 1.4202347474635844,
+            "mad": 0.5150021934489611,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "cops",
+          "n_subjects": 2,
+          "z_sd": {
+            "n": 1,
+            "median": 0.9300473245885379,
+            "q25": 0.9300473245885379,
+            "q75": 0.9300473245885379,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          },
+          "z_step_abs_median": {
+            "n": 1,
+            "median": 1.8794934520757274,
+            "q25": 1.8794934520757274,
+            "q75": 1.8794934520757274,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        },
+        {
+          "split": "valid",
+          "metric": "walking_cadence_hourly_median_mean_hz",
+          "reference": "nhanes",
+          "n_subjects": 2,
+          "z_sd": {
+            "n": 1,
+            "median": 0.7335239687702797,
+            "q25": 0.7335239687702797,
+            "q75": 0.7335239687702797,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          },
+          "z_step_abs_median": {
+            "n": 1,
+            "median": 1.4823476825270918,
+            "q25": 1.4823476825270918,
+            "q75": 1.4823476825270918,
+            "mad": 0.0,
+            "frac_abs_gt_2": 0.0
+          }
+        }
+      ]
+    }
+  },
+  "gates": [
+    {
+      "gate": "jackknife_median_shift[cops/enmo_hourly_median_mean_g]",
+      "value": 0.23483095918415958,
+      "threshold": 0.5,
+      "status": "pass"
+    },
+    {
+      "gate": "jackknife_median_shift[cops/walking_cadence_hourly_median_mean_hz]",
+      "value": 0.3645946784675046,
+      "threshold": 0.5,
+      "status": "pass"
+    },
+    {
+      "gate": "jackknife_median_shift[cops/rest_tremor_window_fraction]",
+      "value": 0.1335412115040775,
+      "threshold": 0.5,
+      "status": "pass"
+    },
+    {
+      "gate": "jackknife_median_shift[nhanes/enmo_hourly_median_mean_g]",
+      "value": 0.19996376404823732,
+      "threshold": 0.5,
+      "status": "pass"
+    },
+    {
+      "gate": "jackknife_median_shift[nhanes/walking_cadence_hourly_median_mean_hz]",
+      "value": 0.35892304360127303,
+      "threshold": 0.5,
+      "status": "pass"
+    },
+    {
+      "gate": "jackknife_median_shift[nhanes/rest_tremor_window_fraction]",
+      "value": 0.34146063899114254,
+      "threshold": 0.5,
+      "status": "pass"
+    },
+    {
+      "gate": "bootstrap_median_ci_width[cops/enmo_hourly_median_mean_g]",
+      "value": 1.0777603214439093,
+      "threshold": 2.0,
+      "status": "pass"
+    },
+    {
+      "gate": "bootstrap_median_ci_width[cops/walking_cadence_hourly_median_mean_hz]",
+      "value": 1.6999173570598034,
+      "threshold": 2.0,
+      "status": "pass"
+    },
+    {
+      "gate": "bootstrap_median_ci_width[cops/rest_tremor_window_fraction]",
+      "value": 1.3407860079432141,
+      "threshold": 2.0,
+      "status": "pass"
+    },
+    {
+      "gate": "bootstrap_median_ci_width[nhanes/enmo_hourly_median_mean_g]",
+      "value": 1.2880947245179875,
+      "threshold": 2.0,
+      "status": "pass"
+    },
+    {
+      "gate": "bootstrap_median_ci_width[nhanes/walking_cadence_hourly_median_mean_hz]",
+      "value": 1.4240483171577576,
+      "threshold": 2.0,
+      "status": "pass"
+    },
+    {
+      "gate": "bootstrap_median_ci_width[nhanes/rest_tremor_window_fraction]",
+      "value": 1.646497521880983,
+      "threshold": 2.0,
+      "status": "pass"
+    },
+    {
+      "gate": "no_lookahead[train]",
+      "value": null,
+      "threshold": 0,
+      "status": "not_evaluable"
+    },
+    {
+      "gate": "no_lookahead[valid]",
+      "value": 0,
+      "threshold": 0,
+      "status": "pass"
+    },
+    {
+      "gate": "schema_and_semantic_validation",
+      "value": 33,
+      "threshold": "build_analysis/validate_output",
+      "status": "pass"
+    },
+    {
+      "gate": "baseline_unchanged",
+      "value": true,
+      "threshold": true,
+      "status": "pass"
+    },
+    {
+      "gate": "audit[baseline_lock]",
+      "value": "0 failed / 3 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "audit[hash_chain]",
+      "value": "0 failed / 2 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "audit[reference_formulas]",
+      "value": "0 failed / 54 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "audit[distances]",
+      "value": "0 failed / 660 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "audit[null_handling]",
+      "value": "0 failed / 66 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "audit[previous_day]",
+      "value": "0 failed / 132 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "audit[coverage]",
+      "value": "0 failed / 381 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "audit[official_reports]",
+      "value": "0 failed / 0 checked",
+      "threshold": "0 failed",
+      "status": "not_evaluable"
+    },
+    {
+      "gate": "audit[test_lock]",
+      "value": "0 failed / 3 checked",
+      "threshold": "0 failed",
+      "status": "pass"
+    },
+    {
+      "gate": "protected_paths_unchanged",
+      "value": [],
+      "threshold": [
+        "src",
+        "tools",
+        "config",
+        "metadata",
+        "tests"
+      ],
+      "status": "pass"
+    }
+  ],
+  "protected_paths_unchanged": true,
+  "overall": "pass_with_unevaluable",
+  "test_ready_cells": [
+    {
+      "dataset": "cops",
+      "metric": "enmo_hourly_median_mean_g",
+      "ready": false,
+      "reasons": [
+        "valid_level=descriptive_only"
+      ]
+    },
+    {
+      "dataset": "cops",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "ready": false,
+      "reasons": [
+        "valid_level=unavailable"
+      ]
+    },
+    {
+      "dataset": "cops",
+      "metric": "rest_tremor_window_fraction",
+      "ready": false,
+      "reasons": [
+        "valid_level=descriptive_only"
+      ]
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "enmo_hourly_median_mean_g",
+      "ready": false,
+      "reasons": [
+        "valid_level=descriptive_only"
+      ]
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "ready": false,
+      "reasons": [
+        "valid_level=descriptive_only"
+      ]
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "rest_tremor_window_fraction",
+      "ready": false,
+      "reasons": [
+        "valid_level=descriptive_only"
+      ]
+    }
+  ]
+}

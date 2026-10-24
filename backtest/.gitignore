@@ -1,3 +1,4 @@
-# Backtest data/results contain per-subject information: never commit.
+# Working dirs (per-subject data, raw/parquet caches, runs in progress): never commit directly.
+# Results meant for publication are copied as a checksummed snapshot into results/ at the repo root.
 workspace/
 outputs/

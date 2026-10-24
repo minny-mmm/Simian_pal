@@ -1,0 +1,406 @@
+{
+  "run_id": "real-symptom-v1",
+  "mode": "real",
+  "created_utc": "2026-10-24T08:57:00.880703+00:00",
+  "caveat": "Distances from the COPS/NHANES cohort references only, not diagnosis, severity or probability. Cohort = device brand for 100% of subjects, so any COPS-vs-NHANES difference may be the device.",
+  "data_kind": "real",
+  "baseline_sha256": "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de",
+  "unavailable": [
+    {
+      "input": "test_bundle",
+      "path": null,
+      "status": "blocked_no_test_features"
+    }
+  ],
+  "evaluability": [
+    {
+      "dataset": "cops",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_reference_participants": 6,
+      "n_reference_days": 28,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "cops",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_reference_participants": 5,
+      "n_reference_days": 18,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": false,
+      "n_loo_insufficient": 5,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 0,
+      "valid_level": "unavailable",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "cops",
+      "metric": "rest_tremor_window_fraction",
+      "n_reference_participants": 6,
+      "n_reference_days": 28,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_reference_participants": 5,
+      "n_reference_days": 30,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": false,
+      "n_loo_insufficient": 5,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_reference_participants": 4,
+      "n_reference_days": 22,
+      "reference_status": "insufficient_data",
+      "full_reference_evaluable": false,
+      "loo_jackknife_evaluable": false,
+      "n_loo_insufficient": 4,
+      "bootstrap_evaluable": false,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "rest_tremor_window_fraction",
+      "n_reference_participants": 5,
+      "n_reference_days": 30,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": false,
+      "n_loo_insufficient": 5,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 1,
+      "valid_level": "descriptive_only",
+      "test_level": "blocked_no_test_features"
+    }
+  ],
+  "tracks": {
+    "symptom": {
+      "status": "ok",
+      "source": "1579 matched hours from 1722 feature hours and 2244 label hours (31 train/valid files; 0 other files not opened); label match rate 0.704",
+      "features": [
+        "walk_frac",
+        "rest_frac",
+        "tremor_frac_all",
+        "tremor_frac_of_rest",
+        "enmo_median",
+        "enmo_p90",
+        "jerk_median",
+        "jerk_p90",
+        "dyn_rms_median",
+        "dyn_rms_p90",
+        "mag_sd_median",
+        "mag_iqr_median",
+        "sma_median",
+        "spec_entropy_median",
+        "dyn_power_nongait_median",
+        "dyn_power_nongait_p90",
+        "step_freq_walk_median",
+        "step_freq_walk_sd",
+        "step_ac_walk_median",
+        "stride_reg_walk_median",
+        "sampen_walk_median",
+        "dyn_rms_walk_median",
+        "swing_walk_median",
+        "tremor_rms_rest_p90",
+        "tremor_ratio_rest_median",
+        "dom_freq_rest_median",
+        "tremor_amp_log_tremor_median",
+        "tremor_freq_tremor_median"
+      ],
+      "n_folds": 5,
+      "folds": [
+        {
+          "fold": 0,
+          "status": "ok",
+          "n_test_subjects": 6
+        },
+        {
+          "fold": 1,
+          "status": "ok",
+          "n_test_subjects": 6
+        },
+        {
+          "fold": 2,
+          "status": "ok",
+          "n_test_subjects": 6
+        },
+        {
+          "fold": 3,
+          "status": "ok",
+          "n_test_subjects": 7
+        },
+        {
+          "fold": 4,
+          "status": "ok",
+          "n_test_subjects": 6
+        }
+      ],
+      "cv": {
+        "n_hours": 1579,
+        "n_subjects": 31,
+        "prevalence": 0.27549081697276756,
+        "balanced_accuracy": 0.4822914154810707,
+        "pr_auc": 0.27641222509033975,
+        "recall_per_class": {
+          "0": 0.6197552447552448,
+          "1": 0.3448275862068966
+        },
+        "dummy": {
+          "balanced_accuracy": 0.5,
+          "pr_auc": 0.27549081697276756
+        },
+        "per_subject": [
+          {
+            "subject_id": "COPS-10",
+            "n_hours": 67,
+            "positive_rate": 0.029850746268656716,
+            "accuracy": 0.7611940298507462
+          },
+          {
+            "subject_id": "COPS-13",
+            "n_hours": 58,
+            "positive_rate": 0.2413793103448276,
+            "accuracy": 0.5517241379310345
+          },
+          {
+            "subject_id": "COPS-14",
+            "n_hours": 58,
+            "positive_rate": 0.22413793103448276,
+            "accuracy": 0.6551724137931034
+          },
+          {
+            "subject_id": "COPS-15",
+            "n_hours": 80,
+            "positive_rate": 1.0,
+            "accuracy": 0.2
+          },
+          {
+            "subject_id": "COPS-16",
+            "n_hours": 78,
+            "positive_rate": 0.2948717948717949,
+            "accuracy": 0.32051282051282054
+          },
+          {
+            "subject_id": "COPS-17",
+            "n_hours": 72,
+            "positive_rate": 0.3472222222222222,
+            "accuracy": 0.6111111111111112
+          },
+          {
+            "subject_id": "COPS-23",
+            "n_hours": 57,
+            "positive_rate": 0.08771929824561403,
+            "accuracy": 0.6140350877192983
+          },
+          {
+            "subject_id": "COPS-26",
+            "n_hours": 45,
+            "positive_rate": 0.0,
+            "accuracy": 0.5111111111111111
+          },
+          {
+            "subject_id": "COPS-33",
+            "n_hours": 71,
+            "positive_rate": 1.0,
+            "accuracy": 0.5070422535211268
+          },
+          {
+            "subject_id": "COPS-34",
+            "n_hours": 58,
+            "positive_rate": 0.0,
+            "accuracy": 0.4827586206896552
+          },
+          {
+            "subject_id": "COPS-35",
+            "n_hours": 63,
+            "positive_rate": 0.0,
+            "accuracy": 0.6984126984126984
+          },
+          {
+            "subject_id": "COPS-37",
+            "n_hours": 55,
+            "positive_rate": 0.0,
+            "accuracy": 0.6363636363636364
+          },
+          {
+            "subject_id": "COPS-40",
+            "n_hours": 42,
+            "positive_rate": 0.21428571428571427,
+            "accuracy": 0.6428571428571429
+          },
+          {
+            "subject_id": "COPS-41",
+            "n_hours": 68,
+            "positive_rate": 0.8823529411764706,
+            "accuracy": 0.14705882352941177
+          },
+          {
+            "subject_id": "COPS-43",
+            "n_hours": 3,
+            "positive_rate": 1.0,
+            "accuracy": 0.3333333333333333
+          },
+          {
+            "subject_id": "COPS-45",
+            "n_hours": 33,
+            "positive_rate": 0.9393939393939394,
+            "accuracy": 0.696969696969697
+          },
+          {
+            "subject_id": "COPS-48",
+            "n_hours": 48,
+            "positive_rate": 0.14583333333333334,
+            "accuracy": 0.3125
+          },
+          {
+            "subject_id": "COPS-49",
+            "n_hours": 37,
+            "positive_rate": 0.0,
+            "accuracy": 0.9459459459459459
+          },
+          {
+            "subject_id": "COPS-5",
+            "n_hours": 68,
+            "positive_rate": 0.058823529411764705,
+            "accuracy": 0.6617647058823529
+          },
+          {
+            "subject_id": "COPS-51",
+            "n_hours": 72,
+            "positive_rate": 0.25,
+            "accuracy": 0.5
+          },
+          {
+            "subject_id": "COPS-52",
+            "n_hours": 55,
+            "positive_rate": 0.0,
+            "accuracy": 0.8727272727272727
+          },
+          {
+            "subject_id": "COPS-54",
+            "n_hours": 36,
+            "positive_rate": 0.0,
+            "accuracy": 0.7777777777777778
+          },
+          {
+            "subject_id": "COPS-55",
+            "n_hours": 36,
+            "positive_rate": 0.0,
+            "accuracy": 0.5277777777777778
+          },
+          {
+            "subject_id": "COPS-56",
+            "n_hours": 54,
+            "positive_rate": 0.14814814814814814,
+            "accuracy": 0.3148148148148148
+          },
+          {
+            "subject_id": "COPS-59",
+            "n_hours": 42,
+            "positive_rate": 0.7857142857142857,
+            "accuracy": 0.23809523809523808
+          },
+          {
+            "subject_id": "COPS-6",
+            "n_hours": 47,
+            "positive_rate": 0.0,
+            "accuracy": 0.6808510638297872
+          },
+          {
+            "subject_id": "COPS-61",
+            "n_hours": 9,
+            "positive_rate": 0.1111111111111111,
+            "accuracy": 0.8888888888888888
+          },
+          {
+            "subject_id": "COPS-62",
+            "n_hours": 44,
+            "positive_rate": 0.45454545454545453,
+            "accuracy": 0.6363636363636364
+          },
+          {
+            "subject_id": "COPS-66",
+            "n_hours": 52,
+            "positive_rate": 0.15384615384615385,
+            "accuracy": 0.6346153846153846
+          },
+          {
+            "subject_id": "COPS-8",
+            "n_hours": 34,
+            "positive_rate": 0.0,
+            "accuracy": 0.7941176470588235
+          },
+          {
+            "subject_id": "COPS-9",
+            "n_hours": 37,
+            "positive_rate": 0.0,
+            "accuracy": 0.2702702702702703
+          }
+        ],
+        "balanced_accuracy_subject_ci95": {
+          "low": 0.4157289445070315,
+          "high": 0.5532193832454164,
+          "n_valid": 200
+        },
+        "pr_auc_subject_ci95": {
+          "low": 0.172449437731306,
+          "high": 0.4072864871090138,
+          "n_valid": 200
+        }
+      },
+      "valid": {
+        "status": "insufficient_valid",
+        "n_subjects": 0,
+        "n_classes": 0
+      },
+      "note": "Exploratory hourly symptom task, not the baseline target (README_model_plan.md)."
+    }
+  },
+  "gates": [
+    {
+      "gate": "baseline_unchanged",
+      "value": true,
+      "threshold": true,
+      "status": "pass"
+    },
+    {
+      "gate": "protected_paths_unchanged",
+      "value": [],
+      "threshold": [
+        "src",
+        "tools",
+        "config",
+        "metadata",
+        "tests"
+      ],
+      "status": "pass"
+    }
+  ],
+  "protected_paths_unchanged": true,
+  "overall": "pass"
+}

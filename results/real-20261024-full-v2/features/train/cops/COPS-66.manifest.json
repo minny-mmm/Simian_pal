@@ -1,0 +1,2146 @@
+{
+  "verified": true,
+  "data_kind": "real",
+  "dataset": "cops",
+  "subject_id": "COPS-66",
+  "split": "train",
+  "feature_contract": "mew-37d5722-reference-v1",
+  "preprocessing_version": "3d6be89a1c3b7beae0f6818f39895f7143fb6cc2cda21eebd76e9a8fad003d11",
+  "source_branch": "origin/Mew_Feature",
+  "source_commit": "37d5722",
+  "extractor_sha256": "25c5d87292b045278afa58c0ee495b0968192d60573dc4cbcf24f1720d436362",
+  "extractor_config": {
+    "walk_stride_reg": 0.5,
+    "walk_dyn_rms": 0.12,
+    "clean_walk_stride_reg": 0.7,
+    "rest_swing_deg": 15.0,
+    "rest_dyn_rms": 0.08,
+    "tremor_ratio": 0.5,
+    "tremor_rms": 0.015,
+    "min_windows_per_hour": 30,
+    "min_walk_windows_for_sd": 3,
+    "day_hours": [
+      9,
+      21
+    ]
+  },
+  "hourly_sha256": "6874bdc1f618de4b93851fc56b536e3568ca3293045a9b80131b43c7201a23b2",
+  "clean_parquet_sha256": "248653786e27d3af5fa9584bd78e6334cf16cd17589b5166675392ba78a7cd4a",
+  "qc_sha256": "3bf633c5aad81ca815f5a0af0474eed036339e5dd42ade76b1b70c258a3509f8",
+  "qc_valid_days": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "source_clean_config_snapshot": {
+    "abnormal": {
+      "gravity_hour_min_windows": 6,
+      "gravity_hour_tol_g": 0.1,
+      "gravity_sd_max_g": 0.013,
+      "gravity_tol_g": 0.1,
+      "gravity_window_s": 10,
+      "spike_g": 3.0,
+      "spike_pad_s": 0.1,
+      "stuck_eps_g": 1e-05,
+      "stuck_min_s": 60,
+      "zero_g": 0.05,
+      "zero_min_s": 1.0
+    },
+    "calibration": {
+      "max_iter": 1000,
+      "max_norm_dev_g": 0.15,
+      "min_points": 50,
+      "sd_max_g": 0.013,
+      "sphere_g": 0.3,
+      "tol": 1e-10,
+      "window_s": 10
+    },
+    "clip": {
+      "flag_g": 5.9,
+      "limit_g": 6.0
+    },
+    "days": {
+      "include_visits": [
+        "outpatient"
+      ],
+      "min_valid_days": 3,
+      "min_valid_hours": 10
+    },
+    "default_visit": "outpatient",
+    "harmonize": {
+      "add_noise": {
+        "datasets": [
+          "nhanes"
+        ],
+        "seed": 0,
+        "target_mg": [
+          4.93,
+          5.07,
+          6.0
+        ]
+      },
+      "min_noise_windows": 30,
+      "noise_window_s": 10,
+      "quantize": {
+        "datasets": [
+          "cops",
+          "nhanes"
+        ],
+        "step_g": 0.0039
+      }
+    },
+    "ism": {
+      "constant_sd_max_g": 0.001,
+      "constant_window_s": 1,
+      "min_valid_frac": 0.5,
+      "range_max_g": 0.05,
+      "window_s": 10
+    },
+    "nonwear": {
+      "min_axes": 2,
+      "min_valid_frac": 0.5,
+      "range_max_g": 0.05,
+      "range_smooth_s": 1,
+      "sd_max_g": 0.013,
+      "step_min": 15,
+      "window_min": 60
+    },
+    "out_dir": "data/clean/reference-runs/real-20261024-full-v2",
+    "qc_summary": "reports/reference_baseline/real-20261024-full-v2/qc_summary.csv",
+    "resample": {
+      "chunk_s": 600,
+      "context_s": 5,
+      "fs_out": 50,
+      "min_run_s": 1.0
+    },
+    "sleep": {
+      "epoch_s": 5,
+      "max_gap_min": 60,
+      "median_window_min": 5,
+      "min_block_min": 30,
+      "min_window_hours": 12,
+      "multiplier": 15,
+      "percentile": 10,
+      "threshold_max_deg": 0.5,
+      "threshold_min_deg": 0.13
+    },
+    "subjects": {
+      "cops_splits": "metadata/cops_splits.csv",
+      "cops_summary": "reports/cops_visit_summary.csv",
+      "nhanes_selected": "metadata/nhanes_splits.csv"
+    },
+    "time": {
+      "max_interp_gap_s": 1.0
+    }
+  },
+  "clean_run_evidence": {
+    "schema_version": 1,
+    "kind": "clean_run_evidence",
+    "run_id": "real-20261024-full-v2",
+    "recorded_at_utc": "2026-10-24T12:33:32.789492+00:00",
+    "evidence_uri": "file:///D:/AWS/Simianpal-refrun/data/clean/reference-runs/real-20261024-full-v2/cops/COPS-66.started.json",
+    "dataset": "cops",
+    "subject_id": "COPS-66",
+    "wrist": "left",
+    "split": "train",
+    "status": "completed",
+    "started_utc": "2026-10-24T12:30:46.669899+00:00",
+    "resolved_clean_config": {
+      "abnormal": {
+        "gravity_hour_min_windows": 6,
+        "gravity_hour_tol_g": 0.1,
+        "gravity_sd_max_g": 0.013,
+        "gravity_tol_g": 0.1,
+        "gravity_window_s": 10,
+        "spike_g": 3.0,
+        "spike_pad_s": 0.1,
+        "stuck_eps_g": 1e-05,
+        "stuck_min_s": 60,
+        "zero_g": 0.05,
+        "zero_min_s": 1.0
+      },
+      "calibration": {
+        "max_iter": 1000,
+        "max_norm_dev_g": 0.15,
+        "min_points": 50,
+        "sd_max_g": 0.013,
+        "sphere_g": 0.3,
+        "tol": 1e-10,
+        "window_s": 10
+      },
+      "clip": {
+        "flag_g": 5.9,
+        "limit_g": 6.0
+      },
+      "days": {
+        "include_visits": [
+          "outpatient"
+        ],
+        "min_valid_days": 3,
+        "min_valid_hours": 10
+      },
+      "default_visit": "outpatient",
+      "harmonize": {
+        "add_noise": {
+          "datasets": [
+            "nhanes"
+          ],
+          "seed": 0,
+          "target_mg": [
+            4.93,
+            5.07,
+            6.0
+          ]
+        },
+        "min_noise_windows": 30,
+        "noise_window_s": 10,
+        "quantize": {
+          "datasets": [
+            "cops",
+            "nhanes"
+          ],
+          "step_g": 0.0039
+        }
+      },
+      "ism": {
+        "constant_sd_max_g": 0.001,
+        "constant_window_s": 1,
+        "min_valid_frac": 0.5,
+        "range_max_g": 0.05,
+        "window_s": 10
+      },
+      "nonwear": {
+        "min_axes": 2,
+        "min_valid_frac": 0.5,
+        "range_max_g": 0.05,
+        "range_smooth_s": 1,
+        "sd_max_g": 0.013,
+        "step_min": 15,
+        "window_min": 60
+      },
+      "out_dir": "data/clean/reference-runs/real-20261024-full-v2",
+      "qc_summary": "reports/reference_baseline/real-20261024-full-v2/qc_summary.csv",
+      "resample": {
+        "chunk_s": 600,
+        "context_s": 5,
+        "fs_out": 50,
+        "min_run_s": 1.0
+      },
+      "sleep": {
+        "epoch_s": 5,
+        "max_gap_min": 60,
+        "median_window_min": 5,
+        "min_block_min": 30,
+        "min_window_hours": 12,
+        "multiplier": 15,
+        "percentile": 10,
+        "threshold_max_deg": 0.5,
+        "threshold_min_deg": 0.13
+      },
+      "subjects": {
+        "cops_splits": "metadata/cops_splits.csv",
+        "cops_summary": "reports/cops_visit_summary.csv",
+        "nhanes_selected": "metadata/nhanes_splits.csv"
+      },
+      "time": {
+        "max_interp_gap_s": 1.0
+      }
+    },
+    "resolved_config": {
+      "clean": {
+        "abnormal": {
+          "gravity_hour_min_windows": 6,
+          "gravity_hour_tol_g": 0.1,
+          "gravity_sd_max_g": 0.013,
+          "gravity_tol_g": 0.1,
+          "gravity_window_s": 10,
+          "spike_g": 3.0,
+          "spike_pad_s": 0.1,
+          "stuck_eps_g": 1e-05,
+          "stuck_min_s": 60,
+          "zero_g": 0.05,
+          "zero_min_s": 1.0
+        },
+        "calibration": {
+          "max_iter": 1000,
+          "max_norm_dev_g": 0.15,
+          "min_points": 50,
+          "sd_max_g": 0.013,
+          "sphere_g": 0.3,
+          "tol": 1e-10,
+          "window_s": 10
+        },
+        "clip": {
+          "flag_g": 5.9,
+          "limit_g": 6.0
+        },
+        "days": {
+          "include_visits": [
+            "outpatient"
+          ],
+          "min_valid_days": 3,
+          "min_valid_hours": 10
+        },
+        "default_visit": "outpatient",
+        "harmonize": {
+          "add_noise": {
+            "datasets": [
+              "nhanes"
+            ],
+            "seed": 0,
+            "target_mg": [
+              4.93,
+              5.07,
+              6.0
+            ]
+          },
+          "min_noise_windows": 30,
+          "noise_window_s": 10,
+          "quantize": {
+            "datasets": [
+              "cops",
+              "nhanes"
+            ],
+            "step_g": 0.0039
+          }
+        },
+        "ism": {
+          "constant_sd_max_g": 0.001,
+          "constant_window_s": 1,
+          "min_valid_frac": 0.5,
+          "range_max_g": 0.05,
+          "window_s": 10
+        },
+        "nonwear": {
+          "min_axes": 2,
+          "min_valid_frac": 0.5,
+          "range_max_g": 0.05,
+          "range_smooth_s": 1,
+          "sd_max_g": 0.013,
+          "step_min": 15,
+          "window_min": 60
+        },
+        "out_dir": "data/clean/reference-runs/real-20261024-full-v2",
+        "qc_summary": "reports/reference_baseline/real-20261024-full-v2/qc_summary.csv",
+        "resample": {
+          "chunk_s": 600,
+          "context_s": 5,
+          "fs_out": 50,
+          "min_run_s": 1.0
+        },
+        "sleep": {
+          "epoch_s": 5,
+          "max_gap_min": 60,
+          "median_window_min": 5,
+          "min_block_min": 30,
+          "min_window_hours": 12,
+          "multiplier": 15,
+          "percentile": 10,
+          "threshold_max_deg": 0.5,
+          "threshold_min_deg": 0.13
+        },
+        "subjects": {
+          "cops_splits": "metadata/cops_splits.csv",
+          "cops_summary": "reports/cops_visit_summary.csv",
+          "nhanes_selected": "metadata/nhanes_splits.csv"
+        },
+        "time": {
+          "max_interp_gap_s": 1.0
+        }
+      },
+      "datasets": {
+        "cops": {
+          "acc_includes_gravity": true,
+          "acc_unit": "g",
+          "enabled": true,
+          "gyro_unit": null,
+          "raw_dir": "data/raw/reference-runs/real-20261024-full-v2/cops",
+          "sampling_rate_hz": 100,
+          "subject_file": "data/processed/subject_data/subject_metadata_COv.csv"
+        },
+        "nhanes": {
+          "acc_includes_gravity": true,
+          "acc_unit": "g",
+          "enabled": false,
+          "gyro_unit": null,
+          "raw_dir": "data/raw/reference-runs/real-20261024-full-v2/nhanes",
+          "sampling_rate_hz": 80,
+          "subject_file": "data/processed/subject_data/subject_metadata_NHA.csv"
+        }
+      },
+      "paths": {
+        "manifest": "metadata/manifest.csv",
+        "processed": "data/processed",
+        "raw": "data/raw",
+        "sensor_data": "data/processed/sensor_data"
+      },
+      "storage": {
+        "aws_profile": "minny",
+        "endpoint_url": null,
+        "region": "ap-southeast-1",
+        "s3_root": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline"
+      }
+    },
+    "code_version": {
+      "git_commit": "70e7db7ac363997d569eb7e760e39ece13305873",
+      "files": {
+        "src/clean/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/clean/run.py": "370db3dd956ad73290e985899f6adc55bafbbd462c8c6c88841068001f01aabb",
+        "src/clean/steps.py": "7e5d41486434825188f632a8d8bcb33689e8f82e958c77a94e20f30d5059b46f",
+        "src/clean/noise_target.py": "a7f54756cc93074ec6755be4a8e8fa6a32f2c1ccf0179c27261cf0c3c9a378da",
+        "src/clean/report.py": "2d75ec0d639182573eca99e803d9c9e85a1cbea72a189f710364c045142c4c03",
+        "src/ingestion/__init__.py": "65c20dc8fa688cea7f3eabc0eb2570733883dc013100c0dd44f19977902884f2",
+        "src/ingestion/base.py": "6bc4e0eb8296ebbbf9b5e6e1c2f89b6b97d198f1acaecc9382949e1d364e49a1",
+        "src/ingestion/cops_reader.py": "5d0fb8ae0a72c954ac523bd2cbe22d603ec5915e0f74e10a55df91adb1f9cf3c",
+        "src/ingestion/nhanes_reader.py": "bb61a01bf9b19d13c945cce8c1dc8cee797cecee1d48b68acef8577f5fa9aa0a",
+        "src/ingestion/unzip_cops.py": "7927bd1492c758520cf2726d1f85789d6d12f4db46ec0020a251d43f0331448a"
+      }
+    },
+    "dependencies": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "packages": {
+        "numpy": "2.5.4",
+        "pandas": "3.0.6",
+        "scipy": "1.18.1",
+        "pyarrow": "26.0.0",
+        "PyYAML": "6.0.3",
+        "s3fs": "2026.9.0"
+      }
+    },
+    "inputs": [
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_15h-16h_leftWrist.zip",
+        "sha256": "977ebd4b82fda6b87c7641a3df191a8b7f698e13ee264cdaeba3276cda8a8fcf",
+        "size": 2055800,
+        "etag": "\"d583baa5fbe269e295fe9c9da2595558\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.184103+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_16h-17h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_16h-17h_leftWrist.zip",
+        "sha256": "74186874e6ec38fad860e167fe925c9ef6c46c062e0c723c72c4a0a338f186b0",
+        "size": 2726621,
+        "etag": "\"5385735730419f512418c4740a970d4c\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.427563+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_17h-18h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_17h-18h_leftWrist.zip",
+        "sha256": "bd232b8eda3ef1f2a37658d25c592dc574a25a812d06af2d12821669e98bbbe2",
+        "size": 3036037,
+        "etag": "\"00e153840be079a987bb80d0f10c78bd\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.213710+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_18h-19h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_18h-19h_leftWrist.zip",
+        "sha256": "399c6ba4ff92f7c94d6629ab6b2a2bc3f047357bdc9d4fae1edc9a3abc569d4d",
+        "size": 2697925,
+        "etag": "\"0739bc095084906bf3ee1a36e8b394dd\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.542324+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_19h-20h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_19h-20h_leftWrist.zip",
+        "sha256": "aff231d611260d6acaf5602cde491b0431a5aa698cbb612c907661ec1875f3de",
+        "size": 2499406,
+        "etag": "\"2a5c30632145cacd5eb8ac370fd745fb\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.532590+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_20h-21h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_20h-21h_leftWrist.zip",
+        "sha256": "48efd443536c57d993d9bf2b07d58161af9fd46877e6da083339e489f58efb18",
+        "size": 2471974,
+        "etag": "\"5d5dea2cf5f514e7a95b2bd17d24cb8c\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.576791+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_21h-22h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_21h-22h_leftWrist.zip",
+        "sha256": "559c5dff95c4942763d2486dff3c7a6f3c4b3c3502b2a7fe52bbd19c9beeb7ba",
+        "size": 2132045,
+        "etag": "\"71837ece836ee25b19bd26d2e60c69b2\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.800339+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_22h-23h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_22h-23h_leftWrist.zip",
+        "sha256": "1facf2c65f330c0ecf974e28d29d7a916375b8fd943cd7b912d41d77cbeed60c",
+        "size": 1864641,
+        "etag": "\"50315da7cc66beee4246347be631c23b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.960640+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day0_23h-00h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day0_23h-00h_leftWrist.zip",
+        "sha256": "96b6d9df720a2f13f3ad90641a0432086c696ef3011d08fc15977f7a52638eb7",
+        "size": 1839237,
+        "etag": "\"0dfc495741e9bf48b52e40acd18fff41\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.949717+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_00h-01h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_00h-01h_leftWrist.zip",
+        "sha256": "73f00c433657f93dff972e1b124bae9a9b85512399d643ba9cebf99e87812fa7",
+        "size": 2026001,
+        "etag": "\"7b69cea6c8bfa08c4091a9526ff907b2\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:08.862916+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_01h-02h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_01h-02h_leftWrist.zip",
+        "sha256": "b9277ffd614d3b14d0ff6b8e62017a0e869eafe94523ca5b99a62c34a224c9e3",
+        "size": 1813142,
+        "etag": "\"ed109018de33731bd72f3d0c147519af\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.067310+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_02h-03h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_02h-03h_leftWrist.zip",
+        "sha256": "b188d5a450b831ed298c7e117902b8c968e19942403ac592b5517237b165cf66",
+        "size": 1826248,
+        "etag": "\"e5decf602b78b0aa3e15a2338baa910d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.210299+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_03h-04h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_03h-04h_leftWrist.zip",
+        "sha256": "d076ec17f9692d85c9c883f3589b8fc9b3bdd6915afa337ced3e77c005c9d89f",
+        "size": 1997041,
+        "etag": "\"28132d6cd5b2edbfd3255ad779f923f0\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.242864+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_04h-05h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_04h-05h_leftWrist.zip",
+        "sha256": "df2445b7c231ebdfea87e633cc5c5bbdf7c68c31448482128d0309e4ebafcd31",
+        "size": 1974405,
+        "etag": "\"c12761f943e224d0691f18ff8165480e\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.386928+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_05h-06h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_05h-06h_leftWrist.zip",
+        "sha256": "b617dfa091e0057aacbc7cf3981494aacb7e97a12a9273374524813f08ef3377",
+        "size": 2044345,
+        "etag": "\"dcf4b5fa1f9b67d9e1c4b80e2c4043b8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.449900+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_06h-07h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_06h-07h_leftWrist.zip",
+        "sha256": "d3de16d4ea79cf77c620bf58aa2a4104ab3bedc9c6ddd4ed626c3f77f0e823c0",
+        "size": 2358543,
+        "etag": "\"82df04b008ec28aee620b6a0b2592c83\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.587223+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_07h-08h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_07h-08h_leftWrist.zip",
+        "sha256": "619736cb8f78d8dbcbb561889a4e9f4f9308ffcf72154c9289fbfef849ac162d",
+        "size": 2550512,
+        "etag": "\"ecc74dd67a2304279f7ca9536c7dd525\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.516751+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_08h-09h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_08h-09h_leftWrist.zip",
+        "sha256": "e43145d394aefb54cf4c6684904c9e53a9e444bf4c9aea4d9ec2092d10d37855",
+        "size": 2442594,
+        "etag": "\"9a7ed270ca808b9eef9be807a5ef3b6d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.652710+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_09h-10h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_09h-10h_leftWrist.zip",
+        "sha256": "84f9d2d7200f6cef40254e2fee88de897e1b255d70459a89c86f8aeb7885f37d",
+        "size": 2296809,
+        "etag": "\"11fdf57f608f06ee1fc1f61143092e14\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.807093+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_10h-11h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_10h-11h_leftWrist.zip",
+        "sha256": "e33de0eb66f55316ad8e3bbdcb1c0c3d4e048517354ca19f6ae8481645d3ddff",
+        "size": 2358456,
+        "etag": "\"ac97091aa3d98c632137f47e418c33ef\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.809139+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_11h-12h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_11h-12h_leftWrist.zip",
+        "sha256": "05dccca9061b0b5eb940df60aff1cb1bed2455e0fbb3c332f3d86de584f2fb90",
+        "size": 2414932,
+        "etag": "\"b24d7ff6de5bda90401933eb12a9b67b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.985361+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_12h-13h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_12h-13h_leftWrist.zip",
+        "sha256": "d162c0afe0f0851952a9dc05a0ed619df6f15dc827715ce5a0e1800e568ad379",
+        "size": 2553938,
+        "etag": "\"e8589b26d66e47075bfefc6df0033fb1\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:09.936979+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_13h-14h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_13h-14h_leftWrist.zip",
+        "sha256": "5271b6049ed3d5fe7385962efca2250e7e5084b2f5e01eb70e921a6d55b93894",
+        "size": 2147579,
+        "etag": "\"ddd8d371b1d68c2bbe68d86896d2dca7\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.148129+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_14h-15h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_14h-15h_leftWrist.zip",
+        "sha256": "3eac5e9cab0136d906627586a6fbc00f43e8446acf807160e73080ed787bd056",
+        "size": 2321052,
+        "etag": "\"a78f4c02941706c009a73fa3d7795a5a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.101073+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_15h-16h_leftWrist.zip",
+        "sha256": "beacddb1663e3a09d094921ead0ba42b5f33990162ea5b10293a9e6e0b0b0c05",
+        "size": 2945655,
+        "etag": "\"51cdde54df7bf154ab0e0ee493518b9a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.371809+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_16h-17h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_16h-17h_leftWrist.zip",
+        "sha256": "089a7bdc9bcfb82f150ee5770d0d0d8c6c15af93390c2d1aae7131d334255ea0",
+        "size": 2464280,
+        "etag": "\"94a826b97458bef7384b7fe84b2f439b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.279799+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_17h-18h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_17h-18h_leftWrist.zip",
+        "sha256": "f77b09e514d01d21bb9596ad9a24f2762eac34dbe8e1c69a1a594816b9553da5",
+        "size": 2638244,
+        "etag": "\"1befe38363df0ab86bc2336b389f6e40\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.457302+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_18h-19h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_18h-19h_leftWrist.zip",
+        "sha256": "86e1074bbfafde20da8cad447ed1511ac7b8436316bc267c3c48efeb25497e2f",
+        "size": 3139613,
+        "etag": "\"0031a1b4fa4be43acb7c89134ef386d6\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.579814+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_19h-20h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_19h-20h_leftWrist.zip",
+        "sha256": "9c45800650d166b265cc3eef6eaeea41c58a2d2082e91dfdf8e7dd1a2c11f92c",
+        "size": 2281247,
+        "etag": "\"cf41c2abd6c22226bc9b93404a8a2170\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.511375+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_20h-21h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_20h-21h_leftWrist.zip",
+        "sha256": "78c972dd19899144775f4844b3672bc7b75916aa9f4faaad2b682ae997247f4e",
+        "size": 2269819,
+        "etag": "\"31fa7aa33dd79daa32659849e2c21e35\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.746169+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_21h-22h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_21h-22h_leftWrist.zip",
+        "sha256": "058617f5b7d47624326493530c66b7637cc5da5dcdc58a20551c9f9114c4b0ab",
+        "size": 2144206,
+        "etag": "\"8e0ff908d043f443e7a8e9be6ebf44d4\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.776387+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_22h-23h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_22h-23h_leftWrist.zip",
+        "sha256": "a4915ff8078d18094adeddfec3c8fff0e3db3dc0a210bc4f358628c3a14c471e",
+        "size": 2256969,
+        "etag": "\"cf83a7af9ce89ad84fb12c9c2502bc76\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.765479+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day1_23h-00h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day1_23h-00h_leftWrist.zip",
+        "sha256": "3354323b906452987f7b1ad27b739c4d4fa0f91efffa0a2498be5d217a5249ca",
+        "size": 1881342,
+        "etag": "\"f5b506c3332691a6ef382d2df6ec1eae\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:10.893444+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_00h-01h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_00h-01h_leftWrist.zip",
+        "sha256": "b6ab42e90b8c0ba97bd325cc20a322219f1c73563a712270a3aaa593bcb2936e",
+        "size": 1922635,
+        "etag": "\"2d1cdceb7dda64b614d92f580fea0315\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.076711+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_01h-02h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_01h-02h_leftWrist.zip",
+        "sha256": "28891a2b9d39697918830fb20f169bf821a58947899f601e827e45c6a2016e20",
+        "size": 1949624,
+        "etag": "\"297997bdaf46c1115cf104330484df79\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.107900+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_02h-03h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_02h-03h_leftWrist.zip",
+        "sha256": "c8fa4e90e209259b0d5ee4ff1b0e57226229987df24434d10e9f7826a40dc438",
+        "size": 2070225,
+        "etag": "\"0523b017c82fa2e53a5c3fd8591894aa\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.123880+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_03h-04h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_03h-04h_leftWrist.zip",
+        "sha256": "0d96ffce6687c712e804f745cc581ec8d1fc5cd3cff49bac7d1c9aba17bda655",
+        "size": 2245567,
+        "etag": "\"c4942ec33061e1dd9a2fb5882867c979\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.171422+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_04h-05h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_04h-05h_leftWrist.zip",
+        "sha256": "4714dbd85b24fcb2313dc91dd562fdf9631604f24c45733ac34bcb52f7dfe6ab",
+        "size": 2167640,
+        "etag": "\"8c2b695451a3d86ad0458e6101744c17\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.403303+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_05h-06h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_05h-06h_leftWrist.zip",
+        "sha256": "4fad906d8d380dffee302309a315b85944d71ac72e5d6ca6fb57125515538e84",
+        "size": 2236237,
+        "etag": "\"aff050ca3e44abd2c7a97d5f2543b7bd\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.380993+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_06h-07h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_06h-07h_leftWrist.zip",
+        "sha256": "b689165538db5cf12db483d00806133ee0fde6ca7b95d7d016207305049824e1",
+        "size": 2665994,
+        "etag": "\"e6cbecebba95f8ac947dd2ddfef2fc32\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.479933+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_07h-08h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_07h-08h_leftWrist.zip",
+        "sha256": "7f8eb52a82ae3f7710abfe4bc712813374bc641db89e68fce774c8f56e64d7c1",
+        "size": 2524454,
+        "etag": "\"b51ba07943d8b40f99dda03f5506a172\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.538380+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_08h-09h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_08h-09h_leftWrist.zip",
+        "sha256": "c297ae67c1e6ddad7134cf6ad0c49e4c1703037bef99c10bab42cec87c343106",
+        "size": 2248017,
+        "etag": "\"b7621df214865e29927aea62e6395b0d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.644668+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_09h-10h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_09h-10h_leftWrist.zip",
+        "sha256": "8f397d616e8b2c3d189186f1f7398789a6f2d946655039600a1add9588653206",
+        "size": 2287957,
+        "etag": "\"9f011cae64dbe2e37186a022ea1dcbec\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.764606+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_10h-11h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_10h-11h_leftWrist.zip",
+        "sha256": "8dcf5aae3691f5c3e809f50b0aab2f5cb87a32155c1d2957489e2b8066fab2d3",
+        "size": 2245466,
+        "etag": "\"3ed4fb42572b5918b05a86b72b4cc86c\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.817788+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_11h-12h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_11h-12h_leftWrist.zip",
+        "sha256": "9b998ab285f4f6a2638debbf23fc3528641c480ff8d5d985edace75eb1651f7d",
+        "size": 2500970,
+        "etag": "\"46446c9c016c4f10c4599b39f926f89e\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.876369+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_12h-13h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_12h-13h_leftWrist.zip",
+        "sha256": "82e0d4f7613cf1b16cfc58706c20a7ec8dd8e3aabe0a5fac7a7780e88fce1fd8",
+        "size": 2282046,
+        "etag": "\"c7c4d8407c7befbe7e87376f2fe0a846\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:11.986575+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_13h-14h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_13h-14h_leftWrist.zip",
+        "sha256": "c8d9358f2e4a0a84f5e2409d2554325331f9acedc173c0bb524257c7cd46c40c",
+        "size": 2145457,
+        "etag": "\"ce09f7c7ed696d1d033e6139b060a9a5\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.066566+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_14h-15h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_14h-15h_leftWrist.zip",
+        "sha256": "4b87c0f0517470cd8a736350a7d6c6d7cd61a8124a70d6e94d6cb903cc66716d",
+        "size": 2775829,
+        "etag": "\"99728f9f396bd11f64bc15853c577237\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.112037+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_15h-16h_leftWrist.zip",
+        "sha256": "ce3f5cdba8f90cf8f924659af7a905d6d0989ea7f99e97c3fbc16d0c6c202741",
+        "size": 2586058,
+        "etag": "\"602cb4bb3fbeba6f69d977c423c8ab6c\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.155321+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_16h-17h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_16h-17h_leftWrist.zip",
+        "sha256": "bd840b5e4c1dfb16560a1898a2a1354fed30926f16c550287bab2145ef99462b",
+        "size": 2408469,
+        "etag": "\"c1341fe97877789172c24e3b64e2ef2b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.306826+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_17h-18h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_17h-18h_leftWrist.zip",
+        "sha256": "d3a971c611ea9bac3ef1dfd689d8dfc820c9df42ec699b84fc307eb0095bb07a",
+        "size": 3602209,
+        "etag": "\"2b60f463dce0dc14fdad8dfb46bc9aad\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.487233+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_18h-19h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_18h-19h_leftWrist.zip",
+        "sha256": "f6fe4f91f6f2a388fa2d5f6b998ac99b9e87cea1b9a1ac8c4d828e2de42104e4",
+        "size": 3165809,
+        "etag": "\"aec8d877384c03e701ea3528dcb69ee8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.450889+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_19h-20h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_19h-20h_leftWrist.zip",
+        "sha256": "bbf833a055d24283964ba291b23adba8c6fac1d9abe0e498b0b237f54b721279",
+        "size": 2596182,
+        "etag": "\"ee4812466848272d7338dd926218840d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.434039+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_20h-21h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_20h-21h_leftWrist.zip",
+        "sha256": "a29316bef1bfb0dd94ed1129eec8026cd3da6fbf08a8833d918fcdf15fe2d889",
+        "size": 2921919,
+        "etag": "\"55066b5b298f39518b836a04ffedaf93\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.612821+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_21h-22h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_21h-22h_leftWrist.zip",
+        "sha256": "83ce0a1327fbec472699e4730ff0fe7a8ad8d9d4f4e65b89b09217f02f70f634",
+        "size": 2730005,
+        "etag": "\"dd07ab851f9ed3a4322ef899c104cc83\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.782479+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_22h-23h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_22h-23h_leftWrist.zip",
+        "sha256": "613169afc44b821590d388094351a44f068c5c76f76f29b41c0498cbbd2d24c6",
+        "size": 1983784,
+        "etag": "\"760589420f03c1f49be96aa043c8fcbe\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.759874+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day2_23h-00h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day2_23h-00h_leftWrist.zip",
+        "sha256": "bd50d93264bab77826a1251c3cb8b43ff8422c9c0c7300dd5badcabc97d176df",
+        "size": 1825887,
+        "etag": "\"6e98fbee66ca8caf05d1589648625a9b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.829056+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_00h-01h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_00h-01h_leftWrist.zip",
+        "sha256": "db9cd894582b9f8aad5cc070454d57a3de93fcebc4d52a8e645b81736f27ed8a",
+        "size": 1893509,
+        "etag": "\"17b1a14bd57adb8b0b02358cbe1d0aeb\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:12.875438+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_01h-02h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_01h-02h_leftWrist.zip",
+        "sha256": "bbe86013823f7d9e6f3c34d3e4d2f4b73678355c562e3357b7f796c838fe0939",
+        "size": 1921797,
+        "etag": "\"299debafdcc5d65c011c69d1c42b4e36\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.003474+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_02h-03h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_02h-03h_leftWrist.zip",
+        "sha256": "e6a548574030c15070a9e8bc5075bae62d0a31dee05243bcb5e2dd5e07a31c40",
+        "size": 1889727,
+        "etag": "\"d8cee0bb755c40a5781c59d63b6e1f40\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.061594+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_03h-04h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_03h-04h_leftWrist.zip",
+        "sha256": "3bcd61c18a485aaa66b428f967a871c80ec776be0e8dd24fea6244245d9cf62c",
+        "size": 1868684,
+        "etag": "\"b2e42794ce57d01be62f230ffdedc98d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.139778+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_04h-05h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_04h-05h_leftWrist.zip",
+        "sha256": "356b8c2a01a83394a26b67fe2faadef87322dc3e8c558c76c58fd8398fb7e36e",
+        "size": 1882394,
+        "etag": "\"7e5ee2f35ffdb8ea46f6cfb12b2d2fe8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.135497+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_05h-06h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_05h-06h_leftWrist.zip",
+        "sha256": "fb6485d6d8e50ea87386851853a2b1b7ffa7985b8d8af37765376ef774b23c5b",
+        "size": 1961822,
+        "etag": "\"8ddd6cdaf4704094385106a87fe9f3ac\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.285308+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_06h-07h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_06h-07h_leftWrist.zip",
+        "sha256": "722f2914d1a4a1fd335a3d464639aeec0009bccccf8464545cd7bd73377a4095",
+        "size": 2258298,
+        "etag": "\"6d7f897f07cf9b740b6be0e5e0fb14eb\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.344348+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_07h-08h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_07h-08h_leftWrist.zip",
+        "sha256": "11320a3266bb08d7316c6358b890735418a166d8b75b18eb2595a7751208db98",
+        "size": 2222797,
+        "etag": "\"33d7c656af03c3e9ee59f9ae35f251ca\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.413541+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_08h-09h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_08h-09h_leftWrist.zip",
+        "sha256": "9de89f348724c0a8b6191205552110c04440300fc67884de3983b54d145b463a",
+        "size": 2958020,
+        "etag": "\"5b3ed10f279db3f5c4a16ce479f743a2\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.545581+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_09h-10h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_09h-10h_leftWrist.zip",
+        "sha256": "ace60d9c0b25f5f607d91158bf15ef232e7ba34ea630ea89ceba344cd52d328b",
+        "size": 2863631,
+        "etag": "\"347e21f7801fdf00bafc463940bea29c\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.627773+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_10h-11h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_10h-11h_leftWrist.zip",
+        "sha256": "853a01d47eaa035b62f1bb9a4b628146a13620e2190154c33e4b031d898ddf6f",
+        "size": 2760146,
+        "etag": "\"cf9545948b164a7e7622d6cfe47a601b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.646357+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_11h-12h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_11h-12h_leftWrist.zip",
+        "sha256": "d137284e55eeee809f5b7e115d9dafd38d0c0fc8f13679fb959d4267f97cfa55",
+        "size": 2685680,
+        "etag": "\"a3113415c25785a51b47cc6a36fa9901\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.736750+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_12h-13h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_12h-13h_leftWrist.zip",
+        "sha256": "35aa95845b436e703ce407994e9ee2b6ef4648779308589039ba2fd187a84c06",
+        "size": 2465125,
+        "etag": "\"5e80f79abb0901b5f56a06a0cea36469\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.819603+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_13h-14h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_13h-14h_leftWrist.zip",
+        "sha256": "d8eb82a6dd3e5947f27d750a332c1a2b4374245bc1950152cd0c717392986d09",
+        "size": 2272683,
+        "etag": "\"d7710a872b075a5e176047de112681c6\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.968083+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_14h-15h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_14h-15h_leftWrist.zip",
+        "sha256": "2e11a0e81c6548848c759d8784c6d75845a757af20cb6574602d7946e724b76f",
+        "size": 2448501,
+        "etag": "\"f5d088a83a1ef9e5a006f19fc348b33e\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:13.967085+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_15h-16h_leftWrist.zip",
+        "sha256": "e2b0f3904a9287addda3692a5316f62392bed0f7b5c79261e3211a94ff601111",
+        "size": 2279335,
+        "etag": "\"6f62fd689e0c3a5d3278b4682c7b7dca\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.008288+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_16h-17h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_16h-17h_leftWrist.zip",
+        "sha256": "870226445f3e92a7986fd7cd8a9f22ce04b786d38ff53c4af461bc70a17c4262",
+        "size": 2191989,
+        "etag": "\"8a122359e0564390dc7edbe6aef985d8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.243718+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_17h-18h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_17h-18h_leftWrist.zip",
+        "sha256": "fdda60f93533c150e34ac251b8edfd98af150c3d86cb16fe532468a3eaf1b60c",
+        "size": 3062614,
+        "etag": "\"45a7de78b722e0031f17c29c481f4a72\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.312630+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_18h-19h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_18h-19h_leftWrist.zip",
+        "sha256": "603835f2c6141cfd1c99534a9a9ab66349e201d145457a5c9e69332b9344e692",
+        "size": 3042642,
+        "etag": "\"452cdbde1590cf26f74a3087390ce8f8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.300860+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_19h-20h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_19h-20h_leftWrist.zip",
+        "sha256": "c142223f767f82eaeb7e25984fbdf9973a86dd81512c39183f4bc7ccf0f64c27",
+        "size": 3039341,
+        "etag": "\"a168ca1224b674cbd05ddf5635fa5864\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.327734+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_20h-21h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_20h-21h_leftWrist.zip",
+        "sha256": "6a8ab5f205ea3288a41d2af1e723b446812fc8a656ea224250a977df0f7900f0",
+        "size": 2500646,
+        "etag": "\"c64d3245e1b56b2616c9dc3b81b3bd79\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.533267+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_21h-22h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_21h-22h_leftWrist.zip",
+        "sha256": "02303920604d0801df37443c7cd54ef3cee57dd8d0f7de625d35263942b19c5b",
+        "size": 2149020,
+        "etag": "\"afd9cb3b693d50261d0e69c0f9ddde23\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.595494+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_22h-23h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_22h-23h_leftWrist.zip",
+        "sha256": "0a5dbb0cbb39813066cac09f0e82c4db6086f2a8f3d8d6415073814f5fb8bf88",
+        "size": 2905786,
+        "etag": "\"fc50fe432ef2487e29105e78aec5e2bc\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.715681+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day3_23h-00h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day3_23h-00h_leftWrist.zip",
+        "sha256": "25d1bce8d1b446b9f46229ce4b48fda3cfcaf5f57613eeade39b827c3d5331fc",
+        "size": 2333831,
+        "etag": "\"2c31fe23cf5e631c69e2d59307f14c6a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.591548+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_00h-01h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_00h-01h_leftWrist.zip",
+        "sha256": "383e4664cc27ad89933d8859397da05faf122c153ca6349a53689f813bf9dcb2",
+        "size": 2025216,
+        "etag": "\"dc04d364fc23436fe57636bd93230a85\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.809488+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_01h-02h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_01h-02h_leftWrist.zip",
+        "sha256": "78f84312a28789bd0915bf62df0f7a8b5eebf1f8bc944b31aa69385dc40e3a2f",
+        "size": 2107224,
+        "etag": "\"82ae1eae22345f522b45136156e4e531\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.926484+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_02h-03h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_02h-03h_leftWrist.zip",
+        "sha256": "0b6bc240945c474eadc0d0206ddaaf537bb6d268566e0b6d82d43ad72d851432",
+        "size": 2099938,
+        "etag": "\"c1798bed6a04ce3cb97878743164e63d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.867116+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_03h-04h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_03h-04h_leftWrist.zip",
+        "sha256": "482b55ef893db37abcfda20dcef3762e1e4225d9dbd6a6660a0ef189505bee3d",
+        "size": 2015962,
+        "etag": "\"448984fac412666ca9a26256c970f7f7\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:14.977979+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_04h-05h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_04h-05h_leftWrist.zip",
+        "sha256": "9d97998024702e70722f4cc4d8322510244b0356c29d700832be9b4971179e27",
+        "size": 2141845,
+        "etag": "\"c0423ada014e6e26e97e2fa0ed33538a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.181941+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_05h-06h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_05h-06h_leftWrist.zip",
+        "sha256": "78e48eee889c378afadb84c7afcb76fa9c79f51e608487ac8783b74614a683a6",
+        "size": 1859683,
+        "etag": "\"c317280ac36a7e1bc2aa8a545a8f6ecc\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.180937+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_06h-07h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_06h-07h_leftWrist.zip",
+        "sha256": "21fa96222cc17a58e4689da300ff19a68908bb6cad501a1fc3a9155165532931",
+        "size": 2128369,
+        "etag": "\"de6f87b0cd09d6763ea1e4ff68a2c37c\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.181941+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_07h-08h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_07h-08h_leftWrist.zip",
+        "sha256": "69b6d2557b9ce783def6262f531583b4732442398f0a347557591099fd378e5b",
+        "size": 2653413,
+        "etag": "\"6f825a8d579fa4b6f4cbbd25dc50df4a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.256099+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_08h-09h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_08h-09h_leftWrist.zip",
+        "sha256": "af1a4546125d4b1996af1abb135d891b450eaad2c26b388f9983cb28524fc512",
+        "size": 2207290,
+        "etag": "\"7eabbd4c6fcbd9a35f54e113959cf4ae\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.456654+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_09h-10h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_09h-10h_leftWrist.zip",
+        "sha256": "a493073e093b0b1e28ef87910341fa6d618f7ebece9b2c6e021d0fc360656b4d",
+        "size": 2065151,
+        "etag": "\"59005b7c4fb6a0aad6bd3c2ea8d3f36c\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.547278+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_10h-11h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_10h-11h_leftWrist.zip",
+        "sha256": "60f7cdc9b13ead6d78d3feea35908b1a6e6065832742422da189b9876613ec7c",
+        "size": 2453677,
+        "etag": "\"07216d3cda2f355bf2dc4101b0efa606\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.487362+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_11h-12h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_11h-12h_leftWrist.zip",
+        "sha256": "9c301b5b08a7228b2d4ba408209679749a3e8dd78eba6203d609c1459f757bbc",
+        "size": 1880346,
+        "etag": "\"18ebbc21f258f6e01b7b1ec863c5f206\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.536749+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_12h-13h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_12h-13h_leftWrist.zip",
+        "sha256": "9029bf48c15bbb1850652499fcf14ff893308a5fbe049fc6e70a9d3b0f105292",
+        "size": 2441591,
+        "etag": "\"4a6ccfdd1e3ff237e98d5724c82bf8c5\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.683163+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_13h-14h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_13h-14h_leftWrist.zip",
+        "sha256": "e7c540b85b3414b5b0705f85ff4d53942b02db3cb6381a196385ba1ae69043f7",
+        "size": 2354958,
+        "etag": "\"03ba6d0f9b0d05ccadd3a0f9d9c68c02\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.843936+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_14h-15h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_14h-15h_leftWrist.zip",
+        "sha256": "a3173aa4a030d31abf0b9d8200ec6859887fc8909a74af506dffe4cc1ac01adf",
+        "size": 2705737,
+        "etag": "\"0faa56456927ee423adb66fe9b1fc295\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.979933+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_15h-16h_leftWrist.zip",
+        "sha256": "9f31e5d3563a6c8e83b12b9e47ab0545299d2b11ba5e98c0c99253fa98fe08e8",
+        "size": 3034339,
+        "etag": "\"b1122eacdf39ac59a729f3b93f952c99\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:15.910051+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_16h-17h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_16h-17h_leftWrist.zip",
+        "sha256": "9f0fb06583418c06abf6298abe50b27576db681ff9bee1647e19b394c2f813e2",
+        "size": 3221018,
+        "etag": "\"5a905bce3f3f65792225a380218cee08\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.012451+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_17h-18h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_17h-18h_leftWrist.zip",
+        "sha256": "1c53caab726779a17e300d5c3bd1f2b12e2163cf433dabc122b3f0e87b65f2d7",
+        "size": 2920062,
+        "etag": "\"abaf01bf74446b3471b79cb1bd527af3\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.198039+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_18h-19h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_18h-19h_leftWrist.zip",
+        "sha256": "a15bc3c74434fc8f64a25e917698a87e76d6ee68c1c2d0e130a4730707abbd55",
+        "size": 2496472,
+        "etag": "\"82897afbd7254015168fdb6a164303fe\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.242793+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_19h-20h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_19h-20h_leftWrist.zip",
+        "sha256": "71e71be86c958772aa0be66b85d5c008c7073d232d23373de54281160559a5da",
+        "size": 2821157,
+        "etag": "\"d7343c9ed5ab062392eb9fb09d4fcee7\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.317310+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_20h-21h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_20h-21h_leftWrist.zip",
+        "sha256": "89c607f31378c9c6e39e860fa69cc6668ff169c67a275d4a13fd6a57c85b7fa1",
+        "size": 2437955,
+        "etag": "\"d9767ee19c400b5f68fc4ac5d7c719e8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.317310+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_21h-22h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_21h-22h_leftWrist.zip",
+        "sha256": "f99999b9ca77a3ac96afbe943a5f3369d16888894c650df7a9ae9e20eed03a0d",
+        "size": 2303765,
+        "etag": "\"398aa9520e316a95b700d26494421a60\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.453005+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_22h-23h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_22h-23h_leftWrist.zip",
+        "sha256": "bf9f2946900e7f47128ec52fa88e7035354e8267d6b70aaf2c8d3a324c0cdc7c",
+        "size": 2106027,
+        "etag": "\"d3b5db6bc183f20c51e0dd00434c810a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.506598+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day4_23h-00h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day4_23h-00h_leftWrist.zip",
+        "sha256": "2d7be5706d4d1fa975db7fd81b54ce11ee97a243a0c9bf4e6d5afcd30a286371",
+        "size": 2329882,
+        "etag": "\"d6dbce6b586f9375cedb2cd128baa7ea\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.611969+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_00h-01h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_00h-01h_leftWrist.zip",
+        "sha256": "a6750086791b84734febb42cf270bea9bbd847f16c00608ad6d5fa235fea021d",
+        "size": 2119066,
+        "etag": "\"5e2aa02535fd8f28112a29f13ee54bbe\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.695529+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_01h-02h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_01h-02h_leftWrist.zip",
+        "sha256": "8cca2df997ae7f4a2eaa4999dd57353abea3028ee013000067009117f1d047fe",
+        "size": 2118224,
+        "etag": "\"46de750f52fe2f04b9967ee61a3b5419\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.737185+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_02h-03h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_02h-03h_leftWrist.zip",
+        "sha256": "270aff56a7731a6fd906e512b7a5842ed97ac0bfd22dccc11e6ac88d1d4d8612",
+        "size": 2198215,
+        "etag": "\"29045f38f38a19ab1f079ee62891d86d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.791947+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_03h-04h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_03h-04h_leftWrist.zip",
+        "sha256": "2043f2849a1256e6caf09cb98c91c5640c0fe53561fafe6ab173f630b1c078b6",
+        "size": 2166051,
+        "etag": "\"e286f3bf46e8fc1a5c8b221c37389722\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.893215+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_04h-05h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_04h-05h_leftWrist.zip",
+        "sha256": "e3d23c5342f5771ca505adb0dd5c77097449a3273fce355ad81b9406552f6bce",
+        "size": 2197881,
+        "etag": "\"0755d56d06a28e93642c462554a0f30f\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:16.967292+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_05h-06h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_05h-06h_leftWrist.zip",
+        "sha256": "b6f933e7667461dd887a576b8643dab2b28138fd718dab026a7803d732b0e533",
+        "size": 2358429,
+        "etag": "\"8c467b0850b9359c23f66942b4194081\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.030599+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_06h-07h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_06h-07h_leftWrist.zip",
+        "sha256": "417cf6a411445046ad47a7aa0d7e7c13fe88bc8ddee443534c02ea48adab9cb7",
+        "size": 2252274,
+        "etag": "\"8933940494accc0e8026b526a51006f1\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.090002+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_07h-08h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_07h-08h_leftWrist.zip",
+        "sha256": "778894a5b8e96dd98f43e74a29ccc10e6e39b99938e26ae710d543f94f28ffee",
+        "size": 2262052,
+        "etag": "\"1a45cdf541312d6b3b919a67fb609de7\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.185617+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_08h-09h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_08h-09h_leftWrist.zip",
+        "sha256": "a2ed73364cc1d95811455eee2c8fcd2ce563b14a434c145d3e64cfa74545a63d",
+        "size": 2305598,
+        "etag": "\"326dbf7f79263e59f9ed5ac67a1dbcca\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.237893+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_09h-10h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_09h-10h_leftWrist.zip",
+        "sha256": "a41511c7a31d5f9e93560dc53570d941ae53801a41b9179730d30f203539bae0",
+        "size": 2564875,
+        "etag": "\"55ed48923d24b61514628020f88f1095\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.423041+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_10h-11h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_10h-11h_leftWrist.zip",
+        "sha256": "b1b486d829bf93af6ba46ae08ca751c1c46de5b1e2ed464559cc9c03ab3d7d60",
+        "size": 2340717,
+        "etag": "\"cf85599c84a9f2835adec6bd7cd2303a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.370954+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_11h-12h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_11h-12h_leftWrist.zip",
+        "sha256": "75a7481cf050e1a9f70c18e1f022eda5c715979ef4bdad7483ccaca4e2c78bec",
+        "size": 2786191,
+        "etag": "\"81bcb9b33a714ae449735482ec25c611\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.514644+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_12h-13h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_12h-13h_leftWrist.zip",
+        "sha256": "dc4f1ce92cfe8a1c7688221ab4ca9110470aa6e97fb698f326ce1a39a28301e5",
+        "size": 2380058,
+        "etag": "\"e5e6db9432ca04083cabc935f3ecdd48\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.605258+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_13h-14h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_13h-14h_leftWrist.zip",
+        "sha256": "df558d9f179ab18ca5122a4d3daba765e02637715633bdf6c0358037662410d7",
+        "size": 2868337,
+        "etag": "\"5f879739146366309061c123b3ed2d9f\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.677578+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_14h-15h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_14h-15h_leftWrist.zip",
+        "sha256": "0848c5ac127216235d586c1f450fec78526de2d465d5acda1f4b922abd023eca",
+        "size": 2792688,
+        "etag": "\"41839bf6b60c46e24c75d4c04ba9453a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.840581+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_15h-16h_leftWrist.zip",
+        "sha256": "f31a46bac812a32c89870cda8131172c69af7e10560feb99b6b725c06378ba8f",
+        "size": 1888920,
+        "etag": "\"adcc421203e252f70222ce14221ba6cb\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.788286+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_16h-17h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_16h-17h_leftWrist.zip",
+        "sha256": "59a5ff761c88b63ab71259836c7db32611f8cb684a760e6fee09a279ae4f6273",
+        "size": 2131041,
+        "etag": "\"a3b61b36fbcf29b3e5f8fde0181ecfa7\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.043823+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_17h-18h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_17h-18h_leftWrist.zip",
+        "sha256": "5ae90475fdf9144851c052d02f644f3fb75e74b89087c3d96221f8363d2bdf7e",
+        "size": 2330892,
+        "etag": "\"69891024b0a9625ff990ef83f0c20032\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:17.987245+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_18h-19h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_18h-19h_leftWrist.zip",
+        "sha256": "ea3eaccb5c62e4a1a4c2186a66493b5c73349f7acef7a3bb7ad2b6dbe871ec2a",
+        "size": 2207332,
+        "etag": "\"53703b8a3dd87bbba8b85e3f8f39cf11\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.325498+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_19h-20h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_19h-20h_leftWrist.zip",
+        "sha256": "1f0e89c8290d5c996391a92cbf6ca58b297f349daefc6d34b943082e2bd251a2",
+        "size": 2518883,
+        "etag": "\"5dd15b1bab26c81a8a984319f513f720\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.150930+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_20h-21h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_20h-21h_leftWrist.zip",
+        "sha256": "16d8c15128f8852d8720e3189ef2b33fa7e7f869f3b34ac8efe03c77dc52d3da",
+        "size": 2439692,
+        "etag": "\"e7af5aa1c2fee642e61003953d033f2b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.272575+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_21h-22h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_21h-22h_leftWrist.zip",
+        "sha256": "22942f259923bd30e6a312b04ff0a9366ddad0eb4e7181a593bbf3b15bd7cd90",
+        "size": 1986164,
+        "etag": "\"b140ec3448fde6ecab8e760922093f74\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.322862+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_22h-23h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_22h-23h_leftWrist.zip",
+        "sha256": "c3906a84c2a53b8b2c22002f711ea67cadfb9701622783cad8502ba3499f5d00",
+        "size": 2177387,
+        "etag": "\"6d3f30da5fc441b676541dae615d2556\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.444450+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day5_23h-00h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day5_23h-00h_leftWrist.zip",
+        "sha256": "14c1afa73051650ce34192500d28f7c644dddea793b62b1be4b4d9bc1b41190f",
+        "size": 1789234,
+        "etag": "\"36ad6d0ff179e2a11c89e22415757427\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.523922+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_00h-01h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_00h-01h_leftWrist.zip",
+        "sha256": "0248370b76a989e13b0f0cf54e913a39673c7b868e687e19514f05374937fb5c",
+        "size": 1835747,
+        "etag": "\"44bfd6c102275993452ca0e7aced15ac\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.662606+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_01h-02h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_01h-02h_leftWrist.zip",
+        "sha256": "4fb36a73a1a8ffe6df36e9971360d733f7fd934d406474442bce3114b8a485a5",
+        "size": 1839591,
+        "etag": "\"e0471927c008a2ef09af97b25dceae72\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.600870+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_02h-03h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_02h-03h_leftWrist.zip",
+        "sha256": "d9f3ee0cd5b1dee29a514045f5c67ea4304bc06f61bcb34c8435c76eb01a20ec",
+        "size": 1834283,
+        "etag": "\"9b06f2df6e663fc7eced65737267c402\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.982741+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_03h-04h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_03h-04h_leftWrist.zip",
+        "sha256": "bb5235e245c2c4fe026eec34b2c7c145e52c184e37b8b76bf091ba56f6c917e0",
+        "size": 1908006,
+        "etag": "\"d32f1023ed78393eefa39bbeb6892a54\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.855311+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_04h-05h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_04h-05h_leftWrist.zip",
+        "sha256": "9d1b06bddfc3491b7f044f3fb88c55cf0ceff22107a2c439fcf139a86e45d48c",
+        "size": 1841385,
+        "etag": "\"49161f1c8195bfb63fb824794821da05\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.992474+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_05h-06h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_05h-06h_leftWrist.zip",
+        "sha256": "c7a61a4968cae03cef5f59bef0e20d0d962502018f29d62eeed488a63857e6a2",
+        "size": 1882291,
+        "etag": "\"9c8b6beb639bda84114d03a3284fb8d8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:18.936608+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_06h-07h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_06h-07h_leftWrist.zip",
+        "sha256": "0c7fa4d2c1688e08e1cb8f37a3ce479d75505894c81ad6647269dc9a71513034",
+        "size": 2401116,
+        "etag": "\"bb842383436f6df546884fada424f3ce\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:19.336485+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_07h-08h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_07h-08h_leftWrist.zip",
+        "sha256": "37ebcc33454c7df0bbc35e241eb88c68ef5ad73cb3157c08abc22f39de89ead6",
+        "size": 2256900,
+        "etag": "\"59d7653a12c19ef41fe8ee570d54cb62\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:19.668926+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_08h-09h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_08h-09h_leftWrist.zip",
+        "sha256": "eb8f4198d5e4d8d74761861056e1c657524199d97dd515a08c48b81f9546e1e1",
+        "size": 2976056,
+        "etag": "\"428a6294a084d9d327c7def4dd2fa9ec\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:19.340737+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_09h-10h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_09h-10h_leftWrist.zip",
+        "sha256": "7c35e82240fc8140b4b42044f6c505a0ed3ad2bc8a909a4a95c7aa9a166c8d15",
+        "size": 2440350,
+        "etag": "\"a6e3a9009ffc41ca67ff9f34fc95281a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:19.275437+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_10h-11h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_10h-11h_leftWrist.zip",
+        "sha256": "3cdafcd05ad8419aa61280fde91f2398942adc357e5bcf872a71c68f3de0e5fe",
+        "size": 2435118,
+        "etag": "\"7c3c07dc38b10fe891bdb1876991896a\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:19.553855+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_11h-12h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_11h-12h_leftWrist.zip",
+        "sha256": "21420efb9c967bcf5b05a6de29b7cb077fdf8a6b53af3918e4a12b8e4eb6ecc8",
+        "size": 2351720,
+        "etag": "\"f2f1bf92a80f2a732409e4049dc24235\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:19.764589+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_12h-13h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_12h-13h_leftWrist.zip",
+        "sha256": "8092b2fc67d1035dc83269ee4bf21b7c09f2dca4593ea048b6739d90f3becde8",
+        "size": 2519720,
+        "etag": "\"c82db59d290d987459a95af888674122\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:19.711738+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_13h-14h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_13h-14h_leftWrist.zip",
+        "sha256": "d558bf338c3f684dddaac1e4da0e5f2d314634d2f355c2269309c9f8248fa72c",
+        "size": 2310746,
+        "etag": "\"c15538f1dff122410066e5ee2177f2eb\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.069510+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_14h-15h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_14h-15h_leftWrist.zip",
+        "sha256": "0a85b097225ec422461b3f0733b703194a27782f2c2427f868c0e64a39a583b0",
+        "size": 2102738,
+        "etag": "\"2cf1c57df2da1683893dc6ce0aa5936b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.007601+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_15h-16h_leftWrist.zip",
+        "sha256": "ec85bbf1cbfdad9adf429bc82fea0079c537d231623cf7195d88571d9c9f37ab",
+        "size": 2169124,
+        "etag": "\"01b581de5187258171aae6dda87e5ba1\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.127469+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_16h-17h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_16h-17h_leftWrist.zip",
+        "sha256": "cd9fd1bfbb97d6759fbdf8978b35edbd9a8fa93662a2313541d7a6d68eeaa067",
+        "size": 2364105,
+        "etag": "\"f0c291bc9c02c318c7680ecfe7a28f38\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.021756+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_17h-18h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_17h-18h_leftWrist.zip",
+        "sha256": "f424fa612d22649a4083db6425f0d56db46e43bc5dc07d0f8a32de861ee59942",
+        "size": 2567107,
+        "etag": "\"ec75652661b92da4e478e6400396b669\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.376068+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_18h-19h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_18h-19h_leftWrist.zip",
+        "sha256": "8952fcac43479f83dbdcb15425a198327fb6e9f8181729491359a45076b12771",
+        "size": 2900905,
+        "etag": "\"b7d642a02d6684c88c96cfec9fd85746\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.493915+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_19h-20h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_19h-20h_leftWrist.zip",
+        "sha256": "36e3efbd4ebf9f43cef383ca8f6528fa6af60521cf71092a28ef7a8b2028b6d6",
+        "size": 2950259,
+        "etag": "\"5f97a7eb35d5d6bb45574cc4659abeae\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.458686+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_20h-21h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_20h-21h_leftWrist.zip",
+        "sha256": "76f26056d86ddda111d4ef34d0c6e3d0d23618d514d6905995be0a9675e47c5b",
+        "size": 2210431,
+        "etag": "\"9c8897a2aa8005b4e27465a83aa069bf\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.597945+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_21h-22h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_21h-22h_leftWrist.zip",
+        "sha256": "7cb8c5407f95ec5addf794b9ad6a217affedf9c835853b1af1c7cdb554b29b74",
+        "size": 2405504,
+        "etag": "\"1a142f23c9451c267e46738736a0fa50\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.824185+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_22h-23h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_22h-23h_leftWrist.zip",
+        "sha256": "8a2fdcae939a521ebe77627d68504552c21b982c0e65a5fdcfe56c3b4bcea2ac",
+        "size": 1939649,
+        "etag": "\"c8b366a4958964863a2cadeee8ea19b7\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.011177+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day6_23h-00h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day6_23h-00h_leftWrist.zip",
+        "sha256": "8559c7d3fc2012e7934689ae494406a76fcd287fbb243657d0ca007379bce10d",
+        "size": 1908153,
+        "etag": "\"2ff952b3537fa6d8754e59c1e31f11c1\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.785479+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_00h-01h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_00h-01h_leftWrist.zip",
+        "sha256": "0ec4c5e51187742f159692c6bc704a659cd72c6619207b047e2df275bd5f99cd",
+        "size": 1840824,
+        "etag": "\"f2ee809cdd97cc62be04978f1a8e023b\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:20.986463+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_01h-02h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_01h-02h_leftWrist.zip",
+        "sha256": "a9f55229630e95b1bb9a04ac8b916d7bac20b5188affd46b41725ac8b6a802bd",
+        "size": 1872053,
+        "etag": "\"08ce88e525a2640f6fd3877deedf7429\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.186136+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_02h-03h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_02h-03h_leftWrist.zip",
+        "sha256": "bf29e97ecf0bf780ba9f72a92c989f0fcc5a8661ccbf59000c2f48fb1b92261c",
+        "size": 1877747,
+        "etag": "\"b5f68e125a53c6f21844e3b4e56c75d8\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.091936+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_03h-04h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_03h-04h_leftWrist.zip",
+        "sha256": "3b94dd589228542690776e1cb9ec95e367ad7e9c86997716f5fbf85b958ee3da",
+        "size": 1887770,
+        "etag": "\"1c3f95a319c68df67d8a9326306380f7\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.243657+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_04h-05h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_04h-05h_leftWrist.zip",
+        "sha256": "13d9ca473815a0b50887f3df769aa82ac3b7885fb17f0b1f7a07b295d8eed998",
+        "size": 1927496,
+        "etag": "\"28d3af3372752190b7f0574a947e1dcb\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.317058+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_05h-06h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_05h-06h_leftWrist.zip",
+        "sha256": "db1f7fa9e60a2e69dc8ed621e139c0143e1aff80e22035f8f8f8a0c918eefdbf",
+        "size": 2047909,
+        "etag": "\"dffeff039aafbef8e241834f7ff67336\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.496104+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_06h-07h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_06h-07h_leftWrist.zip",
+        "sha256": "a0a70830e94c628b69bb9448f2077cbeffb2941f591eae11ea613b1c506a9cde",
+        "size": 2654123,
+        "etag": "\"c9c6cd869e18478ed8c5392a2f2e75aa\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.460578+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_07h-08h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_07h-08h_leftWrist.zip",
+        "sha256": "2541432e9ca9fafbeace3214b4a907e13f4e3e45c07efc416024095b8ded61ea",
+        "size": 2928492,
+        "etag": "\"c3370692ddc0a4e1b93531ff59612c59\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.537337+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_08h-09h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_08h-09h_leftWrist.zip",
+        "sha256": "71c44853a093d0bd16619fd214d64a261b09e4a89514b402f8e08b7e96d94837",
+        "size": 2797432,
+        "etag": "\"fa860886ec9e3b947433d5d7e00c6e44\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.600124+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_09h-10h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_09h-10h_leftWrist.zip",
+        "sha256": "a0d7591250870c5573908c2ee126e793920a89c9782fd0ad8e05712fb2a18409",
+        "size": 3046150,
+        "etag": "\"0e221e909c23bcb1cc76bb44e6d75cef\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.768443+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_10h-11h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_10h-11h_leftWrist.zip",
+        "sha256": "740cf2c6c1008347810063a360881186023a69d74980ae3b0b3a78027b234584",
+        "size": 2376713,
+        "etag": "\"2c9148a3bc5646b52f97781373c67350\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.856767+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_11h-12h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_11h-12h_leftWrist.zip",
+        "sha256": "627bca248d48891aaad3890c2490490e2390b916600be13f3010e50bafc0b62e",
+        "size": 2321504,
+        "etag": "\"db7d9714b450e5212365f477336c620d\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.965283+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_12h-13h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_12h-13h_leftWrist.zip",
+        "sha256": "7ab11904791e35df5e0bae070af1211d533f2621e1b341a9f5c37a93aa90ab06",
+        "size": 2430338,
+        "etag": "\"ace5090f2eda8a5bca6c68da9e156d4f\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:21.896436+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_13h-14h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_13h-14h_leftWrist.zip",
+        "sha256": "633a612a3dd0f7fbd593e84a8bd60bcf3707488cd897785388e413f652f3847c",
+        "size": 2243979,
+        "etag": "\"35fb3a1e9ef706fc2b343c51c01da235\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:22.054068+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_14h-15h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_14h-15h_leftWrist.zip",
+        "sha256": "286c0e1d345aebbffd66503fa793daf00db88ad85da0327750e4b71cf7eca194",
+        "size": 2381318,
+        "etag": "\"34720b6f58c05478c70fbc2f117efc00\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:22.115458+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/Accelerometry/COPS-66_Day7_15h-16h_leftWrist.zip",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/Accelerometry/COPS-66_Day7_15h-16h_leftWrist.zip",
+        "sha256": "389a1fd4ceb9a72464c4673e220d91b35bbc1b851c07c110bd0bfa8a72b98ba2",
+        "size": 203427,
+        "etag": "\"8dca5729245713b5cf56b8878934e533\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:22.119019+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/cops/COPS-66/COPS-66_symptomdiary.csv",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/cops/COPS-66/COPS-66_symptomdiary.csv",
+        "sha256": "2ae27ea7deb01a91ec2d0529bf18d6f801c3c51f307e671b173e6b8ab01a2d78",
+        "size": 45164,
+        "etag": "\"97ef85b1e60cacf77a18fef80a6ceef1\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:43:22.185679+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "metadata/cops_splits.csv",
+        "sha256": "7d8611b3cb67351eb983917d928addabe391076315c0e141e57b0a5efb5abe70",
+        "kind": "split_or_cohort_metadata"
+      },
+      {
+        "path": "reports/cops_visit_summary.csv",
+        "sha256": "f3b821979f20b457ddeb1ab018550c0d651bc0fa843a8adde41a3cb55ed12470",
+        "kind": "split_or_cohort_metadata"
+      },
+      {
+        "path": "metadata/nhanes_splits.csv",
+        "sha256": "14f0d224cb13f2acf626f7d68c5addf5fad7f7cc4fc85eedcdc426bd45c6d869",
+        "kind": "split_or_cohort_metadata"
+      }
+    ],
+    "pipeline_config_sha256": "62ef5c1615f43ecf51fe0844d57d27f2dd6c57bc98bf1ce0a34c830aac82a7f4",
+    "runtime_noise_target_axes_mg": null,
+    "parquet_sha256": "248653786e27d3af5fa9584bd78e6334cf16cd17589b5166675392ba78a7cd4a",
+    "qc_sha256": "3bf633c5aad81ca815f5a0af0474eed036339e5dd42ade76b1b70c258a3509f8",
+    "included": true,
+    "qc_status": "ok"
+  },
+  "clean_run_evidence_sha256": "c388c884715df083c67879404ddf87848d946e3012d339517af09f7f41c68092",
+  "clean_config_verification": "original_run_evidence_validated_against_supported_source_and_config",
+  "units": {
+    "enmo_median": "g",
+    "step_freq_walk_median": "steps/s",
+    "tremor_frac_of_rest": "fraction"
+  },
+  "status": "ok",
+  "reason": ""
+}

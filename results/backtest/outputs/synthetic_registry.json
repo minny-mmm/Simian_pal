@@ -1,0 +1,128 @@
+{
+  "d56591cdbe26b91e574b968e7d36a645f7d707fcd402cf0e356bc0a6ebfe1317": {
+    "validation_runs": [
+      {
+        "run_id": "synthetic-flow-A",
+        "overall": "fail",
+        "audit_pass": false,
+        "valid_rows": 240,
+        "audit_statuses": {
+          "baseline_lock": "pass",
+          "hash_chain": "pass",
+          "reference_formulas": "pass",
+          "distances": "pass",
+          "null_handling": "pass",
+          "previous_day": "pass",
+          "coverage": "pass",
+          "official_reports": "not_evaluable",
+          "test_lock": "pass"
+        },
+        "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+        "tracks": [
+          "stability",
+          "loo",
+          "walkforward",
+          "valid",
+          "audit"
+        ],
+        "ready_cells": [
+          {
+            "dataset": "cops",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "cops",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": false,
+            "reasons": [
+              "bootstrap_median_ci_width=fail"
+            ]
+          },
+          {
+            "dataset": "cops",
+            "metric": "rest_tremor_window_fraction",
+            "ready": false,
+            "reasons": [
+              "bootstrap_median_ci_width=fail"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": true,
+            "reasons": []
+          }
+        ],
+        "finished_utc": "2026-10-24T08:28:06.197962+00:00"
+      }
+    ],
+    "comparisons": [],
+    "validation_audit_passed": false,
+    "source": "synthetic",
+    "artifact_id": "a17f1f21c973a4dd773cdc78cc5b443cd1cf29efe9cfbae0906e19aaa9224dca",
+    "baseline_version": "demo-reference-baseline-v1"
+  },
+  "8e059468fe37b05e7419fca392e5a5acfd89862e29abe2e422a203bda570f630": {
+    "validation_runs": [
+      {
+        "run_id": "synthetic-demo-A",
+        "overall": "pass_with_unevaluable",
+        "audit_pass": false,
+        "valid_rows": 240,
+        "audit_statuses": {
+          "baseline_lock": "pass",
+          "hash_chain": "pass",
+          "reference_formulas": "pass",
+          "distances": "pass",
+          "null_handling": "pass",
+          "previous_day": "pass",
+          "coverage": "pass",
+          "official_reports": "not_evaluable",
+          "test_lock": "pass"
+        },
+        "gates_fingerprint": "e44e80a13ddb7698072aa76f329d1bdacd697f48b111d23c2e6674eb193b0373",
+        "tracks": [
+          "stability",
+          "loo",
+          "walkforward",
+          "valid",
+          "audit"
+        ],
+        "ready_cells": [
+          {
+            "dataset": "cops",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "cops",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "cops",
+            "metric": "rest_tremor_window_fraction",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": true,
+            "reasons": []
+          }
+        ],
+        "finished_utc": "2026-10-24T08:32:37.836534+00:00"
+      }
+    ],
+    "comparisons": [],
+    "validation_audit_passed": false,
+    "source": "synthetic",
+    "artifact_id": "4fbb08eaac017cb3557cceec1b8627cb8bcb555b746ecabc02e4dd8e7ba341e9",
+    "baseline_version": "demo-reference-baseline-v1"
+  }
+}

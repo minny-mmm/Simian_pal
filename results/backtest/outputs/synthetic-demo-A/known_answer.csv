@@ -1,0 +1,7 @@
+dataset,subject_id,metric,sd_units,unshifted_median_sd,recovered_median_sd,recovered_increment_sd,n_days,passed,check,day
+cops,SYNTHETIC-COPS-VALID-01,enmo_hourly_median_mean_g,3.0,-0.6620932835010492,2.3379067164989435,2.999999999999993,9.0,True,,
+nhanes,SYNTHETIC-NHANES-VALID-01,enmo_hourly_median_mean_g,3.0,-0.4955237833076847,2.504476216692294,2.9999999999999787,9.0,True,,
+nhanes,,rest_tremor_window_fraction,,,,,,True,zero_scale_has_null_standardization,
+,SYNTHETIC-COPS-VALID-04,,,,,,,True,no_walking_windows_is_null,6.0
+,SYNTHETIC-NHANES-VALID-04,,,,,,,True,no_walking_windows_is_null,6.0
+,,,,,,,,True,day_after_missing_day_is_previous_day_missing,5.0

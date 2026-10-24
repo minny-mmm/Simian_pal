@@ -1,0 +1,777 @@
+{
+  "run_id": "compare-pilot-local-py312-vs-ckpt01",
+  "created_utc": "2026-10-24T08:56:18.936810+00:00",
+  "aws_input": "backtest/workspace/real/data/models/reference-v1/aws-real-pilot-20261024-v1/local_py312_compat/baseline.json",
+  "local": {
+    "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\real\\data\\models\\reference-v1\\real-20261023-v1\\checkpoints\\checkpoint-01\\baseline.json",
+    "file_sha256": "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de",
+    "baseline_sha256": "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de",
+    "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+    "baseline_version": "real-cohort-reference-real-20261023-v1-checkpoint-01",
+    "created_utc": "2026-10-23T05:34:31.469244+00:00",
+    "git_commit": "21f84853c6fe75c61ce69df0f71a898786ad3e27",
+    "git_dirty": true
+  },
+  "aws": {
+    "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\aws\\compare-pilot-local-py312-vs-ckpt01\\baseline.json",
+    "file_sha256": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+    "baseline_sha256": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+    "artifact_id": "9b65d11f9b86263b3a24eaae154657b72324302be5a4e148108c6f1f0510b76e",
+    "baseline_version": "real-data-pilot-aws-real-pilot-20261024-v1",
+    "created_utc": "2026-10-23T17:43:30.937692+00:00",
+    "git_commit": "7989ba8dba461122b3aa750c8ea7501f1382a5d9",
+    "git_dirty": true,
+    "handed_over_file_sha256": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945"
+  },
+  "comparison": {
+    "core": {
+      "preprocessing_version": {
+        "local": "a0417b7e45703d480f6cbcac02790b8290a14286d630eb283a65ec260bf94b10",
+        "aws": "a0417b7e45703d480f6cbcac02790b8290a14286d630eb283a65ec260bf94b10",
+        "equal": true
+      },
+      "feature_contract": {
+        "local": "mew-37d5722-reference-v1",
+        "aws": "mew-37d5722-reference-v1",
+        "equal": true
+      },
+      "metrics": {
+        "local": {
+          "enmo_hourly_median_mean_g": {
+            "unit": "g",
+            "hourly": "enmo_median",
+            "denominator": "n_windows",
+            "hourly_statistic": "median of window mean(max(norm(a)-1g,0))",
+            "daily_statistic": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median"
+          },
+          "walking_cadence_hourly_median_mean_hz": {
+            "unit": "steps/s",
+            "hourly": "step_freq_walk_median",
+            "denominator": "n_walk",
+            "hourly_statistic": "median(2*50/stride_lag) on walking windows in Mew 37d5722",
+            "daily_statistic": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median"
+          },
+          "rest_tremor_window_fraction": {
+            "unit": "fraction",
+            "hourly": "tremor_frac_of_rest",
+            "denominator": "n_rest",
+            "hourly_statistic": "n_tremor/n_rest; null when n_rest=0",
+            "daily_statistic": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios"
+          }
+        },
+        "aws": {
+          "enmo_hourly_median_mean_g": {
+            "unit": "g",
+            "hourly": "enmo_median",
+            "denominator": "n_windows",
+            "hourly_statistic": "median of window mean(max(norm(a)-1g,0))",
+            "daily_statistic": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median"
+          },
+          "walking_cadence_hourly_median_mean_hz": {
+            "unit": "steps/s",
+            "hourly": "step_freq_walk_median",
+            "denominator": "n_walk",
+            "hourly_statistic": "median(2*50/stride_lag) on walking windows in Mew 37d5722",
+            "daily_statistic": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median"
+          },
+          "rest_tremor_window_fraction": {
+            "unit": "fraction",
+            "hourly": "tremor_frac_of_rest",
+            "denominator": "n_rest",
+            "hourly_statistic": "n_tremor/n_rest; null when n_rest=0",
+            "daily_statistic": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios"
+          }
+        },
+        "equal": true
+      },
+      "data_kind": {
+        "local": "real",
+        "aws": "real",
+        "equal": true
+      },
+      "fit_split": {
+        "local": "train",
+        "aws": "train",
+        "equal": true
+      },
+      "roster_hash": {
+        "local": "60d706bc34ba55fbed0a8fa5b2816dff0242ecc35b06564616b52d47c18c1900",
+        "aws": "60d706bc34ba55fbed0a8fa5b2816dff0242ecc35b06564616b52d47c18c1900",
+        "equal": true
+      },
+      "schema_version": {
+        "local": 1,
+        "aws": 1,
+        "equal": true
+      },
+      "kind": {
+        "local": "separate_cohort_reference_not_diagnosis",
+        "aws": "separate_cohort_reference_not_diagnosis",
+        "equal": true
+      },
+      "policy_config_hash": {
+        "local": "5f0ba71952adbfc831dbce51c3b3da5c6993135771efd585e6fcb44828ba278d",
+        "aws": "5f0ba71952adbfc831dbce51c3b3da5c6993135771efd585e6fcb44828ba278d",
+        "equal": true
+      }
+    },
+    "exact_config_hash": {
+      "local": "8f4e0eb6fe615fd06ba66faba2cee06b01f7cec0adca95d7b1b2e5dece1489d5",
+      "aws": "ac7c04820059bac20312bc47eed406ee2cd3ef076ad3af0f1baee4197852d151",
+      "equal": false
+    },
+    "training_daily_hash": {
+      "local": "cac738117ec96eebb1c26fd4e098f121fe1266a367bd443f32f57bf5df903659",
+      "aws": "a5dbb201c8d924c32cb54158c09f1e8c418193edef57e16ebddbb44518532f30",
+      "equal": false
+    },
+    "provenance_equal_except_training_bundle_only_and_sources": false,
+    "n_entries": {
+      "local": 158,
+      "aws": 249
+    },
+    "changed_values": [],
+    "n_changed_values": 0,
+    "added_entries": 91,
+    "removed_entries": 0,
+    "new_subjects": [
+      [
+        "cops",
+        "COPS-13"
+      ],
+      [
+        "cops",
+        "COPS-16"
+      ],
+      [
+        "nhanes",
+        "NHANES-73746"
+      ],
+      [
+        "nhanes",
+        "NHANES-73781"
+      ],
+      [
+        "nhanes",
+        "NHANES-73899"
+      ]
+    ],
+    "summary_diffs": [
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "days_per_subject",
+        "local": {
+          "COPS-10": 6,
+          "COPS-41": 6,
+          "COPS-5": 6,
+          "COPS-6": 4,
+          "COPS-8": 3,
+          "COPS-9": 3
+        },
+        "aws": {
+          "COPS-10": 6,
+          "COPS-13": 5,
+          "COPS-16": 7,
+          "COPS-41": 6,
+          "COPS-5": 6,
+          "COPS-6": 4,
+          "COPS-8": 3,
+          "COPS-9": 3
+        }
+      },
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "mad",
+        "local": 0.0054464961909225,
+        "aws": 0.0051403769702637984
+      },
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "median",
+        "local": 0.0210430521136802,
+        "aws": 0.0211329671121317
+      },
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "n_days",
+        "local": 28,
+        "aws": 40
+      },
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "n_participants",
+        "local": 6,
+        "aws": 8
+      },
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "quantiles",
+        "local": {
+          "0.05": 0.0105090102292085,
+          "0.25": 0.0152284439005877,
+          "0.5": 0.0210430521136802,
+          "0.75": 0.024362697511023,
+          "0.95": 0.0462417622704671
+        },
+        "aws": {
+          "0.05": 0.0105090102292085,
+          "0.25": 0.0159925901418679,
+          "0.5": 0.0211329671121317,
+          "0.75": 0.0263659602496753,
+          "0.95": 0.0401180350118824
+        }
+      },
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "scale",
+        "local": 0.008074975252661699,
+        "aws": 0.0076211228961131075
+      },
+      {
+        "dataset": "cops",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "subject_ids",
+        "local": [
+          "COPS-10",
+          "COPS-41",
+          "COPS-5",
+          "COPS-6",
+          "COPS-8",
+          "COPS-9"
+        ],
+        "aws": [
+          "COPS-10",
+          "COPS-13",
+          "COPS-16",
+          "COPS-41",
+          "COPS-5",
+          "COPS-6",
+          "COPS-8",
+          "COPS-9"
+        ]
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "days_per_subject",
+        "local": {
+          "COPS-10": 6,
+          "COPS-41": 2,
+          "COPS-5": 5,
+          "COPS-8": 2,
+          "COPS-9": 3
+        },
+        "aws": {
+          "COPS-10": 6,
+          "COPS-13": 5,
+          "COPS-16": 6,
+          "COPS-41": 2,
+          "COPS-5": 5,
+          "COPS-8": 2,
+          "COPS-9": 3
+        }
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "mad",
+        "local": 0.08537445660833431,
+        "aws": 0.07763223576007938
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "median",
+        "local": 1.7755561792431702,
+        "aws": 1.8165591500234075
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "n_days",
+        "local": 18,
+        "aws": 29
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "n_participants",
+        "local": 5,
+        "aws": 7
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "quantiles",
+        "local": {
+          "0.05": 1.6127448839444205,
+          "0.25": 1.695517618556358,
+          "0.5": 1.7755561792431702,
+          "0.75": 1.8911739462106096,
+          "0.95": 1.9300618456986536
+        },
+        "aws": {
+          "0.05": 1.6388405117113338,
+          "0.25": 1.709536315794579,
+          "0.5": 1.8165591500234075,
+          "0.75": 1.894191385783487,
+          "0.95": 2.070923568309693
+        }
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "scale",
+        "local": 0.12657616936751645,
+        "aws": 0.11509755273789368
+      },
+      {
+        "dataset": "cops",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "subject_ids",
+        "local": [
+          "COPS-10",
+          "COPS-41",
+          "COPS-5",
+          "COPS-8",
+          "COPS-9"
+        ],
+        "aws": [
+          "COPS-10",
+          "COPS-13",
+          "COPS-16",
+          "COPS-41",
+          "COPS-5",
+          "COPS-8",
+          "COPS-9"
+        ]
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "days_per_subject",
+        "local": {
+          "COPS-10": 6,
+          "COPS-41": 6,
+          "COPS-5": 6,
+          "COPS-6": 4,
+          "COPS-8": 3,
+          "COPS-9": 3
+        },
+        "aws": {
+          "COPS-10": 6,
+          "COPS-13": 5,
+          "COPS-16": 7,
+          "COPS-41": 6,
+          "COPS-5": 6,
+          "COPS-6": 4,
+          "COPS-8": 3,
+          "COPS-9": 3
+        }
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "mad",
+        "local": 0.019028816676885395,
+        "aws": 0.0329687179348184
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "median",
+        "local": 0.0417142857142857,
+        "aws": 0.0487084870848708
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "n_days",
+        "local": 28,
+        "aws": 40
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "n_participants",
+        "local": 6,
+        "aws": 8
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "quantiles",
+        "local": {
+          "0.05": 0.0049610205527994,
+          "0.25": 0.0157397691500524,
+          "0.5": 0.0417142857142857,
+          "0.75": 0.0557677616501145,
+          "0.95": 0.1957478005865102
+        },
+        "aws": {
+          "0.05": 0.0070467648942985,
+          "0.25": 0.0226854690374003,
+          "0.5": 0.0487084870848708,
+          "0.75": 0.0886392009987515,
+          "0.95": 0.2183908045977011
+        }
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "scale",
+        "local": 0.028212123605150286,
+        "aws": 0.048879421210161755
+      },
+      {
+        "dataset": "cops",
+        "metric": "rest_tremor_window_fraction",
+        "field": "subject_ids",
+        "local": [
+          "COPS-10",
+          "COPS-41",
+          "COPS-5",
+          "COPS-6",
+          "COPS-8",
+          "COPS-9"
+        ],
+        "aws": [
+          "COPS-10",
+          "COPS-13",
+          "COPS-16",
+          "COPS-41",
+          "COPS-5",
+          "COPS-6",
+          "COPS-8",
+          "COPS-9"
+        ]
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "days_per_subject",
+        "local": {
+          "NHANES-73558": 7,
+          "NHANES-73596": 5,
+          "NHANES-73616": 7,
+          "NHANES-73640": 4,
+          "NHANES-75654": 7
+        },
+        "aws": {
+          "NHANES-73558": 7,
+          "NHANES-73596": 5,
+          "NHANES-73616": 7,
+          "NHANES-73640": 4,
+          "NHANES-73746": 7,
+          "NHANES-73781": 7,
+          "NHANES-73899": 7,
+          "NHANES-75654": 7
+        }
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "mad",
+        "local": 0.0036263595278246998,
+        "aws": 0.0048053345107296995
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "median",
+        "local": 0.025502895242552,
+        "aws": 0.0260830407872579
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "n_days",
+        "local": 30,
+        "aws": 51
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "n_participants",
+        "local": 5,
+        "aws": 8
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "quantiles",
+        "local": {
+          "0.05": 0.0169522272053852,
+          "0.25": 0.0220709040535444,
+          "0.5": 0.025502895242552,
+          "0.75": 0.0346615335225019,
+          "0.95": 0.0547738940112239
+        },
+        "aws": {
+          "0.05": 0.0158647802545846,
+          "0.25": 0.0220709040535444,
+          "0.5": 0.0260830407872579,
+          "0.75": 0.0328065148390804,
+          "0.95": 0.0547738940112239
+        }
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "scale",
+        "local": 0.005376440635952899,
+        "aws": 0.007124388945607852
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "enmo_hourly_median_mean_g",
+        "field": "subject_ids",
+        "local": [
+          "NHANES-73558",
+          "NHANES-73596",
+          "NHANES-73616",
+          "NHANES-73640",
+          "NHANES-75654"
+        ],
+        "aws": [
+          "NHANES-73558",
+          "NHANES-73596",
+          "NHANES-73616",
+          "NHANES-73640",
+          "NHANES-73746",
+          "NHANES-73781",
+          "NHANES-73899",
+          "NHANES-75654"
+        ]
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "days_per_subject",
+        "local": {
+          "NHANES-73558": 6,
+          "NHANES-73596": 2,
+          "NHANES-73616": 7,
+          "NHANES-75654": 7
+        },
+        "aws": {
+          "NHANES-73558": 6,
+          "NHANES-73596": 2,
+          "NHANES-73616": 7,
+          "NHANES-73781": 7,
+          "NHANES-73899": 7,
+          "NHANES-75654": 7
+        }
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "mad",
+        "local": null,
+        "aws": 0.09843121185464643
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "median",
+        "local": null,
+        "aws": 1.8335235009628708
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "n_days",
+        "local": 22,
+        "aws": 36
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "n_participants",
+        "local": 4,
+        "aws": 6
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "quantiles",
+        "local": {},
+        "aws": {
+          "0.05": 1.3807260106616104,
+          "0.25": 1.7539085653876945,
+          "0.5": 1.8335235009628708,
+          "0.75": 1.9426475585428704,
+          "0.95": 2.020041168093796
+        }
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "reason",
+        "local": "reference_participants_or_days_below_minimum",
+        "aws": ""
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "scale",
+        "local": null,
+        "aws": 0.14593411469569878
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "status",
+        "local": "insufficient_data",
+        "aws": "ok"
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "walking_cadence_hourly_median_mean_hz",
+        "field": "subject_ids",
+        "local": [
+          "NHANES-73558",
+          "NHANES-73596",
+          "NHANES-73616",
+          "NHANES-75654"
+        ],
+        "aws": [
+          "NHANES-73558",
+          "NHANES-73596",
+          "NHANES-73616",
+          "NHANES-73781",
+          "NHANES-73899",
+          "NHANES-75654"
+        ]
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "days_per_subject",
+        "local": {
+          "NHANES-73558": 7,
+          "NHANES-73596": 5,
+          "NHANES-73616": 7,
+          "NHANES-73640": 4,
+          "NHANES-75654": 7
+        },
+        "aws": {
+          "NHANES-73558": 7,
+          "NHANES-73596": 5,
+          "NHANES-73616": 7,
+          "NHANES-73640": 4,
+          "NHANES-73746": 7,
+          "NHANES-73781": 7,
+          "NHANES-73899": 7,
+          "NHANES-75654": 7
+        }
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "mad",
+        "local": 0.013272368869588401,
+        "aws": 0.0150020661813789
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "median",
+        "local": 0.036697247706422,
+        "aws": 0.0401554404145077
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "n_days",
+        "local": 30,
+        "aws": 51
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "n_participants",
+        "local": 5,
+        "aws": 8
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "quantiles",
+        "local": {
+          "0.05": 0.0122783083219645,
+          "0.25": 0.0260950605778192,
+          "0.5": 0.036697247706422,
+          "0.75": 0.055694098088113,
+          "0.95": 0.0942507068803016
+        },
+        "aws": {
+          "0.05": 0.0142021720969089,
+          "0.25": 0.0271646859083191,
+          "0.5": 0.0401554404145077,
+          "0.75": 0.057037037037037,
+          "0.95": 0.3833333333333333
+        }
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "scale",
+        "local": 0.019677614086051762,
+        "aws": 0.022242063320512356
+      },
+      {
+        "dataset": "nhanes",
+        "metric": "rest_tremor_window_fraction",
+        "field": "subject_ids",
+        "local": [
+          "NHANES-73558",
+          "NHANES-73596",
+          "NHANES-73616",
+          "NHANES-73640",
+          "NHANES-75654"
+        ],
+        "aws": [
+          "NHANES-73558",
+          "NHANES-73596",
+          "NHANES-73616",
+          "NHANES-73640",
+          "NHANES-73746",
+          "NHANES-73781",
+          "NHANES-73899",
+          "NHANES-75654"
+        ]
+      }
+    ],
+    "n_summary_diffs": 50,
+    "category": "new_version_more_train",
+    "reason": "5 more train participants, existing values unchanged"
+  },
+  "validation": {
+    "status": "revalidated",
+    "valid_bundle": "backtest\\workspace\\real\\data\\daily\\reference-v1\\aws-real-pilot-20261024-v1\\valid",
+    "result": {
+      "run_id": "compare-pilot-local-py312-vs-ckpt01-validate",
+      "overall": "pass_with_unevaluable",
+      "output": "D:\\AWS\\Simianpal\\backtest\\outputs\\compare-pilot-local-py312-vs-ckpt01-validate",
+      "audit": {
+        "baseline_lock": "pass",
+        "hash_chain": "pass",
+        "reference_formulas": "pass",
+        "distances": "pass",
+        "null_handling": "pass",
+        "previous_day": "pass",
+        "coverage": "pass",
+        "official_reports": "not_evaluable",
+        "test_lock": "pass"
+      }
+    }
+  }
+}

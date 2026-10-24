@@ -131,7 +131,9 @@ Flow: raw (OSF/CDC → S3 `data/raw/`) → subject selection & splits (`tools/`,
   any statistic (scaling, imputation, thresholds, noise target) from train only; never fill feature NaN with 0;
   never use `subject_id`, `dataset`, `label`, `split`, `day`, `hour`, `hour_idx`, or window-count columns as inputs.
 - `data/`, most of `metadata/` and `reports/`, `*.parquet`, `*.zip` are gitignored. Only `metadata/cops_splits.csv`,
-  `metadata/nhanes_splits.csv`, `reports/cops_visit_summary.csv` are committed; data lives on S3.
+  `metadata/nhanes_splits.csv`, `reports/cops_visit_summary.csv` are committed; data lives on S3. Exception: `results/`
+  holds a checksummed snapshot of non-raw results (baseline v1, bundles, backtest outputs incl. the opened test; no
+  parquet/raw). The repo is public; COPS is CC BY 4.0, so derived COPS files need attribution (see `results/README.md`).
 - Comments and CLI help in `src/clean`, `src/storage.py`, `tools/` are Thai; `src/features/run.py`, `src/reference`,
   `tools/*reference*` and `backtest/` are English — match the file you're editing.
 - Reference config/thresholds may only be tuned on train. `config_hash` includes `baseline_version`, so bundles from

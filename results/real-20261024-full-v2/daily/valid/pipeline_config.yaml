@@ -1,0 +1,110 @@
+clean:
+  abnormal:
+    gravity_hour_min_windows: 6
+    gravity_hour_tol_g: 0.1
+    gravity_sd_max_g: 0.013
+    gravity_tol_g: 0.1
+    gravity_window_s: 10
+    spike_g: 3.0
+    spike_pad_s: 0.1
+    stuck_eps_g: 1.0e-05
+    stuck_min_s: 60
+    zero_g: 0.05
+    zero_min_s: 1.0
+  calibration:
+    max_iter: 1000
+    max_norm_dev_g: 0.15
+    min_points: 50
+    sd_max_g: 0.013
+    sphere_g: 0.3
+    tol: 1.0e-10
+    window_s: 10
+  clip:
+    flag_g: 5.9
+    limit_g: 6.0
+  days:
+    include_visits:
+    - outpatient
+    min_valid_days: 3
+    min_valid_hours: 10
+  default_visit: outpatient
+  harmonize:
+    add_noise:
+      datasets:
+      - nhanes
+      seed: 0
+      target_mg:
+      - 4.93
+      - 5.07
+      - 6.0
+    min_noise_windows: 30
+    noise_window_s: 10
+    quantize:
+      datasets:
+      - cops
+      - nhanes
+      step_g: 0.0039
+  ism:
+    constant_sd_max_g: 0.001
+    constant_window_s: 1
+    min_valid_frac: 0.5
+    range_max_g: 0.05
+    window_s: 10
+  nonwear:
+    min_axes: 2
+    min_valid_frac: 0.5
+    range_max_g: 0.05
+    range_smooth_s: 1
+    sd_max_g: 0.013
+    step_min: 15
+    window_min: 60
+  out_dir: data/clean/reference-runs/real-20261024-full-v2
+  qc_summary: reports/reference_baseline/real-20261024-full-v2/qc_summary.csv
+  resample:
+    chunk_s: 600
+    context_s: 5
+    fs_out: 50
+    min_run_s: 1.0
+  sleep:
+    epoch_s: 5
+    max_gap_min: 60
+    median_window_min: 5
+    min_block_min: 30
+    min_window_hours: 12
+    multiplier: 15
+    percentile: 10
+    threshold_max_deg: 0.5
+    threshold_min_deg: 0.13
+  subjects:
+    cops_splits: metadata/cops_splits.csv
+    cops_summary: reports/cops_visit_summary.csv
+    nhanes_selected: metadata/nhanes_splits.csv
+  time:
+    max_interp_gap_s: 1.0
+datasets:
+  cops:
+    acc_includes_gravity: true
+    acc_unit: g
+    enabled: true
+    gyro_unit: null
+    raw_dir: data/raw/reference-runs/real-20261024-full-v2/cops
+    sampling_rate_hz: 100
+    subject_file: data/processed/subject_data/subject_metadata_COv.csv
+  nhanes:
+    acc_includes_gravity: true
+    acc_unit: g
+    enabled: false
+    gyro_unit: null
+    raw_dir: data/raw/reference-runs/real-20261024-full-v2/nhanes
+    sampling_rate_hz: 80
+    subject_file: data/processed/subject_data/subject_metadata_NHA.csv
+paths:
+  manifest: metadata/manifest.csv
+  processed: data/processed
+  raw: data/raw
+  sensor_data: data/processed/sensor_data
+storage:
+  aws_profile: minny
+  endpoint_url: null
+  region: ap-southeast-1
+  s3_root: s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline
