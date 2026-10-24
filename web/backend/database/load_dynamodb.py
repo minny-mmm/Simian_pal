@@ -1,0 +1,157 @@
+"""สร้างตาราง / โหลดข้อมูลจาก data.py / เช็กข้อมูลใน DynamoDB
+
+ก่อนใช้: pip install boto3 pandas  แล้ว  aws configure (region ap-southeast-1)
+
+python load_dynamodb.py create                 สร้างตารางที่ยังไม่มี
+python load_dynamodb.py load                   โหลดทุกตารางใน data.TABLE_DATA
+python load_dynamodb.py load pd_daily_metrics  โหลดตารางเดียว
+python load_dynamodb.py check                  นับแถวทุกตาราง + โชว์ค่ารายวันวันแรกของผู้ป่วยคนแรก
+python load_dynamodb.py on-demand              เปลี่ยนตารางที่สร้างไว้แบบ provisioned เป็น on-demand
+pd_ai_results ไม่ได้โหลดจาก data.py: ใช้ python import_ai_results.py (ดึงผลที่เดโม AI ของทีมเก็บไว้ใน S3)
+"""
+import math
+import os
+import sys
+from decimal import Decimal
+
+import boto3
+
+from data import PATIENTS, START_DATE, TABLE_DATA
+
+REGION = os.environ.get("AWS_REGION", "ap-southeast-1")
+
+# ตาราง: (partition key, sort key หรือ None, index) ชนิด S = ข้อความ, N = ตัวเลข
+TABLES = {
+    "pd_doctors":         (("doctor_id", "S"), None, None),
+    "pd_patients":        (("patient_id", "S"), None, ("by_doctor", ("doctor_id", "S"), None)),
+    "pd_daily_metrics":   (("patient_id", "S"), ("date", "S"), None),
+    "pd_reference":       (("metric", "S"), ("cohort", "S"), None),
+    "pd_alerts":          (("patient_id", "S"), ("created_at", "S"),
+                           ("by_doctor", ("doctor_id", "S"), ("created_at", "S"))),
+    "pd_notes":           (("patient_id", "S"), ("date", "S"), None),
+    "pd_devices":         (("patient_id", "S"), None, None),
+    "pd_assessments":     (("patient_id", "S"), ("type_date", "S"), None),
+    "pd_appointments":    (("doctor_id", "S"), ("slot", "S"), None),
+    "pd_hourly_features": (("subject_id", "S"), ("hour_idx", "N"), None),
+    # ผลจากเดโม AI ของทีม (result_key = "analysis" / "explanation#<วันที่>") เติมด้วย import_ai_results.py
+    # และ backend บันทึกเพิ่มเองเมื่อดึงจากเดโมได้ (app/router/ai.py) ไม่ได้มาจาก data.py
+    "pd_ai_results":      (("patient_id", "S"), ("result_key", "S"), None),
+}
+# ทุกตารางเป็น on-demand (PAY_PER_REQUEST): ไม่มีเพดาน capacity ไม่โดน throttle ตอนโหลดข้อมูล/คนใช้พร้อมกัน
+# จ่ายตามจำนวน read/write จริง (ข้อมูลเดโมขนาดนี้ไม่กี่เซนต์/เดือน) เพิ่มตารางได้โดยไม่ต้องคิดโควตาฟรี 25 หน่วย
+BILLING = "PAY_PER_REQUEST"
+
+db = boto3.resource("dynamodb", region_name=REGION)
+
+
+def key_schema(pk, sk):
+    return ([{"AttributeName": pk[0], "KeyType": "HASH"}]
+            + ([{"AttributeName": sk[0], "KeyType": "RANGE"}] if sk else []))
+
+
+def create():
+    existing = {t.name for t in db.tables.all()}
+    for name, (pk, sk, gsi) in TABLES.items():
+        if name in existing:
+            print(f"มีแล้ว    {name}")
+            continue
+        attrs = dict([pk] + ([sk] if sk else []))
+        kwargs = {"TableName": name, "KeySchema": key_schema(pk, sk), "BillingMode": BILLING}
+        if gsi:
+            gname, gpk, gsk = gsi
+            attrs.update(dict([gpk] + ([gsk] if gsk else [])))
+            kwargs["GlobalSecondaryIndexes"] = [{
+                "IndexName": gname, "KeySchema": key_schema(gpk, gsk),
+                "Projection": {"ProjectionType": "ALL"}}]   # index ใช้ billing ตามตาราง
+        kwargs["AttributeDefinitions"] = [{"AttributeName": a, "AttributeType": t} for a, t in attrs.items()]
+        db.create_table(**kwargs).wait_until_exists()
+        print(f"สร้างแล้ว {name}")
+
+
+def on_demand():
+    """ตารางเดิมที่เป็น provisioned -> on-demand (index เปลี่ยนตามเอง) เปลี่ยนกลับเป็น provisioned ได้วันละครั้ง"""
+    client = db.meta.client
+    for name in TABLES:
+        try:
+            mode = client.describe_table(TableName=name)["Table"].get("BillingModeSummary", {}).get("BillingMode", "PROVISIONED")
+        except client.exceptions.ResourceNotFoundException:
+            print(f"ไม่มี     {name}")
+            continue
+        if mode == BILLING:
+            print(f"เป็นแล้ว  {name}")
+            continue
+        client.update_table(TableName=name, BillingMode=BILLING)
+        client.get_waiter("table_exists").wait(TableName=name)   # รอจนกลับมา ACTIVE ก่อนเปลี่ยนตารางถัดไป
+        print(f"เปลี่ยนแล้ว {name} -> on-demand")
+
+
+def clean(x):
+    """แปลงค่าให้ DynamoDB รับได้: ตัด None/NaN, float -> Decimal, ตัวเลข numpy -> python"""
+    if hasattr(x, "item") and not isinstance(x, (list, dict, str)):
+        x = x.item()  # numpy.int64 / numpy.float64
+    if isinstance(x, dict):
+        out = {k: clean(v) for k, v in x.items()}
+        return {k: v for k, v in out.items() if v is not None}
+    if isinstance(x, (list, tuple)):
+        return [v for v in (clean(v) for v in x) if v is not None]
+    if isinstance(x, float):
+        return None if math.isnan(x) or math.isinf(x) else Decimal(str(x))
+    return x
+
+
+def load(only=None):
+    for name, rows in TABLE_DATA.items():
+        if only and name != only:
+            continue
+        rows = rows() if callable(rows) else rows
+        if not rows:
+            print(f"ข้าม     {name} (ไม่มีข้อมูล)")
+            continue
+        pk, sk, _ = TABLES[name]
+        keys = [pk[0]] + ([sk[0]] if sk else [])
+        with db.Table(name).batch_writer(overwrite_by_pkeys=keys) as batch:
+            for r in rows:
+                item = clean(r)
+                missing = [k for k in keys if k not in item]
+                if missing:
+                    raise ValueError(f"{name}: แถวนี้ไม่มี key {missing}: {r}")
+                batch.put_item(Item=item)
+        print(f"โหลดแล้ว  {name}: {len(rows)} แถว")
+
+
+def check():
+    client = db.meta.client
+    for name in TABLES:
+        try:
+            n, kw = 0, {"Select": "COUNT"}
+            while True:  # scan ได้ทีละไม่เกิน 1 MB ต้องวนจนครบ
+                page = db.Table(name).scan(**kw)
+                n += page["Count"]
+                if "LastEvaluatedKey" not in page:
+                    break
+                kw["ExclusiveStartKey"] = page["LastEvaluatedKey"]
+            print(f"{name:<20} {n:>5} แถว")
+        except client.exceptions.ResourceNotFoundException:
+            print(f"{name:<20} ยังไม่มีตาราง (รัน create ก่อน)")
+    pid, day = PATIENTS[0]["patient_id"], START_DATE.isoformat()
+    try:
+        item = db.Table("pd_daily_metrics").get_item(Key={"patient_id": pid, "date": day}).get("Item")
+        print(f"\n{pid} วันที่ {day}:", item or "ไม่พบ")
+    except client.exceptions.ResourceNotFoundException:
+        pass
+    except client.exceptions.ClientError as e:  # เช่น ตารางบน AWS ใช้ key คนละแบบกับ TABLES
+        print(f"\nอ่าน pd_daily_metrics ไม่ได้: {e.response['Error']['Message']}")
+
+
+if __name__ == "__main__":
+    cmd = sys.argv[1] if len(sys.argv) > 1 else ""
+    if cmd == "create":
+        create()
+    elif cmd == "load":
+        load(sys.argv[2] if len(sys.argv) > 2 else None)
+    elif cmd == "check":
+        check()
+    elif cmd == "on-demand":
+        on_demand()
+    else:
+        print(__doc__)

@@ -1,0 +1,4 @@
+# package ที่ใส่ใน zip ของ Lambda (deploy/deploy_lambda.py) — boto3 ไม่ต้องใส่ Lambda มีให้แล้ว, uvicorn ใช้แค่ในเครื่อง
+fastapi>=0.128
+mangum>=0.21
+PyJWT[crypto]>=2.8
