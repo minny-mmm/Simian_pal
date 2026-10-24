@@ -49,6 +49,7 @@ def patient_row(p, start=None, end=None):
         "wear_hours": avg,
         "wearing": avg is not None and avg >= WEAR_HOURS,
         "follow_up": bool(p.get("follow_up")),
+        "has_ai": bool(p.get("ai_subject")),   # มีผลวิเคราะห์จากเดโม AI (หน้ารายงาน)
         "trend_7d": trend,
         "data_from": start, "data_to": end,   # ช่วงที่ใช้คิดชม.ใส่ของแถวนี้
     }

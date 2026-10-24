@@ -1,4 +1,4 @@
-"""ตรวจ app/router/ai.py + app/reference.py: แปลง day -> วันที่, error ของเดโม, ไม่ส่งรหัสออก
+"""ตรวจ app/router/ai.py + app/reference.py: แปลง day -> วันที่, error ของเดโม, ไม่ส่งรหัสออก, เก็บผลใน pd_ai_results
 (แทนเดโมและ DynamoDB ด้วยของปลอม ไม่ยิงเดโมจริง ไม่กินโควตา)
 
 รัน: cd web/backend && python -m pytest tests -q
@@ -56,6 +56,19 @@ class FakeDemo:
         return 200, ANALYSIS
 
 
+class FakeTable:
+    """แทน pd_ai_results (ผู้ป่วยคนเดียวพอสำหรับ test)"""
+    def __init__(self):
+        self.items = {}
+
+    def get_item(self, Key):
+        item = self.items.get((Key["patient_id"], Key["result_key"]))
+        return {"Item": item} if item else {}
+
+    def put_item(self, Item):
+        self.items[(Item["patient_id"], Item["result_key"])] = Item
+
+
 def own_patient(patient_id, doctor_id):
     p = PATIENTS.get(patient_id)
     if not p or p["doctor_id"] != doctor_id:
@@ -73,6 +86,10 @@ def demo(monkeypatch):
     reference.demo_token.cache_clear()
     monkeypatch.setattr(ai, "get_own_patient", own_patient)
     monkeypatch.setattr(ai, "daily_rows", lambda pid: DAILY)
+    fake.db = FakeTable()
+    monkeypatch.setattr(ai, "table", lambda name: fake.db)
+    monkeypatch.setattr(ai, "query_all", lambda tbl, **kw: [v for (pid, k), v in tbl.items.items()
+                                                            if k.startswith("explanation#")])
     return fake
 
 
@@ -89,8 +106,11 @@ def test_analysis_maps_demo_day_to_our_date(client, demo):
     assert r.status_code == 200 and r.headers["cache-control"] == "no-store"
     j = r.json()
     assert [(d["day"], d["date"], d["display_day"]) for d in j["days"]][0] == (3, "2026-10-01", 4)
-    assert j["rows"][0]["key"] == "tremor" and j["rows"][0]["cops"]["signed_distance"] == pytest.approx(0.07)
-    assert "reference_quantiles" not in j["rows"][0]["cops"]
+    r0 = j["rows"][0]
+    assert r0["key"] == "tremor" and r0["date"] == "2026-10-01" and r0["display_day"] == 4
+    # ส่งต่อทุก field ของเดโม (หน้ารายงานใช้ quantiles / qc)
+    assert r0["reference_comparisons"]["cops"]["signed_distance"] == pytest.approx(0.07)
+    assert r0["reference_comparisons"]["cops"]["reference_quantiles"] == {"0.5": 0.05}
     assert demo.calls[0] == ("https://demo.example/api/analysis?subject=VALID-A", TOKEN)
 
 
@@ -156,3 +176,34 @@ def test_not_configured(client, demo, monkeypatch):
 def test_token_never_in_response(client, demo):
     for path in ("analysis", "explanation"):
         assert TOKEN not in json.dumps(client.get(f"/api/patients/Patient-001/ai/{path}").json())
+
+
+def test_analysis_saved_then_read_without_demo(client, demo):
+    first = client.get("/api/patients/Patient-001/ai/analysis").json()
+    reference._cache.clear()   # จำลอง Lambda เริ่มใหม่ (cache ในหน่วยความจำหาย)
+    demo.status, demo.body = 429, {"error": "daily_demo_limit_reached"}   # โควตาเต็ม
+    r = client.get("/api/patients/Patient-001/ai/analysis")
+    assert first["source"] == "demo" and r.status_code == 200 and r.json()["source"] == "saved"
+    assert r.json()["rows"] == first["rows"] and len(demo.calls) == 1
+
+
+def test_llm_explanation_saved_and_listed(client, demo):
+    client.get("/api/patients/Patient-001/ai/explanation", params={"date": "2026-10-02"})
+    demo.error = AssertionError("ต้องไม่เรียกเดโม")
+    again = client.get("/api/patients/Patient-001/ai/explanation", params={"date": "2026-10-02"}).json()
+    listed = client.get("/api/patients/Patient-001/ai/explanations").json()["items"]
+    assert again["source"] == "saved" and again["label"] == "LLM"
+    assert [(x["date"], x["day"], x["source"]) for x in listed] == [("2026-10-02", 4, "saved")]
+
+
+def test_template_explanation_not_saved(client, demo):
+    demo.body = {"analysis": ANALYSIS, "explanation": {"generation_kind": "expected_template", "explanations": []},
+                 "validation": {"reason": "OverflowError"}}
+    client.get("/api/patients/Patient-001/ai/explanation")
+    assert not [k for k in demo.db.items if k[1].startswith("explanation#")]
+
+
+def test_saved_list_does_not_call_demo(client, demo):
+    demo.error = AssertionError("ต้องไม่เรียกเดโม")
+    r = client.get("/api/patients/Patient-001/ai/explanations")
+    assert r.status_code == 200 and r.json()["items"] == []

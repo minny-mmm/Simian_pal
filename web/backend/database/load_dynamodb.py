@@ -6,6 +6,8 @@ python load_dynamodb.py create                 สร้างตารางท
 python load_dynamodb.py load                   โหลดทุกตารางใน data.TABLE_DATA
 python load_dynamodb.py load pd_daily_metrics  โหลดตารางเดียว
 python load_dynamodb.py check                  นับแถวทุกตาราง + โชว์ค่ารายวันวันแรกของผู้ป่วยคนแรก
+python load_dynamodb.py on-demand              เปลี่ยนตารางที่สร้างไว้แบบ provisioned เป็น on-demand
+pd_ai_results ไม่ได้โหลดจาก data.py: ใช้ python import_ai_results.py (ดึงผลที่เดโม AI ของทีมเก็บไว้ใน S3)
 """
 import math
 import os
@@ -31,9 +33,13 @@ TABLES = {
     "pd_assessments":     (("patient_id", "S"), ("type_date", "S"), None),
     "pd_appointments":    (("doctor_id", "S"), ("slot", "S"), None),
     "pd_hourly_features": (("subject_id", "S"), ("hour_idx", "N"), None),
+    # ผลจากเดโม AI ของทีม (result_key = "analysis" / "explanation#<วันที่>") เติมด้วย import_ai_results.py
+    # และ backend บันทึกเพิ่มเองเมื่อดึงจากเดโมได้ (app/router/ai.py) ไม่ได้มาจาก data.py
+    "pd_ai_results":      (("patient_id", "S"), ("result_key", "S"), None),
 }
-# 10 ตาราง + 2 index x 2 = 24 อยู่ในโควตาฟรี 25
-CAP = {"ReadCapacityUnits": 2, "WriteCapacityUnits": 2}
+# ทุกตารางเป็น on-demand (PAY_PER_REQUEST): ไม่มีเพดาน capacity ไม่โดน throttle ตอนโหลดข้อมูล/คนใช้พร้อมกัน
+# จ่ายตามจำนวน read/write จริง (ข้อมูลเดโมขนาดนี้ไม่กี่เซนต์/เดือน) เพิ่มตารางได้โดยไม่ต้องคิดโควตาฟรี 25 หน่วย
+BILLING = "PAY_PER_REQUEST"
 
 db = boto3.resource("dynamodb", region_name=REGION)
 
@@ -50,16 +56,33 @@ def create():
             print(f"มีแล้ว    {name}")
             continue
         attrs = dict([pk] + ([sk] if sk else []))
-        kwargs = {"TableName": name, "KeySchema": key_schema(pk, sk), "ProvisionedThroughput": CAP}
+        kwargs = {"TableName": name, "KeySchema": key_schema(pk, sk), "BillingMode": BILLING}
         if gsi:
             gname, gpk, gsk = gsi
             attrs.update(dict([gpk] + ([gsk] if gsk else [])))
             kwargs["GlobalSecondaryIndexes"] = [{
                 "IndexName": gname, "KeySchema": key_schema(gpk, gsk),
-                "Projection": {"ProjectionType": "ALL"}, "ProvisionedThroughput": CAP}]
+                "Projection": {"ProjectionType": "ALL"}}]   # index ใช้ billing ตามตาราง
         kwargs["AttributeDefinitions"] = [{"AttributeName": a, "AttributeType": t} for a, t in attrs.items()]
         db.create_table(**kwargs).wait_until_exists()
         print(f"สร้างแล้ว {name}")
+
+
+def on_demand():
+    """ตารางเดิมที่เป็น provisioned -> on-demand (index เปลี่ยนตามเอง) เปลี่ยนกลับเป็น provisioned ได้วันละครั้ง"""
+    client = db.meta.client
+    for name in TABLES:
+        try:
+            mode = client.describe_table(TableName=name)["Table"].get("BillingModeSummary", {}).get("BillingMode", "PROVISIONED")
+        except client.exceptions.ResourceNotFoundException:
+            print(f"ไม่มี     {name}")
+            continue
+        if mode == BILLING:
+            print(f"เป็นแล้ว  {name}")
+            continue
+        client.update_table(TableName=name, BillingMode=BILLING)
+        client.get_waiter("table_exists").wait(TableName=name)   # รอจนกลับมา ACTIVE ก่อนเปลี่ยนตารางถัดไป
+        print(f"เปลี่ยนแล้ว {name} -> on-demand")
 
 
 def clean(x):
@@ -128,5 +151,7 @@ if __name__ == "__main__":
         load(sys.argv[2] if len(sys.argv) > 2 else None)
     elif cmd == "check":
         check()
+    elif cmd == "on-demand":
+        on_demand()
     else:
         print(__doc__)
