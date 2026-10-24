@@ -3,3 +3,4 @@ mangum>=0.21          # ห่อ FastAPI ให้รันบน Lambda (handl
 boto3>=1.41           # ต่อ DynamoDB (Lambda runtime มีให้แล้ว แต่ใส่ไว้ให้รันในเครื่องได้)
 PyJWT[crypto]>=2.8    # ตรวจ ID token จาก Cognito (app/auth.py) ไม่ต้องใช้ในโหมด dev
 uvicorn>=0.39        # รันในเครื่องเท่านั้น: uvicorn app.main:app --reload
+pytest>=8.0           # รัน test ในเครื่องเท่านั้น: python -m pytest tests -q (ไม่ใส่ใน Lambda)
