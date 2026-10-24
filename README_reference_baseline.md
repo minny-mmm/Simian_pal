@@ -2,6 +2,93 @@
 
 เป้าหมายคือวัด **ความห่างของตัวชี้วัดรายวันจาก reference COPS และ NHANES แยกกัน** ไม่ใช่ classifier, โอกาสเป็นโรค หรือคะแนนความรุนแรง และไม่มีการรวมหลายตัวชี้วัดเป็นคะแนนเดียว ข้อความ/กราฟในระบบปลายทางต้องใช้คำว่า “ต่างจากกลุ่มอ้างอิง COPS/NHANES” เท่านั้น
 
+## AWS real-data pilot — 24 ต.ค. 2026
+
+**ลำดับงานล่าสุด:** deployment demo ใช้ baseline local จริงที่ล็อกไว้ Deploy แล้วที่ https://a7cklo11v6.execute-api.ap-southeast-1.amazonaws.com (ข้อมูลต้องล็อกอิน) Backend/Analysis จริง 33 แถวเทียบ local ต่างสูงสุด 0.0 และ Layer B เชื่อม Bedrock Nova Lite `apac.amazon.nova-lite-v1:0` ผ่าน runtime IAM พร้อม semantic guards แล้ว ดู [README_reference_deployment.md](README_reference_deployment.md) สถานะ AWS training แยกต่างหาก ไม่ submit/poll training ระหว่าง deploy และไม่สลับไปใช้ AWS artifact อัตโนมัติ ต้องตรวจ compatibility และ validate ก่อน promote อย่างชัดเจน
+
+**AWS continuation 24 ต.ค. 08:09 น. เวลาไทย:** ตรวจชื่อ job เดิมแล้วไม่พบงาน และตรวจ applied quotas ราย instance ครบทั้ง On-Demand 170 records / Spot 169 records ทุกตัวเป็น 0 จึงไม่มี CPU ทางเลือกที่ใช้ได้ แม้ aggregate training instance quota เป็น 4 คำขอเดิมยัง `CASE_OPENED`, requested=1 แต่ applied `ml.m5.xlarge`=0 Direct Support API อ่าน case detail ไม่ได้ (`SubscriptionRequiredException`); case ID/status ยืนยันจาก Service Quotas รอบนี้ไม่เรียก CreateTrainingJob ไม่ fit หรือเปลี่ยน instance/Region/source/config ตรวจ S3 ทั้ง 9 frozen objects และ hash ชุด validator เดิมตรงทั้งหมด รายงานแยกโดยไม่เขียนทับ handoff เดิม: `reports/reference_baseline/aws-real-pilot-20261024-v1/aws-execution-continue-01/AWS_EXECUTION_HANDOFF.md` / `.json` ต้องติดตาม case เดิม `179280244700132` ให้มี applied quota ก่อน submit ไม่ polling รอไม่สิ้นสุด
+
+**สถานะสำหรับส่ง validator ล่าสุด:** SSO ใช้งานได้และสร้าง scoped execution role สำเร็จแล้ว ส่ง quota request เพียงหนึ่งคำขอ `c5811078318c4270afd395b964883e58jfxRF26F` สถานะ `CASE_OPENED` (case `179280244700132`) แต่ applied quota ยังเป็น 0 จึงยังไม่ได้ submit งาน `pd-reference-real-pilot-20261024-v1` ตรวจ `DescribeTrainingJob` แล้วไม่พบงานนี้ ไม่ส่งงานซ้ำและไม่เปลี่ยน config เพื่อหลบ quota ข้อความ SSO/approval ด้านล่างเป็นประวัติที่แก้แล้ว
+
+ตรวจ S3 bytes ทั้ง 9 objects ตรง frozen snapshot เดิม: input manifest SHA256 `abb94dd80afadf4528152fbfb972660d69cc7c08958743d1b9650ba2f072bc25`; LastModified คือ 23 ต.ค. 17:38 UTC = 24 ต.ค. 00:38 Asia/Bangkok Source commit `7989ba8dba461122b3aa750c8ea7501f1382a5d9` พร้อม `dirty=true`; ต้องล็อก source archive SHA256 `abc089f77af81895c47dd4423e52a03b3d6d24bdd38f5a9bf6ce709a7a6f1421` ด้วย ไม่อ้างว่าเป็น pristine commit
+
+valid bundle มีเฉพาะ COPS-7 และ NHANES-81262 ที่ `data/daily/reference-v1/aws-real-pilot-20261024-v1/valid/` ทั้ง local และใต้ S3 root ตาม config มี 33 metric-day rows (`ok=26`, `insufficient_data=7`) ใช้ `train/reference_config.yaml` เดิม พร้อม versioned hourly manifests และ clean/QC evidence ใน `valid/provenance/` ไม่ใช้ legacy feature CSV และไม่เปิด `data/features/nhanes/tests/` รายงานส่งต่อ: `reports/reference_baseline/aws-real-pilot-20261024-v1/VALIDATOR_HANDOFF.md` / `.json` ผล local Python 3.12 และ Analysis แยกชัดจาก AWS ซึ่งยังไม่มี artifact
+
+```powershell
+# ตรวจ immutable input เดิม ไม่สร้าง train ใหม่:
+python tools/prepare_reference_validator.py --stage verify
+# เตรียม valid เฉพาะสองคน; reuse output เดิมที่ตรวจ hash แล้ว:
+python tools/prepare_reference_validator.py --stage valid
+python tools/prepare_reference_validator.py --stage provenance
+python tools/prepare_reference_validator.py --stage handoff
+# หลัง AWS applied quota >=1 เท่านั้น; submit ตรวจชื่องานเดิมและ reuse หากมีแล้ว:
+python tools/run_reference_aws.py --stage preflight
+python tools/run_reference_aws.py --stage submit
+python tools/run_reference_aws.py --stage monitor
+python tools/prepare_reference_validator.py --stage handoff
+```
+
+`monitor` ใช้ valid bundle ที่เตรียมแล้วเฉพาะสองคน ไม่สกัด/fit validation ใหม่ เก็บ SHA256 ของ downloaded `model.tar.gz` และ `baseline.json` แยกกันเมื่อ AWS สำเร็จ ไม่แก้ frozen code archive เพื่อเพิ่ม reporting logic นี้
+
+**อัปเดตหลังอนุญาต IAM/quota:** ผู้ใช้อนุญาตสร้าง role และขอ quota 1 instance แล้ว ได้เรียก `--stage provision` จริง แต่หยุดที่ STS credential resolution ด้วย `TokenRetrievalError: Token has expired and refresh failed` ก่อนมีการสร้าง role หรือส่ง quota request ดู `reports/reference_baseline/aws-real-pilot-20261024-v1/blocked_provision.json` ต้องรัน `aws sso login --profile minny --region ap-southeast-1` แล้วรัน provision/preflight ต่อ ไม่ต้องขออนุญาต IAM/quota หรือ paid pilot ซ้ำ ข้อความ automatic approval ด้านล่างเป็นประวัติ blocker ก่อนอนุญาต ยังไม่ได้ submit job และยังไม่มี AWS training artifact
+
+สถานะล่าสุด: **ยังไม่ submit training job** แม้ผู้ใช้อนุญาต paid pilot แล้ว AWS identity/S3/ECR/ราคาใช้งานได้ แต่ไม่มี execution role ที่ trust SageMaker และ training quotas ใน `ap-southeast-1` เป็น 0 รวม `ml.m5.xlarge` (`L-CCE2AFA6`) Automatic approval review ปฏิเสธการสร้าง persistent IAM role/policy และขอเพิ่ม quota เพราะยังต้องอนุญาตสองการเปลี่ยนแปลงนี้แยกต่างหาก ยังไม่ได้สร้าง role หรือส่ง quota request ไม่ใช่ AWS training failure และยังไม่มี job ARN/CloudWatch training logs/ผล validation จาก AWS
+
+ตรวจหลักฐานปัจจุบันที่ `reports/reference_baseline/aws-real-pilot-20261024-v1/aws_preflight.json`, `service_quotas.json`, `execution_role_trust.json` และ `execution_role_permissions.json` Role ARN ใน `config/sagemaker_reference_pilot.yaml` เป็น **role ที่เสนอ ยังไม่ใช่ resource ที่สร้างสำเร็จ** Trust ผูกกับ account/Region/job นี้เท่านั้น Object permissions อ่านเฉพาะ train/code snapshot และเขียนเฉพาะ model prefix ของ run ไม่มี endpoint permissions ไม่แก้ role ของทีม
+
+ทำส่วนที่ไม่ติด IAM/quota สำเร็จแล้ว: frozen train snapshot ใหม่จาก completed clean manifests ที่ผ่าน QC ทุกคน ณ snapshot, ไม่อ่าน `.tmp`/in-flight outputs และไม่หยุด worker เดิม (ตอนตรวจไม่พบ worker ทำงาน) ใช้ clean/feature/daily/fit เดิมผ่าน `tools/run_reference_aws.py` ไม่สร้าง ingestion/clean ใหม่ ไม่เปลี่ยน split/thresholds และไม่ใช้ validation/test เข้า fit
+
+| ตัวชี้วัด | COPS reference คน / วัน | NHANES reference คน / วัน |
+| --- | ---: | ---: |
+| ENMO (g) | 8 / 40 | 8 / 51 |
+| Walking cadence (steps/s) | 7 / 29 | 6 / 36 |
+| Rest tremor window fraction (0–1) | 8 / 40 | 8 / 51 |
+
+ทั้ง 6 reference summaries เป็น `ok` เพราะมี train เพิ่มที่เสร็จจริง ไม่ได้ลดขั้นต่ำ Snapshot รวม 16 train คน; COPS มี 42 observed clean-QC days แต่ daily ENMO/tremor ใช้ได้ 40 วัน ส่วน cadence มี daily-usable 30 วัน/8 คน แล้วเข้า reference หลังขั้นต่ำวันต่อคน 29 วัน/7 คน NHANES cadence มี daily-usable 37 วัน/7 คน แล้วเข้า reference 36 วัน/6 คน วันที่ไม่ผ่านยังคง null พร้อมเหตุผลใน daily/coverage ไม่เปลี่ยนเป็น 0
+
+ไฟล์จริงในเครื่อง:
+
+- `reports/reference_baseline/aws-real-pilot-20261024-v1/input_manifest.json`: รายชื่อ/split, clean/QC/manifest/hourly hashes, preprocessing version, code revision+source hashes, coverage และ train/held-out overlap check
+- `data/daily/reference-v1/aws-real-pilot-20261024-v1/train/`: train-only daily/hour QC/roster/configs/bundle manifest; roster เก็บ split metadata เดิมเพื่อป้องกัน leakage ไม่ใช่ held-out sensor/features
+- `data/models/reference-v1/aws-real-pilot-20261024-v1/local_same_snapshot/`: **local fit เท่านั้น** ผ่าน SageMaker entrypoint เดิม
+- `reports/reference_baseline/aws-real-pilot-20261024-v1/source.tar.gz`: frozen code whitelist ไม่มีข้อมูล/credentials
+- `reports/reference_baseline/aws-real-pilot-20261024-v1/local_dependency_parity.json`: ใช้ frozen code และ input เดียวกันตรวจ local Python 3.13/numpy 2.5.4/pandas 3.0.6 เทียบ Python 3.12.6/numpy 2.5.1/pandas 2.2.3 ผ่าน `rtol=atol=1e-12`, maximum reference absolute difference `0.0` **ไม่ใช่ผลการรันบน AWS**
+
+อัปโหลด train input/code/input manifest จริงแล้วภายใต้ `storage.s3_root` เดิม:
+
+```text
+data/daily/reference-v1/aws-real-pilot-20261024-v1/train/
+data/models/reference-v1/aws-real-pilot-20261024-v1/source/source.tar.gz
+reports/reference_baseline/aws-real-pilot-20261024-v1/input_manifest.json
+```
+
+S3 upload ใช้ SHA256 metadata และ conditional `IfNoneMatch=*` ห้าม overwrite ต่าง content การ resume ตรวจ hashes ก่อนใช้ input เดิม Source clean evidence เดิมถูกเก็บตามจริง ไม่แก้ Git revision/preprocessing version ย้อนหลัง
+
+แผน job `pd-reference-real-pilot-20261024-v1`: official sklearn 1.9-0 prebuilt image ใน Singapore pin digest จาก ECR ตาม config, 1 × `ml.m5.xlarge` CPU, 20 GB volume, max runtime 900 วินาที, ปิด profiler, omit `RetryStrategy` (ไม่เปิด automatic job retry) และ create API retry เพียงหนึ่ง attempt ไม่ต้อง build Docker ในเครื่อง Container มี sklearn แต่โค้ด fit เป็น empirical cohort distributions ไม่เรียก classifier/ANN/LLM
+
+ตรวจ [official image catalog](https://aws.github.io/deep-learning-containers/reference/available_images/), [Region registry](https://aws.github.io/deep-learning-containers/reference/region_availability/), [Dockerfile](https://raw.githubusercontent.com/aws/deep-learning-containers/main/docker/sklearn/1.9-0/Dockerfile) และ [dependencies](https://raw.githubusercontent.com/aws/deep-learning-containers/main/docker/sklearn/1.9-0/pyproject.toml) แล้ว Python/numpy/pandas/PyYAML รองรับ fit path ที่ใช้ และ entrypoint จะเก็บ versions ที่รันจริงไว้ใน `runtime_metadata.json` Network isolation ใช้ `code` input channel ให้บริการดาวน์โหลด source ก่อนรัน แล้ว toolkit เปิด local tarball แทน S3 fetch จากใน container
+
+ราคา AWS Price List ของ **Training SKU** `ml.m5.xlarge-Training` ใน Singapore ณ วันที่ตรวจ US$0.288/hour; สมมติ billed compute 5–10 นาที ≈ US$0.024–0.048 ไม่รวม S3/EBS/CloudWatch/ภาษี ไม่ใช่ invoice หรือ hard total-cost cap เก็บ raw price evidence ใน preflight JSON ไม่ใช้ราคา Studio/Notebook แทน
+
+คำสั่งรัน (Python environment ที่มี `requirements-reference-aws.txt` เวอร์ชันที่ตรวจแล้ว):
+
+```powershell
+python -u -X utf8 tools/run_reference_aws.py --stage prepare
+python -u -X utf8 tools/run_reference_aws.py --stage preflight
+python -u -X utf8 tools/run_reference_aws.py --stage upload
+# เมื่อได้รับอนุญาต IAM/quota แยกต่างหากแล้วเท่านั้น หรือให้ผู้ดูแลจัด prerequisites:
+python -u -X utf8 tools/run_reference_aws.py --stage provision
+# ต้องรอ applied quota >= 1 และ role พร้อม ไม่ใช่แค่ quota request PENDING:
+python -u -X utf8 tools/run_reference_aws.py --stage submit
+python -u -X utf8 tools/run_reference_aws.py --stage monitor
+```
+
+`prepare` reuse ได้เฉพาะ snapshot เดิมที่ hashes ผ่าน ไม่เพิ่มคนใน snapshot ที่ตรึงแล้ว หากข้อมูลเพิ่มต้องใช้ namespace/config ใหม่ `submit` ตรวจ exact job name และ input identity; งานเดิมถูก reuse ไม่ create ซ้ำ มี durable submission intent ก่อน create เพื่อหยุดการส่งซ้ำหลัง response กำกวม/ขาดการเชื่อมต่อ Failed job จะไม่ถูก retry แบบเสียเงินอัตโนมัติ
+
+เมื่อ AWS job เป็น `Completed` เท่านั้น `monitor` จึงโหลด model archive ตรวจ baseline fingerprint เปรียบเทียบ reference entries/median/quantiles/MAD/status/units/null กับ local snapshot เดียวกันด้วย tolerance ที่กำหนดล่วงหน้า แล้วตรวจ validation ที่เสร็จแล้วโดยไม่ fit เพิ่ม Public Analysis JSON ใช้ schema `1.0.0` เดิมและ semantic validation พร้อมตรวจ baseline hash คงเดิม Whole artifact bytes อาจต่างเพราะ timestamp/runtime/code metadata จึงเก็บทั้ง SHA256 และผล numerical parity ไม่อ้างว่า byte hashes ต้องเท่ากัน
+
+ยังไม่มี `analysis_VALIDATION_AWS_REAL.json`/AWS validation report จนกว่า job จริงสำเร็จ ผล local checkpoint ในหัวข้อถัดไปเป็นคนละ scope ไม่ใช้แทนผล AWS ไม่เปิด test ไม่สร้าง endpoint และไม่ใช้ข้อมูลจำลองเป็น training input ของรอบนี้
+
 ## Real-data run — 23 ต.ค. 2026
 
 ใช้ **ทางที่ 2: clean ใหม่จาก raw** เพราะค้น S3 clean/features/raw และ prefixes metadata/config/reports/logs/manifests รวมประวัติ Git และ QC ของ train/validation 110 ไฟล์แล้ว ไม่พบ config/code/output linkage ของ clean/features เดิม `_source.json` 42 ไฟล์บอกเพียง acquisition source/size/file count ไม่ยืนยัน preprocessing ห้ามใช้การตรงกันของ MD5 หรือ config ปัจจุบันแทนหลักฐานย้อนหลัง

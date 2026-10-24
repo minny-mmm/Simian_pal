@@ -70,6 +70,9 @@ def test_prebuilt_script_request_archive_and_same_entrypoint(tmp_path):
     assert request['EnableNetworkIsolation'] is True
     assert request['AlgorithmSpecification']['ContainerEntrypoint']==['train']
     assert json.loads(request['HyperParameters']['sagemaker_program'])=='train.py'
+    assert json.loads(request['HyperParameters']['sagemaker_submit_directory'])=='/opt/ml/input/data/code/source.tar.gz'
+    assert [channel['ChannelName'] for channel in request['InputDataConfig']]==['train','code']
+    assert request['InputDataConfig'][1]['DataSource']['S3DataSource']['S3Uri'].endswith('/source.tar.gz')
     source=prepare_script_archive(tmp_path/'source.tar.gz')
     unpack=tmp_path/'source'
     with tarfile.open(source['path']) as archive:
