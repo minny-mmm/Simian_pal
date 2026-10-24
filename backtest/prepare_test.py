@@ -75,7 +75,8 @@ def locked_context(bcfg, unlock, approved_sha, pull=False, outputs_root=None, cu
     inputs = load_real(bcfg, pull)
     sha, plan, readiness = ref.check_test_locks(inputs, bcfg, outputs_root, unlock, approved_sha)
     report = f"reports/reference_baseline/{bcfg['real']['run_id']}"
-    files = {name: materialize(f'{report}/{name}', bcfg['paths']['workspace'], pull) for name in RUN_FILES}
+    files = {name: materialize(f'{report}/{name}', bcfg['paths']['workspace'], pull, bcfg['real'].get('data_root'))
+             for name in RUN_FILES}
     if current_source is None:
         from tools.run_real_reference import source_version
         current_source = source_version()

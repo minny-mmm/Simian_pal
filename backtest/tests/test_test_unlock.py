@@ -8,6 +8,7 @@ import pytest
 from src.reference.common import fingerprint, sha256
 from src.reference.io import load_bundle
 
+from backtest import prepare_symptom as symptom_prep
 from backtest import prepare_test as prep
 from backtest.evaluators.report_builder import update_registry
 from backtest.run import main as run_main
@@ -41,12 +42,21 @@ def test_real_paths_full_run_layout():
     p = real_paths(cfg)
     assert p['baseline'] == f"data/models/reference-v1/{cfg['real']['run_id']}/baseline.json"
     assert p['test_plan'] == f"reports/reference_baseline/{cfg['real']['run_id']}/test_plan_NOT_EXECUTED.json"
-    assert 'checkpoints' not in p['train_bundle'] and 'checkpoints' in real_paths(load_backtest_config())['train_bundle']
+    checkpoint = real_paths(load_backtest_config(overrides={'real': {'checkpoint': 'ckpt-x'}}))['train_bundle']
+    assert 'checkpoints' not in p['train_bundle'] and checkpoint.endswith('checkpoints/ckpt-x/train')
+
+
+def test_materialize_prefers_data_root(tmp_path):
+    rel = 'data/models/x/baseline.json'
+    assert data_loader.materialize(rel, 'backtest/workspace', data_root=tmp_path) is None
+    (tmp_path / rel).parent.mkdir(parents=True)
+    (tmp_path / rel).write_text('{}')
+    assert data_loader.materialize(rel, 'backtest/workspace', data_root=tmp_path) == tmp_path / rel
 
 
 def test_load_real_never_pulls_test_bundle(monkeypatch, tmp_path):
     calls = {}
-    monkeypatch.setattr(data_loader, 'materialize', lambda rel, ws, pull=False: calls.setdefault(rel, pull) and None)
+    monkeypatch.setattr(data_loader, 'materialize', lambda rel, ws, pull=False, root=None: calls.setdefault(rel, pull) and None)
     cfg = load_backtest_config(overrides={'real': {'test_bundle': 'data/daily/x/test'}, 'paths': {'workspace': str(tmp_path)}})
     with pytest.raises(FileNotFoundError):
         load_real(cfg, pull=True)
@@ -266,7 +276,31 @@ def test_prepare_assembly(tmp_path, monkeypatch):
         _prepare(tmp_path, monkeypatch, {'T1': 'included', 'T2': 'excluded'})
 
 
-@pytest.mark.parametrize('main', [run_main, prep.main])
+def test_prepare_symptom_requests_only_train_valid_keys(tmp_path):
+    roster = pd.DataFrame(dict(dataset=['cops', 'cops', 'cops', 'nhanes'], subject_id=['COPS-A', 'COPS-V', 'COPS-T', 'NHANES-1'],
+                               split=['train', 'valid', 'test', 'train']))
+    subjects = symptom_prep.select_subjects(roster)
+    assert [s['subject_id'] for s in subjects] == ['COPS-A', 'COPS-V']
+    with pytest.raises(ValueError, match='COPS-T'):
+        symptom_prep.select_subjects(roster, ['COPS-T'])
+    diary = ('Day;Time;TremorScore;KinesiaScore;Visit;Kinesia;WearableDataAvailability\n'
+             'Day 1;10 hr;1;0;outpatient;Awake;Wearable Worn\nDay 1;11 hr;0;0;outpatient;Sleep;Wearable Worn\n').encode()
+    qc = json.dumps(dict(included=True, status='ok', days=[dict(day=1, valid=True)])).encode()
+    features = b'subject_id,dataset,day,hour,tremor_frac_all\nCOPS-A,cops,1,9,0.1\n'
+    files = {f'data/raw/cops/COPS-A/COPS-A_symptomdiary.csv': diary, 'data/clean/cops/COPS-A.qc.json': qc,
+             'data/features/cops/COPS-A.csv': features}
+    requested = []
+    manifest = symptom_prep.build_snapshot(tmp_path / 'snap', subjects, lambda k: requested.append(k) or files.get(k))
+    assert not any('COPS-T' in k or 'nhanes' in k for k in requested)
+    assert {e['subject_id']: e['status'] for e in manifest['subjects']} == {'COPS-A': 'ok', 'COPS-V': 'missing'}
+    labels = pd.read_csv(tmp_path / 'snap/labels.csv')
+    assert labels[['subject_id', 'day', 'hour', 'tremor_score']].values.tolist() == [['COPS-A', 1, 9, 1]]  # Time 10 hr -> hour 9
+    assert (tmp_path / 'snap/features/COPS-A.csv').read_bytes() == features
+    with pytest.raises(ValueError, match='never overwrite'):
+        symptom_prep.build_snapshot(tmp_path / 'snap', subjects, files.get)
+
+
+@pytest.mark.parametrize('main', [run_main, prep.main, symptom_prep.main])
 def test_cli_parsers_build(main):
     with pytest.raises(SystemExit) as exc:
         main(['--help'])

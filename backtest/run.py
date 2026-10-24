@@ -138,8 +138,11 @@ def _gates(results, inputs, bcfg, baseline_start):
 
 def run(mode, run_id=None, tracks=None, config_path=DEFAULT_CONFIG, overrides=None, pull=False,
         unlock_test=False, approved_sha=None, outputs_root=None, workspace_root=None, baseline=None,
-        train_bundle=None, valid_bundle=None, synthetic_from=None, test_bundle=None):
+        train_bundle=None, valid_bundle=None, synthetic_from=None, test_bundle=None, symptom_snapshot=None):
     bcfg = load_backtest_config(config_path, overrides)
+    if symptom_snapshot is not None:  # written by backtest.prepare_symptom (train/valid only)
+        snap = Path(symptom_snapshot).resolve()
+        bcfg['symptom'].update(features_glob=str(snap / 'features' / '*.csv'), labels_path=str(snap / 'labels.csv'))
     if synthetic_from and mode != 'synthetic':
         raise ValueError('--synthetic-from is only valid with --mode synthetic')
     if baseline is not None:
@@ -265,6 +268,7 @@ def main(argv=None):
     p.add_argument('--train-bundle', type=Path, help='with --baseline: the train bundle it was fitted on (hash chain)')
     p.add_argument('--valid-bundle', type=Path, help='real mode: valid bundle to compare (default from config)')
     p.add_argument('--test-bundle', type=Path, help='real mode: test bundle built by backtest.prepare_test (opened only by the test track)')
+    p.add_argument('--symptom-snapshot', type=Path, help='Track B inputs written by backtest.prepare_symptom')
     p.add_argument('--synthetic-from', help='synthetic mode: reuse the fixture (same baseline file) of an earlier run ID')
     a = p.parse_args(argv)
     if a.baseline and not a.approved_baseline_sha256:
@@ -272,7 +276,7 @@ def main(argv=None):
     results, out = run(a.mode, a.run_id, a.tracks, a.config, pull=a.pull, unlock_test=a.unlock_test,
                        approved_sha=a.approved_baseline_sha256, baseline=a.baseline, train_bundle=a.train_bundle,
                        valid_bundle=a.valid_bundle, synthetic_from=a.synthetic_from,
-                       test_bundle=a.test_bundle)
+                       test_bundle=a.test_bundle, symptom_snapshot=a.symptom_snapshot)
     failed = [g['gate'] for g in results['gates'] if g['status'] == 'fail']
     print(f"[{results['data_kind'].upper()}] overall={results['overall']} -> {out}")
     for g in failed:

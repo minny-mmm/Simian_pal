@@ -206,11 +206,12 @@ def _pull(rel, dest):
     return True
 
 
-def materialize(rel, workspace, pull=False):
-    """Local project copy (read in place) > backtest workspace copy > S3 pull into the workspace."""
+def materialize(rel, workspace, pull=False, data_root=None):
+    """data_root (e.g. the git worktree of a long real run) > local project copy > backtest workspace copy > S3 pull."""
     if not rel:
         return None
-    for candidate in [ROOT / rel, ROOT / workspace / 'real' / rel]:
+    roots = [Path(data_root)] if data_root else []
+    for candidate in [r / rel for r in roots] + [ROOT / rel, ROOT / workspace / 'real' / rel]:
         if candidate.exists():
             return candidate
     dest = ROOT / workspace / 'real' / rel
@@ -223,7 +224,8 @@ def load_real(bcfg, pull=False):
     rel = real_paths(bcfg)
     ws = bcfg['paths']['workspace']
     # The test bundle is only located locally, never pulled: test contents must not be downloaded before unlock.
-    found = {k: materialize(v, ws, pull and k != 'test_bundle') for k, v in rel.items() if k not in ('report_dir',)}
+    root = bcfg['real'].get('data_root')
+    found = {k: materialize(v, ws, pull and k != 'test_bundle', root) for k, v in rel.items() if k not in ('report_dir',)}
     if found['baseline'] is None:
         raise FileNotFoundError(f"Real baseline not found: {rel['baseline']}. Run with --pull "
                                 "(after `aws sso login --profile minny`) or copy it into the workspace.")
@@ -246,7 +248,7 @@ def load_real(bcfg, pull=False):
         unavailable.append(dict(input='test_bundle', path=rel['test_bundle'], status='blocked_no_test_features'))
     official = {}
     for name in bcfg['real'].get('official_reports', []):
-        path = materialize(f"{rel['report_dir']}/{name}", ws, pull) if rel['report_dir'] else None
+        path = materialize(f"{rel['report_dir']}/{name}", ws, pull, root) if rel['report_dir'] else None
         if path is not None:
             official[name] = json.loads(path.read_text(encoding='utf-8'))
     if found['fit_report'] is not None:

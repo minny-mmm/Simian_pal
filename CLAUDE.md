@@ -14,9 +14,15 @@ Every stage therefore uses the *same code and thresholds for both datasets*. The
 raw readers (`src/ingestion/`) and `clean.harmonize` in `config/config.yaml`. Don't introduce per-dataset branches
 elsewhere; any new feature/step should be checked for device leakage.
 
+**Current modelling target (since 21 Oct 2026):** not a classifier. `src/reference` builds a *daily cohort-reference
+baseline* — per-day distance of 3 indicators (ENMO, walking cadence, rest-tremor fraction) from separate COPS and
+NHANES train references. Outputs must say "distance from the COPS/NHANES reference", never diagnosis/severity/
+probability, and never a combined score. The hourly-tremor plan in `README_model_plan.md` is exploratory only.
+
 Docs are in Thai: `README.md` (overview, clean stage, harmonize), `README_Download.md` (team S3 workflow),
-`README_feature.md` (feature columns, training pitfalls). README.md's statement that feature code doesn't exist is
-outdated — see `src/features/run.py`.
+`README_feature.md` (feature columns, training pitfalls), `README_reference_baseline.md` (reference baseline: formulas,
+null rules, real runs, SageMaker prep — the most current status doc), `backtest/README.md`. README.md's statement that
+feature code doesn't exist is outdated — see `src/features/run.py`.
 
 ## Commands
 
@@ -34,18 +40,35 @@ python tools/noise_target.py                             # check NHANES noise ta
 python tools/s3_pull.py list                             # what's on S3
 python tools/s3_batch.py clean --dry-run                 # pull raw from S3 3 at a time -> clean -> upload
 python -m src.pipeline --datasets cops                   # optional ingestion path (COPS only)
+
+# reference baseline (all write new run dirs; never overwrite)
+python tools/extract_reference_features.py --dataset cops --ids COPS-8 [--config ...] [--clean-manifest-root ...]
+python tools/reference_baseline.py daily|fit|compare ... # hourly->daily bundle, train-only fit, compare
+python tools/run_real_reference.py --run-id <new> --stage inspect|train|validation|checkpoint|status
+python tools/reference_demo.py --out reports/reference_baseline/demo-NEW   # synthetic only
+
+# backtest (separate folder; reads project code/config read-only) — full sequence in backtest/RUNBOOK.md
+python -X utf8 -m backtest.run --mode synthetic|real [--pull] [--tracks ...] --run-id <new>   # exit 1 gate fail, 2 test locked
+python -X utf8 -m backtest.run --mode synthetic --synthetic-from <run> --config <unlock cfg> --tracks test --unlock-test ...
+python -X utf8 -m backtest.aws_compare --aws-artifact <s3 uri|file> --aws-sha256 <sha>
+python -X utf8 -m backtest.prepare_symptom                # Track B inputs, COPS train/valid only -> --symptom-snapshot
+python -X utf8 -m backtest.prepare_test --config <unlock cfg> --unlock-test --approved-baseline-sha256 <sha> --dry-run
+python -m pytest backtest/tests -q
 ```
 
+On Windows use `python -X utf8` for anything that prints/writes Thai. The AWS CLI needs `--region ap-southeast-1`
+explicitly (the profile's region is malformed); Python storage reads region from config.
+
 `tests/test_storage.py` uses moto's in-process S3 server; it never touches real AWS. On Windows its 3 tests currently
-error at setup (`ThreadedMotoServer` reports host `0.0.0.0`, which Windows can't connect to: WinError 10049);
-the other tests pass. Real S3 access needs
+error at setup (`ThreadedMotoServer` reports host `0.0.0.0`, which Windows can't connect to: WinError 10049 or
+botocore `EndpointConnectionError`); the other tests pass. Real S3 access needs
 `aws sso login --profile minny` (profile/bucket in `config/config.yaml` → `storage`).
 
 ## Architecture
 
 Flow: raw (OSF/CDC → S3 `data/raw/`) → subject selection & splits (`tools/`, outputs committed to git) →
 **clean** (`src/clean`) → `data/clean/<ds>/<id>.parquet` + `.qc.json` → **features** (`src/features/run.py`) →
-`data/features/<ds>/<id>.csv` (1 row per hour) → model (not started).
+`data/features/<ds>/<id>.csv` (1 row per hour) → **reference baseline** (`src/reference`, below).
 
 - **Readers** (`src/ingestion/`): subclasses of `DatasetReader` (`base.py`), registered in `READERS` in
   `src/ingestion/__init__.py`. The clean stage uses only `has_raw`, `iter_hours` (yields `(t, xyz)` per hourly file,
@@ -68,6 +91,33 @@ Flow: raw (OSF/CDC → S3 `data/raw/`) → subject selection & splits (`tools/`,
   → 09:00–21:00 only → classify windows tremor/walk/rest → aggregate per (day, hour). Thresholds are in its `CFG`
   dict (mostly untuned). Amplitude-dependent columns use `AMPLITUDE_PREFIXES` and are the most brand-sensitive.
   Inter-axis correlation features were removed deliberately (device fingerprint).
+- **Reference baseline** (`src/reference`, thresholds in `config/reference_baseline.yaml`): versioned hourly features
+  (each CSV needs a `.manifest.json` from `tools/extract_reference_features.py`, backed by clean-run evidence;
+  `provenance.py`) → `daily.py` aggregates 09–21 h hourly rows to 3 daily indicators with coverage/`insufficient_data`
+  → `io.py` writes hashed bundles (`daily.csv`, `hour_qc.csv`, `bundle.manifest.json`, ...) → `model.py` fits
+  subject-balanced weighted median/quantiles/MAD on **train only** (`fit_reference` → `baseline.json`, tamper-checked
+  by `artifact_id`) and `compare_daily` (train rows are scored leave-one-subject-out) → `output.py` `build_analysis`
+  adds QC + `previous_day` and validates against public JSON Schema `1.0.0`. Null is never 0; MAD=0 → `zero_scale`
+  (distance kept, standardized null). `tools/run_real_reference.py` drives real runs into per-run namespaces
+  (`data/{clean/reference-runs,features/reference-v1,daily/reference-v1,models/reference-v1}/<run>/`,
+  `reports/reference_baseline/<run>/`). SageMaker files (`aws/reference/`, `tools/prepare_reference_aws.py`,
+  `tools/sagemaker_fit_reference.py`) only prepare requests; nothing in the repo submits jobs.
+- **Backtest** (`backtest/`): never edits `src/ tools/ config/ metadata/ tests/` (hash-checked each run); writes only
+  `backtest/workspace|outputs` (gitignored). Real mode reads only the baseline whose SHA256 equals
+  `real.approved_baseline_sha256` in `backtest/config/backtest_config.yaml`, never fits, keeps test locked; gates are
+  pre-registered there. `aws_compare.py` compares an AWS artifact with the local one by content (file SHA and
+  `artifact_id` always differ) and treats more train subjects as a new version that must be re-validated.
+  Every validation run with `audit` appends to `outputs/baseline_registry.json` (synthetic: `synthetic_registry.json`)
+  keyed by baseline SHA. **Test opens only if** `test.allow_test_split` + `--unlock-test` + approved SHA == file ==
+  `locked_baseline_sha256` of `test_plan_NOT_EXECUTED.json` (written only by `run_real_reference --stage fit`, so
+  checkpoint baselines can never open test) **and** the readiness gate passes: a registry run of that SHA with no failed
+  gate, audit passed, same gates fingerprint, and for every (cohort, metric) whose reference is `ok` the jackknife and
+  bootstrap gates `pass` (not `not_evaluable`) and valid has ≥ `min_valid_subjects_for_distribution` people
+  (`ref.ready_cells` / `readiness_for_test`). Once per SHA: `outputs/_test_opened/<sha>.json` is written before any test
+  row is read. The test bundle is built only by `backtest/prepare_test.py` (same locks; locked pipeline/reference
+  config, noise lock and clean source must reproduce the baseline `preprocessing_version`) and is never pulled by
+  `--pull`. Keep `allow_test_split: false` in the main config; unlock via a separate config copy with identical gates.
+  `real.data_root` points real mode at another checkout (e.g. a run's worktree) before the repo/workspace.
 
 ## Gotchas
 
@@ -79,5 +129,15 @@ Flow: raw (OSF/CDC → S3 `data/raw/`) → subject selection & splits (`tools/`,
   never use `subject_id`, `dataset`, `label`, `split`, `day`, `hour`, `hour_idx`, or window-count columns as inputs.
 - `data/`, most of `metadata/` and `reports/`, `*.parquet`, `*.zip` are gitignored. Only `metadata/cops_splits.csv`,
   `metadata/nhanes_splits.csv`, `reports/cops_visit_summary.csv` are committed; data lives on S3.
-- Comments and CLI help in `src/clean`, `src/storage.py`, `tools/` are Thai; `src/features/run.py` is English —
-  match the file you're editing.
+- Comments and CLI help in `src/clean`, `src/storage.py`, `tools/` are Thai; `src/features/run.py`, `src/reference`,
+  `tools/*reference*` and `backtest/` are English — match the file you're editing.
+- Reference config/thresholds may only be tuned on train. `config_hash` includes `baseline_version`, so bundles from
+  runs with different names don't mix even when the policy is identical; never mix preprocessing versions.
+- `tools/run_real_reference.py` `initialize()` refuses to continue a run once git HEAD or clean source changes. Run long
+  real runs from a dedicated `git worktree` so commits elsewhere don't break them; a run's clean evidence lives only on
+  the machine that ran it (S3 has bundles/reports, not `data/clean/reference-runs/`).
+- Legacy CSVs in S3 `data/features/` have no manifests: don't use them for the reference baseline (Track B only).
+  `tools/audit_model_readiness.py` fetches QC/diaries of every split incl. test; use `backtest.prepare_symptom` instead.
+  `data/features/nhanes/tests/` holds test-split files — don't pull or open test data until the test gate is unlocked.
+- `load_bundle` reads CSVs with pandas' default float parser, which is not bit-exact round-trip (~1e-15 relative);
+  fits and analyses are consistent because all read the same way, but a different pandas version can shift values.

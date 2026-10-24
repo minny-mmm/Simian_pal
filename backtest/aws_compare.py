@@ -218,7 +218,8 @@ def run_compare(aws_artifact, aws_sha, run_id=None, config_path=DEFAULT_CONFIG, 
     if out.exists():
         raise ValueError(f'Output exists: {out}; never overwrite')
     rel = real_paths(bcfg)
-    local_path = Path(local_baseline) if local_baseline else materialize(rel['baseline'], workspace_root, pull)
+    data_root = bcfg['real'].get('data_root')
+    local_path = Path(local_baseline) if local_baseline else materialize(rel['baseline'], workspace_root, pull, data_root)
     if local_path is None:
         raise FileNotFoundError(f"Local baseline not found: {rel['baseline']} (use --pull)")
     local_sha = check_approved(local_path, local_approved_sha or bcfg['real']['approved_baseline_sha256'])
@@ -234,7 +235,7 @@ def run_compare(aws_artifact, aws_sha, run_id=None, config_path=DEFAULT_CONFIG, 
     if comparison['category'] == 'same_inputs_match':
         validation = dict(status='reuse_local_validation', equivalent_to=local_sha)
     elif comparison['category'] == 'new_version_more_train':
-        vpath = Path(valid_bundle) if valid_bundle else materialize(rel['valid_bundle'], workspace_root, pull)
+        vpath = Path(valid_bundle) if valid_bundle else materialize(rel['valid_bundle'], workspace_root, pull, data_root)
         vdaily = load_bundle(vpath)[0] if vpath else None
         status = valid_bundle_check(vdaily, aws)
         validation = dict(status=status, valid_bundle=str(vpath) if vpath else None)

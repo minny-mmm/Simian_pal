@@ -92,7 +92,9 @@ aws sso login --profile minny
 & $py -X utf8 tools/run_real_reference.py --run-id real-20261023-v1 --stage fit
 ```
 
-- `initialize()` ปฏิเสธถ้า clean source/config/splits เปลี่ยนตั้งแต่เริ่ม run → ต้องรันที่ revision เดิม หรือเริ่ม run ID ใหม่ทั้งชุด
+- `initialize()` ปฏิเสธถ้า git HEAD/clean source/config/splits เปลี่ยนตั้งแต่เริ่ม run → รัน run ยาวใน `git worktree` แยก
+  (เช่น `git worktree add --detach D:\AWS\Simianpal-refrun <commit>`) แล้วตั้ง `real.data_root` ของ backtest ไปที่ worktree นั้น
+- clean evidence ของ `real-20261023-v1` อยู่บนเครื่อง `C:\working\a` เท่านั้น (S3 มีแค่ bundle/report) จึงต่อ run นั้นจากเครื่องอื่นไม่ได้
 - `--workers` สูงสุด 2 และมี memory guard; รันซ้ำคำสั่งเดิมเพื่อ resume
 
 ### ขั้น 3 — valid บน baseline ตัวเดียวกัน (ทุกคนใน split valid: COPS 7 / NHANES 22)
@@ -163,10 +165,12 @@ Remove-Item backtest/config/backtest_config.test-unlock.yaml
 ### ขั้น 7 — Track B (ถ้าต้องการ)
 
 ```powershell
-& $py -X utf8 tools/audit_model_readiness.py   # ได้ diary_labels_REVIEW_ONLY.csv; ตรวจ day/hour ตาม README_signal_audit.md
-# ตั้ง symptom.labels_path ใน backtest_config.yaml และให้มี data/features/cops/<id>.csv ของคน train/valid
-& $py -X utf8 -m backtest.run --mode real --tracks symptom --run-id real-symptom-v1
+# ดึงเฉพาะ COPS train/valid: diary + QC + legacy features -> snapshot ใหม่ใน backtest/workspace/real/symptom/<UTC>/
+& $py -X utf8 -m backtest.prepare_symptom
+& $py -X utf8 -m backtest.run --mode real --tracks symptom --symptom-snapshot <dir ที่พิมพ์ออกมา> --run-id real-symptom-v1
 ```
+
+ไม่ใช้ `tools/audit_model_readiness.py` เพราะดึง QC/diary ของทุก split รวม test; `source` ในผลรายงาน label match rate (day/hour ตาม README_signal_audit.md)
 
 ## 4. ตรวจซอฟต์แวร์ด้วย synthetic (ไม่ต้องต่อ S3)
 

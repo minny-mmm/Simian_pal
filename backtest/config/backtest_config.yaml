@@ -12,7 +12,8 @@ paths:
 
 real:
   run_id: real-20261023-v1
-  checkpoint: checkpoint-01
+  checkpoint: checkpoint-01  # null = full-run layout (the only one with a test plan)
+  data_root: null            # e.g. the git worktree of a long real run; searched before the repo and the workspace
   # Repo-relative; mirrored 1:1 under storage.s3_root. Used in place if present locally, otherwise
   # pulled (--pull) into backtest/workspace/real/<same path>.
   train_bundle: data/daily/reference-v1/{run_id}/checkpoints/{checkpoint}/train
