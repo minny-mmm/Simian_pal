@@ -1,0 +1,7 @@
+dataset,metric,n_reference_participants,n_reference_days,reference_status,full_reference_evaluable,loo_jackknife_evaluable,n_loo_insufficient,bootstrap_evaluable,n_valid_subjects_ok,valid_level,test_level
+cops,enmo_hourly_median_mean_g,6,28,ok,True,True,0,True,1,descriptive_only,blocked_no_test_features
+cops,walking_cadence_hourly_median_mean_hz,5,18,ok,True,False,5,True,0,unavailable,blocked_no_test_features
+cops,rest_tremor_window_fraction,6,28,ok,True,True,0,True,1,descriptive_only,blocked_no_test_features
+nhanes,enmo_hourly_median_mean_g,5,30,ok,True,False,5,True,1,descriptive_only,blocked_no_test_features
+nhanes,walking_cadence_hourly_median_mean_hz,4,22,insufficient_data,False,False,4,False,1,descriptive_only,blocked_no_test_features
+nhanes,rest_tremor_window_fraction,5,30,ok,True,False,5,True,1,descriptive_only,blocked_no_test_features

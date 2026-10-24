@@ -1,0 +1,137 @@
+{
+  "run_id": "synthetic-flow-C",
+  "mode": "synthetic",
+  "created_utc": "2026-10-24T08:28:09.822713+00:00",
+  "caveat": "Distances from the COPS/NHANES cohort references only, not diagnosis, severity or probability. Cohort = device brand for 100% of subjects, so any COPS-vs-NHANES difference may be the device.",
+  "data_kind": "synthetic",
+  "baseline_sha256": "d56591cdbe26b91e574b968e7d36a645f7d707fcd402cf0e356bc0a6ebfe1317",
+  "unavailable": [],
+  "evaluability": [
+    {
+      "dataset": "cops",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_reference_participants": 8,
+      "n_reference_days": 80,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 4,
+      "valid_level": "distribution",
+      "test_level": "available_locked"
+    },
+    {
+      "dataset": "cops",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_reference_participants": 8,
+      "n_reference_days": 80,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 4,
+      "valid_level": "distribution",
+      "test_level": "available_locked"
+    },
+    {
+      "dataset": "cops",
+      "metric": "rest_tremor_window_fraction",
+      "n_reference_participants": 8,
+      "n_reference_days": 80,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 4,
+      "valid_level": "distribution",
+      "test_level": "available_locked"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "enmo_hourly_median_mean_g",
+      "n_reference_participants": 8,
+      "n_reference_days": 80,
+      "reference_status": "ok",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": true,
+      "n_valid_subjects_ok": 4,
+      "valid_level": "distribution",
+      "test_level": "available_locked"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "n_reference_participants": 0,
+      "n_reference_days": 0,
+      "reference_status": "insufficient_data",
+      "full_reference_evaluable": false,
+      "loo_jackknife_evaluable": false,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": false,
+      "n_valid_subjects_ok": 4,
+      "valid_level": "distribution",
+      "test_level": "available_locked"
+    },
+    {
+      "dataset": "nhanes",
+      "metric": "rest_tremor_window_fraction",
+      "n_reference_participants": 8,
+      "n_reference_days": 80,
+      "reference_status": "zero_scale",
+      "full_reference_evaluable": true,
+      "loo_jackknife_evaluable": true,
+      "n_loo_insufficient": 0,
+      "bootstrap_evaluable": false,
+      "n_valid_subjects_ok": 4,
+      "valid_level": "distribution",
+      "test_level": "available_locked"
+    }
+  ],
+  "tracks": {
+    "test": {
+      "status": "locked_not_ready",
+      "reason": "Baseline not ready for test: [{'run_id': 'synthetic-flow-A', 'reasons': ['overall=fail', 'cops/walking_cadence_hourly_median_mean_hz: bootstrap_median_ci_width=fail', 'cops/rest_tremor_window_fraction: bootstrap_median_ci_width=fail']}]",
+      "readiness": {
+        "ready": false,
+        "validation_run": null,
+        "reasons": [
+          {
+            "run_id": "synthetic-flow-A",
+            "reasons": [
+              "overall=fail",
+              "cops/walking_cadence_hourly_median_mean_hz: bootstrap_median_ci_width=fail",
+              "cops/rest_tremor_window_fraction: bootstrap_median_ci_width=fail"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "gates": [
+    {
+      "gate": "baseline_unchanged",
+      "value": true,
+      "threshold": true,
+      "status": "pass"
+    },
+    {
+      "gate": "protected_paths_unchanged",
+      "value": [],
+      "threshold": [
+        "src",
+        "tools",
+        "config",
+        "metadata",
+        "tests"
+      ],
+      "status": "pass"
+    }
+  ],
+  "protected_paths_unchanged": true,
+  "overall": "pass"
+}

@@ -1,0 +1,26 @@
+version: reference-baseline-v1
+feature_contract: mew-37d5722-reference-v1
+paths:
+  hourly: data/features/reference-v1
+  daily: data/daily/reference-v1
+  models: data/models/reference-v1
+  reports: reports/reference_baseline
+feature_policy:
+  source_branch_commit: 37d5722
+  clock_hours: [9, 21]
+  window_seconds: 10
+  min_hour_valid_minutes: 20
+  min_day_valid_minutes: 360
+  min_day_hours: 6
+  min_metric_minutes: 5
+  min_metric_hours: 2
+  metric_coverage:
+    enmo_hourly_median_mean_g: {min_minutes: 360, min_hours: 6}
+    walking_cadence_hourly_median_mean_hz: {min_minutes: 5, min_hours: 2}
+    rest_tremor_window_fraction: {min_minutes: 5, min_hours: 2}
+reference_policy:
+  min_participants: 5
+  min_days: 10
+  min_days_per_participant: 2
+  quantiles: [0.05, 0.25, 0.5, 0.75, 0.95]
+  mad_scale_factor: 1.4826

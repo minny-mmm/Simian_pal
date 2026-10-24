@@ -1,0 +1,22 @@
+gate,value,threshold,status
+jackknife_median_shift[cops/enmo_hourly_median_mean_g],0.18352521622027657,0.5,pass
+jackknife_median_shift[cops/walking_cadence_hourly_median_mean_hz],0.1410394693759631,0.5,pass
+jackknife_median_shift[cops/rest_tremor_window_fraction],0.1625114107853244,0.5,pass
+jackknife_median_shift[nhanes/enmo_hourly_median_mean_g],,0.5,not_evaluable
+jackknife_median_shift[nhanes/walking_cadence_hourly_median_mean_hz],,0.5,not_evaluable
+jackknife_median_shift[nhanes/rest_tremor_window_fraction],,0.5,not_evaluable
+bootstrap_median_ci_width[cops/enmo_hourly_median_mean_g],1.2207116772961748,2.0,pass
+bootstrap_median_ci_width[cops/walking_cadence_hourly_median_mean_hz],1.4426633492233523,2.0,pass
+bootstrap_median_ci_width[cops/rest_tremor_window_fraction],1.858459585981866,2.0,pass
+bootstrap_median_ci_width[nhanes/enmo_hourly_median_mean_g],,2.0,not_evaluable
+bootstrap_median_ci_width[nhanes/walking_cadence_hourly_median_mean_hz],,2.0,not_evaluable
+bootstrap_median_ci_width[nhanes/rest_tremor_window_fraction],,2.0,not_evaluable
+no_lookahead[train],0,0,pass
+no_lookahead[valid],,0,not_evaluable
+schema_and_semantic_validation,129,build_analysis/validate_output,pass
+baseline_unchanged,True,True,pass
+audit[baseline_lock],0 failed / 3 checked,0 failed,pass
+audit[hash_chain],0 failed / 9 checked,0 failed,pass
+audit[reference_formulas],0 failed / 54 checked,0 failed,pass
+audit[test_lock],0 failed / 3 checked,0 failed,pass
+protected_paths_unchanged,[],"['src', 'tools', 'config', 'metadata', 'tests']",pass

@@ -1,0 +1,91 @@
+{
+  "run_id": "synthetic-flow-C",
+  "mode": "synthetic",
+  "tracks": [
+    "test"
+  ],
+  "status": "completed",
+  "created_utc": "2026-10-24T08:28:09.822713+00:00",
+  "config_path": "C:\\Users\\Pingpong\\AppData\\Local\\Temp\\claude\\D--AWS-Simianpal\\71b7853f-3c5f-418b-a32a-e502028beac8\\scratchpad\\unlock.yaml",
+  "backtest_config_fingerprint": "9d437ad81533ac98bbcd607cab6b1b4c8aa795f0b657cff6ff6f352150e0f858",
+  "gates": {
+    "jackknife_median_shift_max_scale": 0.5,
+    "bootstrap_median_ci_width_max_scale": 2.0,
+    "no_lookahead_mismatches_max": 0,
+    "baseline_unchanged": true,
+    "protected_paths_unchanged": true,
+    "known_answer_tolerance_sd": 0.75,
+    "device_flag_ratio": 2.0
+  },
+  "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+  "synthetic_from": "synthetic-flow-A",
+  "code_version": {
+    "git_commit": "dc269012ea8737ef75d5cd32bdcaf832a934e2c4",
+    "dirty": true,
+    "files": {
+      "src/reference/__init__.py": "67c975615dc4c8d47b9585ba2704685bdc3308e40d34cf0066ec841b93a3244f",
+      "src/reference/common.py": "317fc8ba1b8427a37b0f708ffcbca354166a818ca587b4f4e2cb589e1c5b96b0",
+      "src/reference/daily.py": "c33d7a0493cd057c2be6d45b6f4b53205a84ea81703858902f7c60e0effd3b35",
+      "src/reference/io.py": "9014de080fff394e85c9b36d6ffa28e6c74a91e41a3776cd0e024c2d1c581c08",
+      "src/reference/model.py": "a759aa5bf89c0fca8343c87e7aede46fc42d9be413f33c350520fd9353435765",
+      "src/reference/output.py": "cf9c3a20aab8cd5bb145e99f57102501898f44f5ba0e577972c1e0cb0116a046",
+      "src/reference/provenance.py": "24c337427495d90ce742a970699279e18ec73020d9b6a67a291a3bed2754f8f1",
+      "tools/audit_reference_provenance.py": "0f446c2d72b99703213ecf1223a85816731eb86ea2cd96ba111b6908d1b0e024",
+      "tools/check_reference_demo.py": "4a9321ecd2e724a82b34d97ac4c2c5c9eced7b56029457705bd8b72b3cee1971",
+      "tools/deploy_reference_demo.py": "fc42217b04b325d5cc3759eadf73836b67266e573e550f1d30449f1eb50a64e4",
+      "tools/extract_reference_features.py": "c4b34a5bb79807f452fb1bb2f35ba29bd8059d89097fe3aa829a424871308446",
+      "tools/prepare_reference_aws.py": "b3abaf23221497e553767be6221ac7bdf0bae716bb43baa6108d3f5717f29bbb",
+      "tools/prepare_reference_training.py": "8a17da21b182fe6074a8caa31d965354fbfa8b4867323f0eff7df3da27fbe0bf",
+      "tools/prepare_reference_validator.py": "11506625e7b350b7f7fe3ae6fd38cd0f2f572b898fe48be526a61dd062aae13c",
+      "tools/reference_baseline.py": "aaf2d6a1823d14830d5e828742c64180f0a9bb385bd384319f809893ace717b2",
+      "tools/reference_demo.py": "213fcde4dd27651d0cc07878d38e85722d82089c02b01dcb2b0ee1214c5ffb91",
+      "tools/reference_demo_review.py": "004c0265404c013e33e7d7a239e5177ec7a052bb8a117eb405e585b56df485fc",
+      "tools/run_real_reference.py": "b4c64c124a3d2eb646735d6f857ed9123e5be048127a33d202163af18a7393a4",
+      "tools/run_reference_aws.py": "548d3cbc2509e452352228feb8cf538632307358fd06dc3a53783000f65e8f67",
+      "tools/sagemaker_fit_reference.py": "2c0e727f6f75757a2a91fd8683e67ebb143ec09da0962c4b6a1de2e7695f91eb"
+    }
+  },
+  "backtest_code": {
+    "backtest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/aws_compare.py": "690bb20fa51c2db8b0589ae6a7e4a16965173ebd453f68557d37b8da36ace22e",
+    "backtest/config/backtest_config.yaml": "a688e0f89a022d6a656e617e305a63cb8c5ef1c6ab4fc81a20b76ad311eb097c",
+    "backtest/evaluators/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/evaluators/metrics.py": "36bcf91f82a998f64880007cb10387e5959b60c90d392481392ef35d5e9657b5",
+    "backtest/evaluators/report_builder.py": "10e2f15853c7e5f248866065fe5bbb7ef3b7a3cd082c232ebfe99bf59ce05aa8",
+    "backtest/prepare_test.py": "51bb54bd19d66f82f14e6f2d6c162ae123d26671c11bbe35eebb91fdd83062e2",
+    "backtest/run.py": "c5283e578de92161c146b7a2c676a882459c829f1395466f6127622b3b305607",
+    "backtest/runners/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/runners/data_loader.py": "3753a3ba12b320f4952c8901b3c69fb0e7a9a6f4d4c879a718fe61e1168ab874",
+    "backtest/runners/reference_backtest.py": "22b6ea1a6920ccc91694c8b6d82c6b68902dd0a0e1fc79587f89ee0217e5975a",
+    "backtest/runners/symptom_cv_backtest.py": "196a57a8c43970dc3b0e9754e04640c5c47679b8e3ed98eff2e051ddb834e1e9",
+    "backtest/runners/temporal_walkforward.py": "b46964ea8944d7e883840c3d31ac69c55902dbf8436f4408dd0d486e6ccec505",
+    "backtest/runners/validation_audit.py": "46732fdf37786da827b09b4123d0232ab3141defa7fb436fcde24f969bf0220a",
+    "backtest/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/tests/test_backtest_suite.py": "38ba4e8edd6d33e2909d0211c634e2aa519d99d17ed79df965cc43e7c8c3c664",
+    "backtest/tests/test_test_unlock.py": "64bd5e2e818260c29c1c65bfa0a8687901967e472a70170f3bbb8c1f3e1f8709",
+    "backtest/tests/test_validation_audit.py": "58bae1bfd29e024f865ad12331dd39ac5cb352cc9195bb7025bab87d2021ceab"
+  },
+  "runtime": {
+    "python": "3.12.10",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "pyyaml": "6.0.3"
+  },
+  "inputs": {
+    "baseline": {
+      "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\synthetic\\synthetic-flow-A\\model\\baseline.json",
+      "sha256": "d56591cdbe26b91e574b968e7d36a645f7d707fcd402cf0e356bc0a6ebfe1317"
+    },
+    "train_bundle": {
+      "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\synthetic\\synthetic-flow-A\\bundles\\train",
+      "manifest_sha256": "03b0ca65c23ef0fd8d1df947ad98a51a4b18e3087828314c8157f7a6fbc28faf"
+    },
+    "valid_bundle": {
+      "path": "D:\\AWS\\Simianpal\\backtest\\workspace\\synthetic\\synthetic-flow-A\\bundles\\valid",
+      "manifest_sha256": "b2d3ad3a68048d8a84f8953fc11bc7dbb9d05b3af92c53e7e6685ff80a03dbf7"
+    }
+  },
+  "unavailable": [],
+  "overall": "pass",
+  "finished_utc": "2026-10-24T08:28:10.213175+00:00"
+}

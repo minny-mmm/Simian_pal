@@ -1,0 +1,107 @@
+version: backtest-v1
+reference_config: config/reference_baseline.yaml
+paths:
+  workspace: backtest/workspace
+  outputs: backtest/outputs
+  protected:
+  - src
+  - tools
+  - config
+  - metadata
+  - tests
+real:
+  run_id: real-20261024-full-v2
+  checkpoint: checkpoint-01
+  data_root: D:/AWS/Simianpal-refrun
+  train_bundle: data/daily/reference-v1/{run_id}/checkpoints/{checkpoint}/train
+  valid_bundle: data/daily/reference-v1/{run_id}/checkpoints/{checkpoint}/valid
+  baseline: data/models/reference-v1/{run_id}/checkpoints/{checkpoint}/baseline.json
+  test_plan: reports/reference_baseline/{run_id}/test_plan_NOT_EXECUTED.json
+  test_bundle: null
+  approved_baseline_sha256: f8b422a825d6bb2c123aa6da65176f7177d87b3db69e21e74740f6355f302149
+  report_dir: reports/reference_baseline/{run_id}/checkpoints/{checkpoint}
+  official_reports:
+  - analysis_VALIDATION_REAL.json
+  - validation_report.json
+  - valid_exclusions.json
+  fit_report: data/models/reference-v1/{run_id}/checkpoints/{checkpoint}/fit_report.json
+synthetic:
+  seed: 20261024
+  participants:
+    train: 8
+    valid: 4
+    test: 4
+  days: 10
+  clock_hours:
+  - 9
+  - 21
+  planted_shift:
+    metric: enmo_hourly_median_mean_g
+    sd_units: 3.0
+    subjects_per_cohort: 1
+  missing_day: 4
+  no_walking_day: 6
+  nhanes_tremor_zero: true
+  nhanes_train_walking_days: 1
+evaluability:
+  min_valid_subjects_for_distribution: 3
+stability:
+  seed: 20261024
+  n_bootstrap: 200
+  sensitivity_min_participants:
+  - 3
+  - 4
+  - 5
+walkforward:
+  splits:
+  - train
+  - valid
+metric_signal_type:
+  enmo_hourly_median_mean_g: amplitude
+  walking_cadence_hourly_median_mean_hz: frequency
+  rest_tremor_window_fraction: threshold_classification
+gates:
+  jackknife_median_shift_max_scale: 0.5
+  bootstrap_median_ci_width_max_scale: 2.0
+  no_lookahead_mismatches_max: 0
+  baseline_unchanged: true
+  protected_paths_unchanged: true
+  known_answer_tolerance_sd: 0.75
+  device_flag_ratio: 2.0
+test:
+  allow_test_split: false
+symptom:
+  features_glob: data/features/cops/*.csv
+  labels_path: null
+  label_column: tremor_score
+  positive_scores:
+  - 1
+  - 2
+  candidate_column: candidate_tremor
+  n_folds: 5
+  l2: 1.0
+  seed: 20261024
+  n_bootstrap: 200
+  min_valid_subjects: 3
+  drop_amplitude: false
+  exclude_columns:
+  - subject_id
+  - dataset
+  - label
+  - split
+  - day
+  - hour
+  - hour_idx
+  - n_windows
+  - valid_min
+  - n_walk
+  - n_clean_walk
+  - n_rest
+  - n_tremor
+  - tremor_score
+  - kinesia_score
+  - candidate
+  - candidate_tremor
+  - duplicate_hour
+  - remote_clean_pair
+  - target

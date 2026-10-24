@@ -1,0 +1,141 @@
+{
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/IdcInstanceArn",
+  "/properties/Qev2IdcApplicationName"
+ ],
+ "definitions": {
+  "Tag": {
+   "additionalProperties": false,
+   "description": "A tag consisting of a name/value pair for a resource.",
+   "properties": {
+    "Key": {
+     "description": "The key, or name, for the resource tag.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "Value": {
+     "description": "The value for the resource tag.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    }
+   },
+   "required": [
+    "Key",
+    "Value"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Creates an Amazon Redshift Query Editor (QEV2) IAM Identity Center application.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "redshift:CreateQev2IdcApplication",
+    "redshift:CreateTags",
+    "sso:CreateApplication",
+    "sso:PutApplicationAuthenticationMethod",
+    "sso:PutApplicationGrant",
+    "sso:PutApplicationAccessScope",
+    "sso:PutApplicationAssignmentConfiguration",
+    "sso:TagResource"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "redshift:DeleteQev2IdcApplication",
+    "sso:DeleteApplication"
+   ]
+  },
+  "list": {
+   "permissions": [
+    "redshift:DescribeQev2IdcApplications"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "redshift:DescribeQev2IdcApplications"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "redshift:ModifyQev2IdcApplication",
+    "redshift:CreateTags",
+    "redshift:DeleteTags",
+    "sso:UpdateApplication"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/Qev2IdcApplicationArn"
+ ],
+ "properties": {
+  "IdcDisplayName": {
+   "description": "The display name for the Amazon Redshift Query Editor (QEV2) IAM Identity Center application. It appears in the console.",
+   "maxLength": 127,
+   "minLength": 1,
+   "pattern": "^[\\w+=,.@-]+$",
+   "type": "string"
+  },
+  "IdcInstanceArn": {
+   "description": "The Amazon Resource Name (ARN) of the IAM Identity Center instance used to create the Amazon Redshift Query Editor (QEV2) managed application.",
+   "maxLength": 2147483647,
+   "minLength": 0,
+   "type": "string"
+  },
+  "IdcManagedApplicationArn": {
+   "description": "The Amazon Resource Name (ARN) for the Amazon Redshift Query Editor (QEV2) IAM Identity Center managed application.",
+   "type": "string"
+  },
+  "IdcOnboardStatus": {
+   "description": "The onboarding status for the Amazon Redshift Query Editor (QEV2) IAM Identity Center application.",
+   "type": "string"
+  },
+  "Qev2IdcApplicationArn": {
+   "description": "The Amazon Resource Name (ARN) for the Amazon Redshift Query Editor (QEV2) application that integrates with IAM Identity Center.",
+   "type": "string"
+  },
+  "Qev2IdcApplicationName": {
+   "description": "The name of the Amazon Redshift Query Editor (QEV2) application in IAM Identity Center.",
+   "maxLength": 63,
+   "minLength": 1,
+   "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+   "type": "string"
+  },
+  "Tags": {
+   "description": "A list of tags associated with the application. Tags are key-value pairs that you can use to organize and identify your resources.",
+   "insertionOrder": false,
+   "items": {
+    "$ref": "#/definitions/Tag"
+   },
+   "type": "array",
+   "uniqueItems": true
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/Qev2IdcApplicationArn",
+  "/properties/IdcManagedApplicationArn",
+  "/properties/IdcOnboardStatus"
+ ],
+ "replacementStrategy": "delete_then_create",
+ "required": [
+  "IdcInstanceArn",
+  "Qev2IdcApplicationName",
+  "IdcDisplayName"
+ ],
+ "tagging": {
+  "cloudFormationSystemTags": false,
+  "permissions": [
+   "redshift:CreateTags",
+   "redshift:DeleteTags",
+   "redshift:DescribeQev2IdcApplications"
+  ],
+  "tagOnCreate": true,
+  "tagProperty": "/properties/Tags",
+  "tagUpdatable": true,
+  "taggable": true
+ },
+ "typeName": "AWS::Redshift::QEV2IdcApplication"
+}

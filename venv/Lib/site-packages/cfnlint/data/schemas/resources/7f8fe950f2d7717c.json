@@ -1,0 +1,139 @@
+{
+ "additionalIdentifiers": [
+  [
+   "/properties/Namespace"
+  ]
+ ],
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/Namespace"
+ ],
+ "definitions": {
+  "Tag": {
+   "additionalProperties": false,
+   "properties": {
+    "Key": {
+     "description": "Tag key.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "Value": {
+     "description": "Tag value.",
+     "maxLength": 256,
+     "minLength": 1,
+     "type": "string"
+    }
+   },
+   "required": [
+    "Key",
+    "Value"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Definition of the AWS::QuickSight::Customization Resource Type.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "quicksight:CreateAccountCustomization",
+    "quicksight:DescribeAccountCustomization",
+    "quicksight:TagResource",
+    "quicksight:ListTagsForResource"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "quicksight:DeleteAccountCustomization"
+   ]
+  },
+  "list": {
+   "handlerSchema": {
+    "properties": {
+     "Namespace": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9._-]*$",
+      "type": "string"
+     }
+    },
+    "required": [
+     "Namespace"
+    ]
+   },
+   "permissions": [
+    "quicksight:DescribeAccountCustomization"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "quicksight:DescribeAccountCustomization",
+    "quicksight:ListTagsForResource"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "quicksight:UpdateAccountCustomization",
+    "quicksight:TagResource",
+    "quicksight:UntagResource"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/Arn"
+ ],
+ "properties": {
+  "Arn": {
+   "description": "The Amazon Resource Name of the namespace-scoped account customization, arn:{Partition}:quicksight:{Region}:{AccountId}:customization/namespace/{Namespace}. Returned by the service and used as the primary identifier.",
+   "type": "string"
+  },
+  "AwsAccountId": {
+   "description": "The AWS account that owns the customization. Supplied by CloudFormation from the invoking account rather than by the template, so it is read-only.",
+   "maxLength": 12,
+   "minLength": 12,
+   "pattern": "^[0-9]{12}$",
+   "type": "string"
+  },
+  "DefaultTheme": {
+   "description": "The ARN of the theme applied by default in the QuickSight console for this namespace. May be an AWS-managed starter theme such as arn:{Partition}:quicksight::aws:theme/MIDNIGHT or a theme owned by this account.",
+   "type": "string"
+  },
+  "Namespace": {
+   "description": "The QuickSight namespace the customization applies to. One customization exists per (account, region, namespace), so this is create-only: changing it addresses a different resource.",
+   "maxLength": 64,
+   "minLength": 1,
+   "pattern": "^[a-zA-Z0-9._-]*$",
+   "type": "string"
+  },
+  "Tags": {
+   "description": "Tags applied to the customization. QuickSight rejects any key prefixed aws: or quicksight:, so CloudFormation system tags are not propagated.",
+   "items": {
+    "$ref": "#/definitions/Tag"
+   },
+   "maxItems": 200,
+   "minItems": 1,
+   "type": "array"
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/Arn",
+  "/properties/AwsAccountId"
+ ],
+ "required": [
+  "Namespace",
+  "DefaultTheme"
+ ],
+ "tagging": {
+  "cloudFormationSystemTags": false,
+  "permissions": [
+   "quicksight:TagResource",
+   "quicksight:UntagResource",
+   "quicksight:ListTagsForResource"
+  ],
+  "tagOnCreate": true,
+  "tagProperty": "/properties/Tags",
+  "tagUpdatable": true,
+  "taggable": true
+ },
+ "typeName": "AWS::QuickSight::Customization"
+}

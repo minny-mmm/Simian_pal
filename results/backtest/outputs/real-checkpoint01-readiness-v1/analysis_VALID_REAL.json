@@ -1,0 +1,2696 @@
+{
+  "schema_version": "1.0.0",
+  "is_demo": false,
+  "data_origin": "real",
+  "data_kind": "real",
+  "baseline_version": "real-cohort-reference-real-20261023-v1-checkpoint-01",
+  "analysis": [
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 3,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0138372985803858,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 673.8333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 673.8333333333334,
+        "metric_windows": 4043,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0072057535332944005,
+          "absolute_distance": 0.0072057535332944005,
+          "unit": "g",
+          "standardized_deviation": -0.8923561135273098,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0116655966621662,
+          "absolute_distance": 0.0116655966621662,
+          "unit": "g",
+          "standardized_deviation": -2.169762013953426,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 2,
+        "value": null,
+        "unit": "g",
+        "delta": null,
+        "status": "previous_day_missing",
+        "reason": "previous_day_missing"
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 3,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": null,
+      "unit": "steps/s",
+      "status": "insufficient_data",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 673.8333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 0.3333333333333333,
+        "metric_windows": 2,
+        "metric_eligible_hours": 2,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "insufficient_data",
+        "reasons": [
+          "metric_coverage_below_minimum"
+        ],
+        "observed_hour_rows": 12,
+        "measurement_state": "insufficient_coverage"
+      },
+      "previous_day": {
+        "day": 2,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "previous_day_missing",
+        "reason": "previous_day_missing"
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 3,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.1262083780880773,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 673.8333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 310.3333333333333,
+        "metric_windows": 1862,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.0844940923737916,
+          "absolute_distance": 0.0844940923737916,
+          "unit": "fraction",
+          "standardized_deviation": 2.9949568333227745,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.08951113038165531,
+          "absolute_distance": 0.08951113038165531,
+          "unit": "fraction",
+          "standardized_deviation": 4.548881281552533,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 2,
+        "value": null,
+        "unit": "fraction",
+        "delta": null,
+        "status": "previous_day_missing",
+        "reason": "previous_day_missing"
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 4,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0159803288596563,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 649.8333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 649.8333333333334,
+        "metric_windows": 3899,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.005062723254023901,
+          "absolute_distance": 0.005062723254023901,
+          "unit": "g",
+          "standardized_deviation": -0.6269645535266638,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.009522566382895701,
+          "absolute_distance": 0.009522566382895701,
+          "unit": "g",
+          "standardized_deviation": -1.7711655401190827,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 3,
+        "value": 0.0138372985803858,
+        "unit": "g",
+        "delta": 0.0021430302792704997,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 4,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": null,
+      "unit": "steps/s",
+      "status": "insufficient_data",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 649.8333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 0.6666666666666666,
+        "metric_windows": 4,
+        "metric_eligible_hours": 3,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "insufficient_data",
+        "reasons": [
+          "metric_coverage_below_minimum"
+        ],
+        "observed_hour_rows": 12,
+        "measurement_state": "insufficient_coverage"
+      },
+      "previous_day": {
+        "day": 3,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "current_day_insufficient_data",
+        "reason": "current_day_insufficient_data"
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 4,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0961791831357048,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 649.8333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 253.0,
+        "metric_windows": 1518,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.0544648974214191,
+          "absolute_distance": 0.0544648974214191,
+          "unit": "fraction",
+          "standardized_deviation": 1.9305493689059343,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.059481935429282796,
+          "absolute_distance": 0.059481935429282796,
+          "unit": "fraction",
+          "standardized_deviation": 3.022822541857137,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 3,
+        "value": 0.1262083780880773,
+        "unit": "fraction",
+        "delta": -0.03002919495237251,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 5,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0131962943008049,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 621.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 621.1666666666666,
+        "metric_windows": 3727,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0078467578128753,
+          "absolute_distance": 0.0078467578128753,
+          "unit": "g",
+          "standardized_deviation": -0.9717376917395291,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0123066009417471,
+          "absolute_distance": 0.0123066009417471,
+          "unit": "g",
+          "standardized_deviation": -2.2889866688848737,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 4,
+        "value": 0.0159803288596563,
+        "unit": "g",
+        "delta": -0.0027840345588513987,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 5,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": null,
+      "unit": "steps/s",
+      "status": "insufficient_data",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 621.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 2.0,
+        "metric_windows": 12,
+        "metric_eligible_hours": 2,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "insufficient_data",
+        "reasons": [
+          "metric_coverage_below_minimum"
+        ],
+        "observed_hour_rows": 12,
+        "measurement_state": "insufficient_coverage"
+      },
+      "previous_day": {
+        "day": 4,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "current_day_insufficient_data",
+        "reason": "current_day_insufficient_data"
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 5,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0588628762541806,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 621.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 249.16666666666663,
+        "metric_windows": 1495,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.017148590539894905,
+          "absolute_distance": 0.017148590539894905,
+          "unit": "fraction",
+          "standardized_deviation": 0.6078447259023185,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.022165628547758602,
+          "absolute_distance": 0.022165628547758602,
+          "unit": "fraction",
+          "standardized_deviation": 1.12643882794055,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 4,
+        "value": 0.0961791831357048,
+        "unit": "fraction",
+        "delta": -0.037316306881524194,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 6,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0137887273518971,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 654.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 654.5,
+        "metric_windows": 3927,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0072543247617831,
+          "absolute_distance": 0.0072543247617831,
+          "unit": "g",
+          "standardized_deviation": -0.8983711447774291,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0117141678906549,
+          "absolute_distance": 0.0117141678906549,
+          "unit": "g",
+          "standardized_deviation": -2.178796100215608,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 5,
+        "value": 0.0131962943008049,
+        "unit": "g",
+        "delta": 0.0005924330510921998,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 6,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": null,
+      "unit": "steps/s",
+      "status": "insufficient_data",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 654.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 0.3333333333333333,
+        "metric_windows": 2,
+        "metric_eligible_hours": 2,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "insufficient_data",
+        "reasons": [
+          "metric_coverage_below_minimum"
+        ],
+        "observed_hour_rows": 12,
+        "measurement_state": "insufficient_coverage"
+      },
+      "previous_day": {
+        "day": 5,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "current_day_insufficient_data",
+        "reason": "current_day_insufficient_data"
+      }
+    },
+    {
+      "subject_id": "COPS-7",
+      "dataset": "cops",
+      "split": "valid",
+      "day": 6,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.1623093681917211,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 654.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 306.0,
+        "metric_windows": 1836,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.12059508247743539,
+          "absolute_distance": 0.12059508247743539,
+          "unit": "fraction",
+          "standardized_deviation": 4.274583656489441,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.1256121204852991,
+          "absolute_distance": 0.1256121204852991,
+          "unit": "fraction",
+          "standardized_deviation": 6.383503606483355,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 5,
+        "value": 0.0588628762541806,
+        "unit": "fraction",
+        "delta": 0.10344649193754049,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 1,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0202216801711089,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 700.3333333333333,
+        "day_eligible_hours": 12,
+        "metric_minutes": 700.3333333333334,
+        "metric_windows": 4202,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0008213719425713001,
+          "absolute_distance": 0.0008213719425713001,
+          "unit": "g",
+          "standardized_deviation": -0.10171819935925586,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0052812150714431,
+          "absolute_distance": 0.0052812150714431,
+          "unit": "g",
+          "standardized_deviation": -0.9822883630718408,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 0,
+        "value": null,
+        "unit": "g",
+        "delta": null,
+        "status": "previous_day_missing",
+        "reason": "previous_day_missing"
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 1,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": null,
+      "unit": "steps/s",
+      "status": "insufficient_data",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 700.3333333333333,
+        "day_eligible_hours": 12,
+        "metric_minutes": 4.833333333333333,
+        "metric_windows": 29,
+        "metric_eligible_hours": 9,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "insufficient_data",
+        "reasons": [
+          "metric_coverage_below_minimum"
+        ],
+        "observed_hour_rows": 12,
+        "measurement_state": "insufficient_coverage"
+      },
+      "previous_day": {
+        "day": 0,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "previous_day_missing",
+        "reason": "previous_day_missing"
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 1,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0232991612301957,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 700.3333333333333,
+        "day_eligible_hours": 12,
+        "metric_minutes": 178.83333333333334,
+        "metric_windows": 1073,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.018415124484089995,
+          "absolute_distance": 0.018415124484089995,
+          "unit": "fraction",
+          "standardized_deviation": -0.6527379768295148,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.013398086476226298,
+          "absolute_distance": 0.013398086476226298,
+          "unit": "fraction",
+          "standardized_deviation": -0.6808796238017173,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 0,
+        "value": null,
+        "unit": "fraction",
+        "delta": null,
+        "status": "previous_day_missing",
+        "reason": "previous_day_missing"
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 2,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0201423309500374,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 667.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 667.1666666666666,
+        "metric_windows": 4003,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0009007211636428009,
+          "absolute_distance": 0.0009007211636428009,
+          "unit": "g",
+          "standardized_deviation": -0.11154475839983563,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.005360564292514601,
+          "absolute_distance": 0.005360564292514601,
+          "unit": "g",
+          "standardized_deviation": -0.9970470531503443,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 1,
+        "value": 0.0202216801711089,
+        "unit": "g",
+        "delta": -7.934922107150078e-05,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 2,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": 1.5693491949016016,
+      "unit": "steps/s",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 667.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 7.666666666666667,
+        "metric_windows": 46,
+        "metric_eligible_hours": 7,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.2062069843415686,
+          "absolute_distance": 0.2062069843415686,
+          "unit": "steps/s",
+          "standardized_deviation": -1.6291138005831292,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "reference_participants_or_days_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 1,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "previous_day_insufficient_data",
+        "reason": "previous_day_insufficient_data"
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 2,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.025,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 667.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 200.0,
+        "metric_windows": 1200,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.016714285714285695,
+          "absolute_distance": 0.016714285714285695,
+          "unit": "fraction",
+          "standardized_deviation": -0.5924504637869376,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.011697247706421998,
+          "absolute_distance": 0.011697247706421998,
+          "unit": "fraction",
+          "standardized_deviation": -0.5944444105504361,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 1,
+        "value": 0.0232991612301957,
+        "unit": "fraction",
+        "delta": 0.0017008387698042998,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 3,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0195156777039688,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 684.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 684.5,
+        "metric_windows": 4107,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0015273744097114017,
+          "absolute_distance": 0.0015273744097114017,
+          "unit": "g",
+          "standardized_deviation": -0.18914911339300314,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.005987217538583202,
+          "absolute_distance": 0.005987217538583202,
+          "unit": "g",
+          "standardized_deviation": -1.1136024637835606,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 2,
+        "value": 0.0201423309500374,
+        "unit": "g",
+        "delta": -0.0006266532460686008,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 3,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": 1.7637691886339455,
+      "unit": "steps/s",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 684.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 17.666666666666668,
+        "metric_windows": 106,
+        "metric_eligible_hours": 10,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.011786990609224723,
+          "absolute_distance": 0.011786990609224723,
+          "unit": "steps/s",
+          "standardized_deviation": -0.09312172005301377,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "reference_participants_or_days_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 2,
+        "value": 1.5693491949016016,
+        "unit": "steps/s",
+        "delta": 0.19441999373234387,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 3,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0326747720364741,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 684.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 219.33333333333331,
+        "metric_windows": 1316,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.009039513677811598,
+          "absolute_distance": 0.009039513677811598,
+          "unit": "fraction",
+          "standardized_deviation": -0.3204123803059399,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0040224756699479,
+          "absolute_distance": 0.0040224756699479,
+          "unit": "fraction",
+          "standardized_deviation": -0.20441887173705592,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 2,
+        "value": 0.025,
+        "unit": "fraction",
+        "delta": 0.007674772036474098,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 4,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0209905772148574,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 666.3333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 666.3333333333334,
+        "metric_windows": 3998,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -5.247489882280118e-05,
+          "absolute_distance": 5.247489882280118e-05,
+          "unit": "g",
+          "standardized_deviation": -0.006498459398436452,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.004512318027694601,
+          "absolute_distance": 0.004512318027694601,
+          "unit": "g",
+          "standardized_deviation": -0.8392760811902568,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 3,
+        "value": 0.0195156777039688,
+        "unit": "g",
+        "delta": 0.0014748995108886005,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 4,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": 1.5255389889246656,
+      "unit": "steps/s",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 666.3333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 11.333333333333334,
+        "metric_windows": 68,
+        "metric_eligible_hours": 10,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.25001719031850467,
+          "absolute_distance": 0.25001719031850467,
+          "unit": "steps/s",
+          "standardized_deviation": -1.9752311321144087,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "reference_participants_or_days_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 3,
+        "value": 1.7637691886339455,
+        "unit": "steps/s",
+        "delta": -0.23823019970927994,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 4,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0324324324324324,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 666.3333333333334,
+        "day_eligible_hours": 12,
+        "metric_minutes": 215.83333333333331,
+        "metric_windows": 1295,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.009281853281853297,
+          "absolute_distance": 0.009281853281853297,
+          "unit": "fraction",
+          "standardized_deviation": -0.32900229035430856,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0042648152739896,
+          "absolute_distance": 0.0042648152739896,
+          "unit": "fraction",
+          "standardized_deviation": -0.21673436908251303,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 3,
+        "value": 0.0326747720364741,
+        "unit": "fraction",
+        "delta": -0.00024233960404169974,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 5,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0198502764878862,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 674.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 674.1666666666666,
+        "metric_windows": 4045,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.001192775625794,
+          "absolute_distance": 0.001192775625794,
+          "unit": "g",
+          "standardized_deviation": -0.14771260449384455,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.0056526187546658,
+          "absolute_distance": 0.0056526187546658,
+          "unit": "g",
+          "standardized_deviation": -1.0513682075955726,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 4,
+        "value": 0.0209905772148574,
+        "unit": "g",
+        "delta": -0.0011403007269711989,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 5,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": null,
+      "unit": "steps/s",
+      "status": "insufficient_data",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 674.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 4.166666666666667,
+        "metric_windows": 25,
+        "metric_eligible_hours": 5,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "insufficient_data",
+        "reasons": [
+          "metric_coverage_below_minimum"
+        ],
+        "observed_hour_rows": 12,
+        "measurement_state": "insufficient_coverage"
+      },
+      "previous_day": {
+        "day": 4,
+        "value": 1.5255389889246656,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "current_day_insufficient_data",
+        "reason": "current_day_insufficient_data"
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 5,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0535714285714285,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 674.1666666666666,
+        "day_eligible_hours": 12,
+        "metric_minutes": 205.33333333333331,
+        "metric_windows": 1232,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.011857142857142802,
+          "absolute_distance": 0.011857142857142802,
+          "unit": "fraction",
+          "standardized_deviation": 0.42028537174628755,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.0168741808650065,
+          "absolute_distance": 0.0168741808650065,
+          "unit": "fraction",
+          "standardized_deviation": 0.8575318527548296,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 4,
+        "value": 0.0324324324324324,
+        "unit": "fraction",
+        "delta": 0.0211389961389961,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 6,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0176904222348308,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 645.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 645.5,
+        "metric_windows": 3873,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.003352629878849399,
+          "absolute_distance": 0.003352629878849399,
+          "unit": "g",
+          "standardized_deviation": -0.41518763512548157,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.007812473007721199,
+          "absolute_distance": 0.007812473007721199,
+          "unit": "g",
+          "standardized_deviation": -1.453093884358782,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 5,
+        "value": 0.0198502764878862,
+        "unit": "g",
+        "delta": -0.002159854253055399,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 6,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": null,
+      "unit": "steps/s",
+      "status": "insufficient_data",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 645.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 4.5,
+        "metric_windows": 27,
+        "metric_eligible_hours": 9,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "metric_coverage_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "insufficient_data",
+        "reasons": [
+          "metric_coverage_below_minimum"
+        ],
+        "observed_hour_rows": 12,
+        "measurement_state": "insufficient_coverage"
+      },
+      "previous_day": {
+        "day": 5,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "current_day_insufficient_data",
+        "reason": "current_day_insufficient_data"
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 6,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0848214285714285,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 645.5,
+        "day_eligible_hours": 12,
+        "metric_minutes": 261.3333333333333,
+        "metric_windows": 1568,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.04310714285714281,
+          "absolute_distance": 0.04310714285714281,
+          "unit": "fraction",
+          "standardized_deviation": 1.5279651918607555,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.048124180865006506,
+          "absolute_distance": 0.048124180865006506,
+          "unit": "fraction",
+          "standardized_deviation": 2.4456308907449684,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 5,
+        "value": 0.0535714285714285,
+        "unit": "fraction",
+        "delta": 0.03125000000000001,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 7,
+      "metric": "enmo_hourly_median_mean_g",
+      "value": 0.0194136823061969,
+      "unit": "g",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_windows) / sum(n_windows); NOT pooled window median",
+      "coverage": {
+        "day_valid_minutes": 667.0,
+        "day_eligible_hours": 12,
+        "metric_minutes": 667.0,
+        "metric_windows": 4002,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.001629369807483301,
+          "absolute_distance": 0.001629369807483301,
+          "unit": "g",
+          "standardized_deviation": -0.20178016111519637,
+          "reference_median": 0.0210430521136802,
+          "reference_scale": 0.008074975252661699,
+          "reference_mad": 0.0054464961909225,
+          "reference_quantiles": {
+            "0.05": 0.0105090102292085,
+            "0.25": 0.0152284439005877,
+            "0.5": 0.0210430521136802,
+            "0.75": 0.024362697511023,
+            "0.95": 0.0462417622704671
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.006089212936355101,
+          "absolute_distance": 0.006089212936355101,
+          "unit": "g",
+          "standardized_deviation": -1.132573267085999,
+          "reference_median": 0.025502895242552,
+          "reference_scale": 0.005376440635952899,
+          "reference_mad": 0.0036263595278246998,
+          "reference_quantiles": {
+            "0.05": 0.0169522272053852,
+            "0.25": 0.0220709040535444,
+            "0.5": 0.025502895242552,
+            "0.75": 0.0346615335225019,
+            "0.95": 0.0547738940112239
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 6,
+        "value": 0.0176904222348308,
+        "unit": "g",
+        "delta": 0.0017232600713660978,
+        "status": "ok",
+        "reason": ""
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 7,
+      "metric": "walking_cadence_hourly_median_mean_hz",
+      "value": 1.565155364633354,
+      "unit": "steps/s",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(hourly_median * n_walk) / sum(n_walk); NOT pooled walking median",
+      "coverage": {
+        "day_valid_minutes": 667.0,
+        "day_eligible_hours": 12,
+        "metric_minutes": 9.333333333333334,
+        "metric_windows": 56,
+        "metric_eligible_hours": 11,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": -0.2104008146098162,
+          "absolute_distance": 0.2104008146098162,
+          "unit": "steps/s",
+          "standardized_deviation": -1.6622466587601747,
+          "reference_median": 1.7755561792431702,
+          "reference_scale": 0.12657616936751645,
+          "reference_mad": 0.08537445660833431,
+          "reference_quantiles": {
+            "0.05": 1.6127448839444205,
+            "0.25": 1.695517618556358,
+            "0.5": 1.7755561792431702,
+            "0.75": 1.8911739462106096,
+            "0.95": 1.9300618456986536
+          },
+          "n_participants": 5,
+          "n_days": 18,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "insufficient_data",
+          "reason": "reference_participants_or_days_below_minimum",
+          "signed_distance": null,
+          "absolute_distance": null,
+          "unit": "steps/s",
+          "standardized_deviation": null,
+          "reference_median": null,
+          "reference_scale": null,
+          "reference_mad": null,
+          "reference_quantiles": {},
+          "n_participants": 4,
+          "n_days": 22,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 6,
+        "value": null,
+        "unit": "steps/s",
+        "delta": null,
+        "status": "previous_day_insufficient_data",
+        "reason": "previous_day_insufficient_data"
+      }
+    },
+    {
+      "subject_id": "NHANES-81262",
+      "dataset": "nhanes",
+      "split": "valid",
+      "day": 7,
+      "metric": "rest_tremor_window_fraction",
+      "value": 0.0434462444771723,
+      "unit": "fraction",
+      "status": "ok",
+      "reporting_clock_hours": [
+        9,
+        21
+      ],
+      "daily_definition": "sum(n_tremor) / sum(n_rest); NOT mean of hourly ratios",
+      "coverage": {
+        "day_valid_minutes": 667.0,
+        "day_eligible_hours": 12,
+        "metric_minutes": 226.33333333333331,
+        "metric_windows": 1358,
+        "metric_eligible_hours": 12,
+        "missing_metric_windows": 0
+      },
+      "reference_comparisons": {
+        "cops": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.0017319587628865998,
+          "absolute_distance": 0.0017319587628865998,
+          "unit": "fraction",
+          "standardized_deviation": 0.06139058466943696,
+          "reference_median": 0.0417142857142857,
+          "reference_scale": 0.028212123605150286,
+          "reference_mad": 0.019028816676885395,
+          "reference_quantiles": {
+            "0.05": 0.0049610205527994,
+            "0.25": 0.0157397691500524,
+            "0.5": 0.0417142857142857,
+            "0.75": 0.0557677616501145,
+            "0.95": 0.1957478005865102
+          },
+          "n_participants": 6,
+          "n_days": 28,
+          "excluded_train_subject": null
+        },
+        "nhanes": {
+          "status": "ok",
+          "reason": "",
+          "signed_distance": 0.006748996770750297,
+          "absolute_distance": 0.006748996770750297,
+          "unit": "fraction",
+          "standardized_deviation": 0.3429784089288671,
+          "reference_median": 0.036697247706422,
+          "reference_scale": 0.019677614086051762,
+          "reference_mad": 0.013272368869588401,
+          "reference_quantiles": {
+            "0.05": 0.0122783083219645,
+            "0.25": 0.0260950605778192,
+            "0.5": 0.036697247706422,
+            "0.75": 0.055694098088113,
+            "0.95": 0.0942507068803016
+          },
+          "n_participants": 5,
+          "n_days": 30,
+          "excluded_train_subject": null
+        }
+      },
+      "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+      "interpretation": "distance_from_cohort_reference_only",
+      "qc": {
+        "status": "ok",
+        "reasons": [],
+        "observed_hour_rows": 12,
+        "measurement_state": "observed"
+      },
+      "previous_day": {
+        "day": 6,
+        "value": 0.0848214285714285,
+        "unit": "fraction",
+        "delta": -0.04137518409425621,
+        "status": "ok",
+        "reason": ""
+      }
+    }
+  ]
+}

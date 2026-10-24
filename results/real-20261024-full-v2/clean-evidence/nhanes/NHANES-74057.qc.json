@@ -1,0 +1,194 @@
+{
+  "subject_id": "NHANES-74057",
+  "dataset": "nhanes",
+  "split": "train",
+  "wrist": null,
+  "fs_native": 80,
+  "fs_out": 50,
+  "n_files": 193,
+  "n_unsorted_files": 0,
+  "n_duplicates": 0,
+  "n_interpolated": 0,
+  "n_long_gaps": 0,
+  "n_short_runs_dropped": 0,
+  "cal_points": 32322,
+  "cal_points_outlier": 0,
+  "cal_error_before_mg": 11.81813498185795,
+  "cal_error_after_mg": 7.029376577168481,
+  "cal_status": "ok",
+  "cal_offset_x": -0.011256354925686232,
+  "cal_offset_y": -0.005077648789994171,
+  "cal_offset_z": -0.0077317410471343054,
+  "cal_scale_x": 0.9977572522874565,
+  "cal_scale_y": 1.0003063293883212,
+  "cal_scale_z": 1.0102670345242455,
+  "pct_impossible_gravity": 0.0,
+  "noise_floor_before_mg": 0.06360292511580769,
+  "noise_floor_after_mg": 5.327316999291318,
+  "noise_added_mg": 5.23416310036477,
+  "noise_target_mg": 5.333333333333333,
+  "noise_source": "nonwear",
+  "noise_windows": 1853,
+  "noise_floor_before_axes_mg": [
+    0.03694351251758163,
+    0.028415450594199032,
+    0.1254498122356424
+  ],
+  "noise_floor_after_axes_mg": [
+    4.920630158714024,
+    5.063479473970012,
+    5.995926319368075
+  ],
+  "noise_added_axes_mg": [
+    4.7995869798226245,
+    4.943338200261795,
+    5.892093205696091
+  ],
+  "noise_target_axes_mg": [
+    4.93,
+    5.07,
+    6.0
+  ],
+  "sleep_nights": 8,
+  "sleep_hours_per_night": 8.79,
+  "hours_total": 192.15,
+  "hours_recorded": 192.15,
+  "hours_missing": 0.0,
+  "pct_clip": 0.0,
+  "pct_abnormal": 0.0,
+  "pct_ism": 45.15,
+  "pct_nonwear": 2.68,
+  "pct_sleep": 36.58,
+  "pct_visit": 0.0,
+  "pct_awake_ism": 18.7,
+  "hours_valid": 93.05,
+  "n_days": 9,
+  "valid_days": 7,
+  "included": true,
+  "status": "ok",
+  "runtime_s": 119.3,
+  "days": [
+    {
+      "day": 0,
+      "recorded_h": 11.5,
+      "valid_h": 6.02,
+      "visit": "outpatient",
+      "valid": false
+    },
+    {
+      "day": 1,
+      "recorded_h": 24.0,
+      "valid_h": 12.02,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 2,
+      "recorded_h": 24.0,
+      "valid_h": 13.62,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 3,
+      "recorded_h": 24.0,
+      "valid_h": 11.59,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 4,
+      "recorded_h": 24.0,
+      "valid_h": 14.19,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 5,
+      "recorded_h": 24.0,
+      "valid_h": 13.7,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 6,
+      "recorded_h": 24.0,
+      "valid_h": 14.99,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 7,
+      "recorded_h": 24.0,
+      "valid_h": 12.94,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 8,
+      "recorded_h": 12.65,
+      "valid_h": 0.0,
+      "visit": "outpatient",
+      "valid": false
+    }
+  ],
+  "nights": [
+    {
+      "window": 1,
+      "start_s": 77780,
+      "end_s": 109925,
+      "hours": 8.93,
+      "threshold_deg": 0.29
+    },
+    {
+      "window": 2,
+      "start_s": 164140,
+      "end_s": 192790,
+      "hours": 7.96,
+      "threshold_deg": 0.342
+    },
+    {
+      "window": 3,
+      "start_s": 249400,
+      "end_s": 279785,
+      "hours": 8.44,
+      "threshold_deg": 0.36
+    },
+    {
+      "window": 4,
+      "start_s": 335280,
+      "end_s": 365605,
+      "hours": 8.42,
+      "threshold_deg": 0.316
+    },
+    {
+      "window": 5,
+      "start_s": 423870,
+      "end_s": 451360,
+      "hours": 7.64,
+      "threshold_deg": 0.345
+    },
+    {
+      "window": 6,
+      "start_s": 509070,
+      "end_s": 530480,
+      "hours": 5.95,
+      "threshold_deg": 0.377
+    },
+    {
+      "window": 7,
+      "start_s": 594425,
+      "end_s": 627655,
+      "hours": 9.23,
+      "threshold_deg": 0.34
+    },
+    {
+      "window": 8,
+      "start_s": 684975,
+      "end_s": 734400,
+      "hours": 13.73,
+      "threshold_deg": 0.257
+    }
+  ],
+  "noise_target_source": "locked_agreed_config"
+}

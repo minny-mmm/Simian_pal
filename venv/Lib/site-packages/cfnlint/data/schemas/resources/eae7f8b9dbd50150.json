@@ -1,0 +1,165 @@
+{
+ "additionalProperties": false,
+ "definitions": {},
+ "properties": {
+  "AuthType": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "AutoDeploymentMode": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "CodeUri": {},
+  "EgressNetworkConnectorArn": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "EndpointDescription": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "EndpointName": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "EndpointType": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "EntryPoint": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "EnvironmentVariables": {
+   "type": "object"
+  },
+  "ExecutionRoleArn": {},
+  "FunctionName": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "InlineCode": {
+   "type": "string"
+  },
+  "KmsKeyArn": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "LoggingConfig": {
+   "type": "object"
+  },
+  "MaxConcurrencyPerEnvironment": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "integer"
+    }
+   ]
+  },
+  "ReplicaRegions": {},
+  "RevisionDescription": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "RevisionWeights": {
+   "type": "object"
+  },
+  "Runtime": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "string"
+    }
+   ]
+  },
+  "ScalingConfig": {
+   "type": "object"
+  },
+  "Tags": {
+   "type": "object"
+  },
+  "ThrottleConfig": {
+   "type": "object"
+  },
+  "Timeout": {
+   "anyOf": [
+    {
+     "type": "object"
+    },
+    {
+     "type": "integer"
+    }
+   ]
+  }
+ },
+ "required": [
+  "Runtime",
+  "AuthType"
+ ],
+ "typeName": "AWS::Serverless::WebFunction"
+}

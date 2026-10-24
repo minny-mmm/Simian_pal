@@ -204,7 +204,14 @@ def make_windows(time_s, xyz):
     sample_idx = np.round(time_s * FS).astype(np.int64)
     wid = sample_idx // WIN_N
     ids, start, counts = np.unique(wid, return_index=True, return_counts=True)
+    # A duplicate plus a missing sample can still have count==WIN_N. Require the exact grid.
+    on_grid = np.abs(time_s * FS - sample_idx) <= 1e-4
+    finite = np.isfinite(xyz).all(axis=1)
     ok = counts == WIN_N
+    for j in np.flatnonzero(ok):
+        segment = slice(start[j], start[j] + WIN_N)
+        ok[j] = (on_grid[segment].all() and finite[segment].all()
+                 and np.array_equal(sample_idx[segment], ids[j] * WIN_N + np.arange(WIN_N)))
     ids, start = ids[ok], start[ok]
     for s in range(0, len(ids), CHUNK):
         a, b = s, min(s + CHUNK, len(ids))

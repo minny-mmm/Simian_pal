@@ -1,0 +1,40 @@
+baseline_version: real-cohort-reference-real-20261024-full-v2-checkpoint-01
+feature_contract: mew-37d5722-reference-v1
+feature_policy:
+  clock_hours:
+  - 9
+  - 21
+  metric_coverage:
+    enmo_hourly_median_mean_g:
+      min_hours: 6
+      min_minutes: 360
+    rest_tremor_window_fraction:
+      min_hours: 2
+      min_minutes: 5
+    walking_cadence_hourly_median_mean_hz:
+      min_hours: 2
+      min_minutes: 5
+  min_day_hours: 6
+  min_day_valid_minutes: 360
+  min_hour_valid_minutes: 20
+  min_metric_hours: 2
+  min_metric_minutes: 5
+  source_branch_commit: 37d5722
+  window_seconds: 10
+paths:
+  daily: data/daily/reference-v1
+  hourly: data/features/reference-v1
+  models: data/models/reference-v1
+  reports: reports/reference_baseline
+reference_policy:
+  mad_scale_factor: 1.4826
+  min_days: 10
+  min_days_per_participant: 2
+  min_participants: 5
+  quantiles:
+  - 0.05
+  - 0.25
+  - 0.5
+  - 0.75
+  - 0.95
+version: reference-baseline-v1

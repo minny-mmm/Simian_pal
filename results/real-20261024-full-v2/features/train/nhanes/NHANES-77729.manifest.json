@@ -1,0 +1,459 @@
+{
+  "verified": true,
+  "data_kind": "real",
+  "dataset": "nhanes",
+  "subject_id": "NHANES-77729",
+  "split": "train",
+  "feature_contract": "mew-37d5722-reference-v1",
+  "preprocessing_version": "3d6be89a1c3b7beae0f6818f39895f7143fb6cc2cda21eebd76e9a8fad003d11",
+  "source_branch": "origin/Mew_Feature",
+  "source_commit": "37d5722",
+  "extractor_sha256": "25c5d87292b045278afa58c0ee495b0968192d60573dc4cbcf24f1720d436362",
+  "extractor_config": {
+    "walk_stride_reg": 0.5,
+    "walk_dyn_rms": 0.12,
+    "clean_walk_stride_reg": 0.7,
+    "rest_swing_deg": 15.0,
+    "rest_dyn_rms": 0.08,
+    "tremor_ratio": 0.5,
+    "tremor_rms": 0.015,
+    "min_windows_per_hour": 30,
+    "min_walk_windows_for_sd": 3,
+    "day_hours": [
+      9,
+      21
+    ]
+  },
+  "hourly_sha256": "5f4d78e2bf393e1fe1da3b4aec1524366a1b2cca990a04543a3cf44aeacaa97b",
+  "clean_parquet_sha256": "bbc34590cbe4a91fe84c13977afaf2a1ed9fcbd8c02797da144790c4eaf7ce1d",
+  "qc_sha256": "78200b443dc48a07a9da59c42eead1d15447540817c5be19887e751e7772d09c",
+  "qc_valid_days": [
+    1,
+    3,
+    4,
+    6
+  ],
+  "source_clean_config_snapshot": {
+    "abnormal": {
+      "gravity_hour_min_windows": 6,
+      "gravity_hour_tol_g": 0.1,
+      "gravity_sd_max_g": 0.013,
+      "gravity_tol_g": 0.1,
+      "gravity_window_s": 10,
+      "spike_g": 3.0,
+      "spike_pad_s": 0.1,
+      "stuck_eps_g": 1e-05,
+      "stuck_min_s": 60,
+      "zero_g": 0.05,
+      "zero_min_s": 1.0
+    },
+    "calibration": {
+      "max_iter": 1000,
+      "max_norm_dev_g": 0.15,
+      "min_points": 50,
+      "sd_max_g": 0.013,
+      "sphere_g": 0.3,
+      "tol": 1e-10,
+      "window_s": 10
+    },
+    "clip": {
+      "flag_g": 5.9,
+      "limit_g": 6.0
+    },
+    "days": {
+      "include_visits": [
+        "outpatient"
+      ],
+      "min_valid_days": 3,
+      "min_valid_hours": 10
+    },
+    "default_visit": "outpatient",
+    "harmonize": {
+      "add_noise": {
+        "datasets": [
+          "nhanes"
+        ],
+        "seed": 0,
+        "target_mg": [
+          4.93,
+          5.07,
+          6.0
+        ]
+      },
+      "min_noise_windows": 30,
+      "noise_window_s": 10,
+      "quantize": {
+        "datasets": [
+          "cops",
+          "nhanes"
+        ],
+        "step_g": 0.0039
+      }
+    },
+    "ism": {
+      "constant_sd_max_g": 0.001,
+      "constant_window_s": 1,
+      "min_valid_frac": 0.5,
+      "range_max_g": 0.05,
+      "window_s": 10
+    },
+    "nonwear": {
+      "min_axes": 2,
+      "min_valid_frac": 0.5,
+      "range_max_g": 0.05,
+      "range_smooth_s": 1,
+      "sd_max_g": 0.013,
+      "step_min": 15,
+      "window_min": 60
+    },
+    "out_dir": "data/clean/reference-runs/real-20261024-full-v2",
+    "qc_summary": "reports/reference_baseline/real-20261024-full-v2/qc_summary.csv",
+    "resample": {
+      "chunk_s": 600,
+      "context_s": 5,
+      "fs_out": 50,
+      "min_run_s": 1.0
+    },
+    "sleep": {
+      "epoch_s": 5,
+      "max_gap_min": 60,
+      "median_window_min": 5,
+      "min_block_min": 30,
+      "min_window_hours": 12,
+      "multiplier": 15,
+      "percentile": 10,
+      "threshold_max_deg": 0.5,
+      "threshold_min_deg": 0.13
+    },
+    "subjects": {
+      "cops_splits": "metadata/cops_splits.csv",
+      "cops_summary": "reports/cops_visit_summary.csv",
+      "nhanes_selected": "metadata/nhanes_splits.csv"
+    },
+    "time": {
+      "max_interp_gap_s": 1.0
+    }
+  },
+  "clean_run_evidence": {
+    "schema_version": 1,
+    "kind": "clean_run_evidence",
+    "run_id": "real-20261024-full-v2",
+    "recorded_at_utc": "2026-10-24T12:52:28.775371+00:00",
+    "evidence_uri": "file:///D:/AWS/Simianpal-refrun/data/clean/reference-runs/real-20261024-full-v2/nhanes/NHANES-77729.started.json",
+    "dataset": "nhanes",
+    "subject_id": "NHANES-77729",
+    "wrist": null,
+    "split": "train",
+    "status": "completed",
+    "started_utc": "2026-10-24T12:50:24.149162+00:00",
+    "resolved_clean_config": {
+      "abnormal": {
+        "gravity_hour_min_windows": 6,
+        "gravity_hour_tol_g": 0.1,
+        "gravity_sd_max_g": 0.013,
+        "gravity_tol_g": 0.1,
+        "gravity_window_s": 10,
+        "spike_g": 3.0,
+        "spike_pad_s": 0.1,
+        "stuck_eps_g": 1e-05,
+        "stuck_min_s": 60,
+        "zero_g": 0.05,
+        "zero_min_s": 1.0
+      },
+      "calibration": {
+        "max_iter": 1000,
+        "max_norm_dev_g": 0.15,
+        "min_points": 50,
+        "sd_max_g": 0.013,
+        "sphere_g": 0.3,
+        "tol": 1e-10,
+        "window_s": 10
+      },
+      "clip": {
+        "flag_g": 5.9,
+        "limit_g": 6.0
+      },
+      "days": {
+        "include_visits": [
+          "outpatient"
+        ],
+        "min_valid_days": 3,
+        "min_valid_hours": 10
+      },
+      "default_visit": "outpatient",
+      "harmonize": {
+        "add_noise": {
+          "datasets": [
+            "nhanes"
+          ],
+          "seed": 0,
+          "target_mg": [
+            4.93,
+            5.07,
+            6.0
+          ]
+        },
+        "min_noise_windows": 30,
+        "noise_window_s": 10,
+        "quantize": {
+          "datasets": [
+            "cops",
+            "nhanes"
+          ],
+          "step_g": 0.0039
+        }
+      },
+      "ism": {
+        "constant_sd_max_g": 0.001,
+        "constant_window_s": 1,
+        "min_valid_frac": 0.5,
+        "range_max_g": 0.05,
+        "window_s": 10
+      },
+      "nonwear": {
+        "min_axes": 2,
+        "min_valid_frac": 0.5,
+        "range_max_g": 0.05,
+        "range_smooth_s": 1,
+        "sd_max_g": 0.013,
+        "step_min": 15,
+        "window_min": 60
+      },
+      "out_dir": "data/clean/reference-runs/real-20261024-full-v2",
+      "qc_summary": "reports/reference_baseline/real-20261024-full-v2/qc_summary.csv",
+      "resample": {
+        "chunk_s": 600,
+        "context_s": 5,
+        "fs_out": 50,
+        "min_run_s": 1.0
+      },
+      "sleep": {
+        "epoch_s": 5,
+        "max_gap_min": 60,
+        "median_window_min": 5,
+        "min_block_min": 30,
+        "min_window_hours": 12,
+        "multiplier": 15,
+        "percentile": 10,
+        "threshold_max_deg": 0.5,
+        "threshold_min_deg": 0.13
+      },
+      "subjects": {
+        "cops_splits": "metadata/cops_splits.csv",
+        "cops_summary": "reports/cops_visit_summary.csv",
+        "nhanes_selected": "metadata/nhanes_splits.csv"
+      },
+      "time": {
+        "max_interp_gap_s": 1.0
+      }
+    },
+    "resolved_config": {
+      "clean": {
+        "abnormal": {
+          "gravity_hour_min_windows": 6,
+          "gravity_hour_tol_g": 0.1,
+          "gravity_sd_max_g": 0.013,
+          "gravity_tol_g": 0.1,
+          "gravity_window_s": 10,
+          "spike_g": 3.0,
+          "spike_pad_s": 0.1,
+          "stuck_eps_g": 1e-05,
+          "stuck_min_s": 60,
+          "zero_g": 0.05,
+          "zero_min_s": 1.0
+        },
+        "calibration": {
+          "max_iter": 1000,
+          "max_norm_dev_g": 0.15,
+          "min_points": 50,
+          "sd_max_g": 0.013,
+          "sphere_g": 0.3,
+          "tol": 1e-10,
+          "window_s": 10
+        },
+        "clip": {
+          "flag_g": 5.9,
+          "limit_g": 6.0
+        },
+        "days": {
+          "include_visits": [
+            "outpatient"
+          ],
+          "min_valid_days": 3,
+          "min_valid_hours": 10
+        },
+        "default_visit": "outpatient",
+        "harmonize": {
+          "add_noise": {
+            "datasets": [
+              "nhanes"
+            ],
+            "seed": 0,
+            "target_mg": [
+              4.93,
+              5.07,
+              6.0
+            ]
+          },
+          "min_noise_windows": 30,
+          "noise_window_s": 10,
+          "quantize": {
+            "datasets": [
+              "cops",
+              "nhanes"
+            ],
+            "step_g": 0.0039
+          }
+        },
+        "ism": {
+          "constant_sd_max_g": 0.001,
+          "constant_window_s": 1,
+          "min_valid_frac": 0.5,
+          "range_max_g": 0.05,
+          "window_s": 10
+        },
+        "nonwear": {
+          "min_axes": 2,
+          "min_valid_frac": 0.5,
+          "range_max_g": 0.05,
+          "range_smooth_s": 1,
+          "sd_max_g": 0.013,
+          "step_min": 15,
+          "window_min": 60
+        },
+        "out_dir": "data/clean/reference-runs/real-20261024-full-v2",
+        "qc_summary": "reports/reference_baseline/real-20261024-full-v2/qc_summary.csv",
+        "resample": {
+          "chunk_s": 600,
+          "context_s": 5,
+          "fs_out": 50,
+          "min_run_s": 1.0
+        },
+        "sleep": {
+          "epoch_s": 5,
+          "max_gap_min": 60,
+          "median_window_min": 5,
+          "min_block_min": 30,
+          "min_window_hours": 12,
+          "multiplier": 15,
+          "percentile": 10,
+          "threshold_max_deg": 0.5,
+          "threshold_min_deg": 0.13
+        },
+        "subjects": {
+          "cops_splits": "metadata/cops_splits.csv",
+          "cops_summary": "reports/cops_visit_summary.csv",
+          "nhanes_selected": "metadata/nhanes_splits.csv"
+        },
+        "time": {
+          "max_interp_gap_s": 1.0
+        }
+      },
+      "datasets": {
+        "cops": {
+          "acc_includes_gravity": true,
+          "acc_unit": "g",
+          "enabled": true,
+          "gyro_unit": null,
+          "raw_dir": "data/raw/reference-runs/real-20261024-full-v2/cops",
+          "sampling_rate_hz": 100,
+          "subject_file": "data/processed/subject_data/subject_metadata_COv.csv"
+        },
+        "nhanes": {
+          "acc_includes_gravity": true,
+          "acc_unit": "g",
+          "enabled": false,
+          "gyro_unit": null,
+          "raw_dir": "data/raw/reference-runs/real-20261024-full-v2/nhanes",
+          "sampling_rate_hz": 80,
+          "subject_file": "data/processed/subject_data/subject_metadata_NHA.csv"
+        }
+      },
+      "paths": {
+        "manifest": "metadata/manifest.csv",
+        "processed": "data/processed",
+        "raw": "data/raw",
+        "sensor_data": "data/processed/sensor_data"
+      },
+      "storage": {
+        "aws_profile": "minny",
+        "endpoint_url": null,
+        "region": "ap-southeast-1",
+        "s3_root": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline"
+      }
+    },
+    "code_version": {
+      "git_commit": "70e7db7ac363997d569eb7e760e39ece13305873",
+      "files": {
+        "src/clean/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/clean/run.py": "370db3dd956ad73290e985899f6adc55bafbbd462c8c6c88841068001f01aabb",
+        "src/clean/steps.py": "7e5d41486434825188f632a8d8bcb33689e8f82e958c77a94e20f30d5059b46f",
+        "src/clean/noise_target.py": "a7f54756cc93074ec6755be4a8e8fa6a32f2c1ccf0179c27261cf0c3c9a378da",
+        "src/clean/report.py": "2d75ec0d639182573eca99e803d9c9e85a1cbea72a189f710364c045142c4c03",
+        "src/ingestion/__init__.py": "65c20dc8fa688cea7f3eabc0eb2570733883dc013100c0dd44f19977902884f2",
+        "src/ingestion/base.py": "6bc4e0eb8296ebbbf9b5e6e1c2f89b6b97d198f1acaecc9382949e1d364e49a1",
+        "src/ingestion/cops_reader.py": "5d0fb8ae0a72c954ac523bd2cbe22d603ec5915e0f74e10a55df91adb1f9cf3c",
+        "src/ingestion/nhanes_reader.py": "bb61a01bf9b19d13c945cce8c1dc8cee797cecee1d48b68acef8577f5fa9aa0a",
+        "src/ingestion/unzip_cops.py": "7927bd1492c758520cf2726d1f85789d6d12f4db46ec0020a251d43f0331448a"
+      }
+    },
+    "dependencies": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "packages": {
+        "numpy": "2.5.4",
+        "pandas": "3.0.6",
+        "scipy": "1.18.1",
+        "pyarrow": "26.0.0",
+        "PyYAML": "6.0.3",
+        "s3fs": "2026.9.0"
+      }
+    },
+    "inputs": [
+      {
+        "path": "data/raw/reference-runs/real-20261024-full-v2/nhanes/pax80_raw/77729.tar.bz2",
+        "uri": "s3://amzn-a3-simianpal-205506434226-ap-southeast-1-an/pd-pipeline/data/raw/nhanes/2013-2014/pax80_raw/77729.tar.bz2",
+        "sha256": "e914273652cbfca457be943b7874b76f354c47a736fea70728d5a42f09443147",
+        "size": 149651490,
+        "etag": "\"01b076c87ef94afa32dea7539a829540-3\"",
+        "version_id": null,
+        "downloaded_utc": "2026-10-24T09:45:10.121854+00:00",
+        "run_id": "real-20261024-full-v2"
+      },
+      {
+        "path": "metadata/cops_splits.csv",
+        "sha256": "7d8611b3cb67351eb983917d928addabe391076315c0e141e57b0a5efb5abe70",
+        "kind": "split_or_cohort_metadata"
+      },
+      {
+        "path": "reports/cops_visit_summary.csv",
+        "sha256": "f3b821979f20b457ddeb1ab018550c0d651bc0fa843a8adde41a3cb55ed12470",
+        "kind": "split_or_cohort_metadata"
+      },
+      {
+        "path": "metadata/nhanes_splits.csv",
+        "sha256": "14f0d224cb13f2acf626f7d68c5addf5fad7f7cc4fc85eedcdc426bd45c6d869",
+        "kind": "split_or_cohort_metadata"
+      }
+    ],
+    "pipeline_config_sha256": "62ef5c1615f43ecf51fe0844d57d27f2dd6c57bc98bf1ce0a34c830aac82a7f4",
+    "runtime_noise_target_axes_mg": [
+      4.93,
+      5.07,
+      6.0
+    ],
+    "parquet_sha256": "bbc34590cbe4a91fe84c13977afaf2a1ed9fcbd8c02797da144790c4eaf7ce1d",
+    "qc_sha256": "78200b443dc48a07a9da59c42eead1d15447540817c5be19887e751e7772d09c",
+    "included": true,
+    "qc_status": "ok"
+  },
+  "clean_run_evidence_sha256": "acbe70dd675a39d9db3624e1b2d196209cd3a3ddd79ff1c8c53d065286184da3",
+  "clean_config_verification": "original_run_evidence_validated_against_supported_source_and_config",
+  "units": {
+    "enmo_median": "g",
+    "step_freq_walk_median": "steps/s",
+    "tremor_frac_of_rest": "fraction"
+  },
+  "status": "ok",
+  "reason": ""
+}

@@ -1,0 +1,1166 @@
+{
+  "schema_version": 1,
+  "data_kind": "real",
+  "is_demo": false,
+  "run_id": "real-20261024-full-v2",
+  "checkpoint": "checkpoint-01",
+  "created_utc": "2026-10-24T10:03:29.374207+00:00",
+  "status": "completed",
+  "selection": "ALL completed QC-included original train subjects at snapshot time; no feature-value selection",
+  "selected": [
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-13",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "994eb11804aefed0261a2996aa652a2148376cc9c6688de5223ba59c403e0b2b"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-15",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "37bcfda1dc406bd9bb0227b4e9d9f4f26aae7577cbf6e702d0472547de244ac0"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-23",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "0bb8d0bd701cbbf0fbd5eace2172d15f56f627b9cc2607d29c66959572feb42e"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-26",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "4f199f58a225328cc4c27cc4c493a05f6a2176ee06cd53e09f2aa8e542e50277"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-34",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "39b89decdcf1f4cb9124927a94ab5a6959ae610bb6d07b44cdf227c7ab37b404"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-37",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "352cca39f812a433913bd7db6a85b8ed8f810f2a72d8192e51b86157a37c7461"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-43",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "a965b355c60612d638dd941cf1291195e6b4a12ce3fecdd9eb13bf1f8c3074ca"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-52",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "cd5b97108ec84509f968833704e2a4494f14feff180b648261e863d42986604a"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-54",
+      "wrist": "left",
+      "split": "train",
+      "clean_manifest_sha256": "998abfa6c24ee2f9a877ea2b28be6538d31157a0b4910c7fbd129cbd2636e59d"
+    }
+  ],
+  "excluded": [
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-4",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-5",
+      "wrist": "right",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-6",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-8",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-9",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-10",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-14",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-16",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-17",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-29",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-33",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-35",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-36",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-40",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-41",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-45",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-48",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-49",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-51",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-55",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-56",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-59",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-61",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-62",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-64",
+      "wrist": "left",
+      "split": "train",
+      "reason": "clean_qc_excluded",
+      "valid_days": 2
+    },
+    {
+      "dataset": "cops",
+      "subject_id": "COPS-66",
+      "wrist": "left",
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73558",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73596",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73616",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73640",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73746",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73781",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73899",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-73938",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-74057",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-74132",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-74254",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-74459",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-74946",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-74984",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75018",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75044",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75136",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75414",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75592",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75654",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75789",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-75845",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76137",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76248",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76312",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76376",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76404",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76411",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76599",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76741",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76745",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76779",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-76868",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77025",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77049",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77067",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77077",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77238",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77313",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77331",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77341",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77524",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77729",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77733",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77736",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77847",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-77852",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78043",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78445",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78562",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78608",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78627",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78883",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78897",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-78991",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79017",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79042",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79136",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79220",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79319",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79377",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79406",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79441",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79554",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79586",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79821",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79832",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79913",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79929",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-79974",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80105",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80120",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80170",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80218",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80268",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80547",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80705",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80800",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80890",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80928",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-80976",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81115",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81142",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81228",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81339",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81344",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81578",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81594",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81875",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-81996",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-82230",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-82440",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-82542",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-82565",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-82612",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-82779",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-82953",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83118",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83207",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83218",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83261",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83338",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83423",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83535",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83567",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    },
+    {
+      "dataset": "nhanes",
+      "subject_id": "NHANES-83660",
+      "wrist": null,
+      "split": "train",
+      "reason": "not_completed_at_checkpoint"
+    }
+  ],
+  "full_train_complete": false,
+  "validation_evaluated": false,
+  "test_evaluated": false,
+  "completed_utc": "2026-10-24T10:04:08.379507+00:00",
+  "baseline_artifact": "D:\\AWS\\Simianpal-refrun\\data\\models\\reference-v1\\real-20261024-full-v2\\checkpoints\\checkpoint-01\\baseline.json",
+  "baseline_sha256": "f8b422a825d6bb2c123aa6da65176f7177d87b3db69e21e74740f6355f302149",
+  "artifact_id": "53d53136798bd021eb806896c9d66a8622a11097f1d0f3337e5c7af7388baf89",
+  "daily_bundle": "D:\\AWS\\Simianpal-refrun\\data\\daily\\reference-v1\\real-20261024-full-v2\\checkpoints\\checkpoint-01\\train",
+  "coverage_report": "D:\\AWS\\Simianpal-refrun\\data\\daily\\reference-v1\\real-20261024-full-v2\\checkpoints\\checkpoint-01\\train\\coverage_report.json",
+  "analysis": "D:\\AWS\\Simianpal-refrun\\reports\\reference_baseline\\real-20261024-full-v2\\checkpoints\\checkpoint-01\\analysis_TRAIN_REAL.json",
+  "analysis_split": "train",
+  "train_comparison": "All days of the scored person excluded from their own cohort reference; not validation.",
+  "references": {
+    "cops": {
+      "enmo_hourly_median_mean_g": {
+        "status": "ok",
+        "reason": "",
+        "n_participants": 9,
+        "n_days": 43,
+        "subject_ids": [
+          "COPS-13",
+          "COPS-15",
+          "COPS-23",
+          "COPS-26",
+          "COPS-34",
+          "COPS-37",
+          "COPS-43",
+          "COPS-52",
+          "COPS-54"
+        ],
+        "median": 0.0228486103644946,
+        "quantiles": {
+          "0.05": 0.0097917959926427,
+          "0.25": 0.0159925901418679,
+          "0.5": 0.0228486103644946,
+          "0.75": 0.0334827158001074,
+          "0.95": 0.0500107352343404
+        },
+        "mad": 0.009128476757594199,
+        "scale": 0.01353387964080916,
+        "days_per_subject": {
+          "COPS-13": 5,
+          "COPS-15": 7,
+          "COPS-23": 5,
+          "COPS-26": 4,
+          "COPS-34": 5,
+          "COPS-37": 5,
+          "COPS-43": 4,
+          "COPS-52": 5,
+          "COPS-54": 3
+        }
+      },
+      "walking_cadence_hourly_median_mean_hz": {
+        "status": "ok",
+        "reason": "",
+        "n_participants": 7,
+        "n_days": 33,
+        "subject_ids": [
+          "COPS-13",
+          "COPS-15",
+          "COPS-23",
+          "COPS-34",
+          "COPS-37",
+          "COPS-43",
+          "COPS-52"
+        ],
+        "median": 1.7339108109191603,
+        "quantiles": {
+          "0.05": 1.5802338279323975,
+          "0.25": 1.6362910440002194,
+          "0.5": 1.7339108109191603,
+          "0.75": 1.8546214984572944,
+          "0.95": 2.0058088479565264
+        },
+        "mad": 0.10079005518817952,
+        "scale": 0.14943133582199494,
+        "days_per_subject": {
+          "COPS-13": 5,
+          "COPS-15": 7,
+          "COPS-23": 4,
+          "COPS-34": 5,
+          "COPS-37": 5,
+          "COPS-43": 3,
+          "COPS-52": 4
+        }
+      },
+      "rest_tremor_window_fraction": {
+        "status": "ok",
+        "reason": "",
+        "n_participants": 9,
+        "n_days": 43,
+        "subject_ids": [
+          "COPS-13",
+          "COPS-15",
+          "COPS-23",
+          "COPS-26",
+          "COPS-34",
+          "COPS-37",
+          "COPS-43",
+          "COPS-52",
+          "COPS-54"
+        ],
+        "median": 0.0492040520984081,
+        "quantiles": {
+          "0.05": 0.0112244897959183,
+          "0.25": 0.0279627163781624,
+          "0.5": 0.0492040520984081,
+          "0.75": 0.1059957173447537,
+          "0.95": 0.2247899159663865
+        },
+        "mad": 0.028320517961862,
+        "scale": 0.0419879999302566,
+        "days_per_subject": {
+          "COPS-13": 5,
+          "COPS-15": 7,
+          "COPS-23": 5,
+          "COPS-26": 4,
+          "COPS-34": 5,
+          "COPS-37": 5,
+          "COPS-43": 4,
+          "COPS-52": 5,
+          "COPS-54": 3
+        }
+      }
+    },
+    "nhanes": {
+      "enmo_hourly_median_mean_g": {
+        "status": "insufficient_data",
+        "reason": "reference_participants_or_days_below_minimum",
+        "n_participants": 0,
+        "n_days": 0,
+        "subject_ids": [],
+        "median": null,
+        "quantiles": {},
+        "mad": null,
+        "scale": null,
+        "days_per_subject": {}
+      },
+      "walking_cadence_hourly_median_mean_hz": {
+        "status": "insufficient_data",
+        "reason": "reference_participants_or_days_below_minimum",
+        "n_participants": 0,
+        "n_days": 0,
+        "subject_ids": [],
+        "median": null,
+        "quantiles": {},
+        "mad": null,
+        "scale": null,
+        "days_per_subject": {}
+      },
+      "rest_tremor_window_fraction": {
+        "status": "insufficient_data",
+        "reason": "reference_participants_or_days_below_minimum",
+        "n_participants": 0,
+        "n_days": 0,
+        "subject_ids": [],
+        "median": null,
+        "quantiles": {},
+        "mad": null,
+        "scale": null,
+        "days_per_subject": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/BackupName",
+  "/properties/TableName"
+ ],
+ "description": "Resource Type definition for AWS::DynamoDB::Backup",
+ "primaryIdentifier": [
+  "/properties/BackupId"
+ ],
+ "properties": {
+  "BackupArn": {
+   "type": "string"
+  },
+  "BackupCreationDateTime": {
+   "type": "string"
+  },
+  "BackupId": {
+   "type": "string"
+  },
+  "BackupName": {
+   "type": "string"
+  },
+  "BackupSizeBytes": {
+   "type": "integer"
+  },
+  "BackupStatus": {
+   "type": "string"
+  },
+  "BackupType": {
+   "type": "string"
+  },
+  "TableName": {
+   "type": "string"
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/BackupStatus",
+  "/properties/BackupSizeBytes",
+  "/properties/BackupArn",
+  "/properties/BackupType",
+  "/properties/BackupId",
+  "/properties/BackupCreationDateTime"
+ ],
+ "required": [
+  "TableName",
+  "BackupName"
+ ],
+ "typeName": "AWS::DynamoDB::Backup"
+}

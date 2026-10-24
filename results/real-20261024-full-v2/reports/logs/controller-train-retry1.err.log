@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 591, in <module>
+    main()
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 571, in main
+    run_subjects(a.run_id,'train',a.ids,a.workers)
+  File "D:\AWS\Simianpal-refrun\tools\run_real_reference.py", line 374, in run_subjects
+    if failed:raise RuntimeError(f'Processing incomplete for {len(failed)} {split} subjects; inspect progress/logs and resume. No automatic fit/evaluation from this incomplete batch.')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Processing incomplete for 85 train subjects; inspect progress/logs and resume. No automatic fit/evaluation from this incomplete batch.

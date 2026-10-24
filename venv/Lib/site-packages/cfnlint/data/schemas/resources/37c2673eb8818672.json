@@ -1,0 +1,603 @@
+{
+ "additionalIdentifiers": [
+  [
+   "/properties/ComputeQuotaId"
+  ]
+ ],
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/Name",
+  "/properties/ClusterArn",
+  "/properties/ComputeQuotaTarget/TeamName"
+ ],
+ "definitions": {
+  "AcceleratorPartitionConfig": {
+   "additionalProperties": false,
+   "description": "Multi-instance GPU (MIG) partition profile and count for fractional accelerator allocation.",
+   "properties": {
+    "Count": {
+     "description": "The number of MIG partitions of the specified Type allocated to the team.",
+     "maximum": 10000000,
+     "minimum": 0,
+     "type": "integer"
+    },
+    "Type": {
+     "description": "MIG profile type. Service rejects MIG profiles that the chosen InstanceType does not support.",
+     "enum": [
+      "mig-1g.5gb",
+      "mig-1g.10gb",
+      "mig-1g.18gb",
+      "mig-1g.20gb",
+      "mig-1g.23gb",
+      "mig-1g.35gb",
+      "mig-1g.45gb",
+      "mig-1g.47gb",
+      "mig-2g.10gb",
+      "mig-2g.20gb",
+      "mig-2g.35gb",
+      "mig-2g.45gb",
+      "mig-2g.47gb",
+      "mig-3g.20gb",
+      "mig-3g.40gb",
+      "mig-3g.71gb",
+      "mig-3g.90gb",
+      "mig-3g.93gb",
+      "mig-4g.20gb",
+      "mig-4g.40gb",
+      "mig-4g.71gb",
+      "mig-4g.90gb",
+      "mig-4g.93gb",
+      "mig-7g.40gb",
+      "mig-7g.80gb",
+      "mig-7g.141gb",
+      "mig-7g.180gb",
+      "mig-7g.186gb"
+     ],
+     "type": "string"
+    }
+   },
+   "required": [
+    "Type",
+    "Count"
+   ],
+   "type": "object"
+  },
+  "ComputeQuotaConfig": {
+   "additionalProperties": false,
+   "description": "Compute allocation rules: per-resource quotas, idle-borrowing strategy, and team-task preemption policy.",
+   "properties": {
+    "ComputeQuotaResources": {
+     "description": "Per-instance-type compute quotas for the team. When VCpu / MemoryInGiB / Accelerators are partially specified, SageMaker auto-fills the remaining fields ratio-proportionally to the underlying instance \u2014 Read may return values the customer did not supply (drift may flag this).",
+     "insertionOrder": false,
+     "items": {
+      "$ref": "#/definitions/ComputeQuotaResourceConfig"
+     },
+     "maxItems": 15,
+     "minItems": 0,
+     "type": "array"
+    },
+    "PreemptTeamTasks": {
+     "description": "Team-task preemption policy. Defaults service-side to 'LowerPriority' when omitted on Create.",
+     "enum": [
+      "Never",
+      "LowerPriority"
+     ],
+     "type": "string"
+    },
+    "ResourceSharingConfig": {
+     "$ref": "#/definitions/ResourceSharingConfig",
+     "description": "Idle-resource-sharing strategy for this team's quota. When omitted, the service applies defaults (Strategy=LendAndBorrow, BorrowLimit=50)."
+    }
+   },
+   "type": "object"
+  },
+  "ComputeQuotaResourceConfig": {
+   "additionalProperties": false,
+   "description": "Per-instance-type compute quota element. Reused under ComputeQuotaConfig.ComputeQuotaResources and ResourceSharingConfig.AbsoluteBorrowLimits.",
+   "properties": {
+    "AcceleratorPartition": {
+     "$ref": "#/definitions/AcceleratorPartitionConfig",
+     "description": "Multi-instance GPU (MIG) partition profile and count, for fractional accelerator allocation. Service rejects MIG profiles that the chosen InstanceType does not support."
+    },
+    "Accelerators": {
+     "description": "The number of accelerators (e.g., GPUs) of this type allocated to the team. SageMaker auto-fills VCpu / MemoryInGiB ratio-proportionally if only this is set.",
+     "maximum": 10000000,
+     "minimum": 0,
+     "type": "integer"
+    },
+    "Count": {
+     "description": "The number of instances of this type allocated to the team.",
+     "maximum": 10000000,
+     "minimum": 0,
+     "type": "integer"
+    },
+    "InstanceType": {
+     "description": "The cluster instance type the quota applies to (e.g., 'ml.m5.xlarge', 'ml.p5.48xlarge'). Validated by the service against the supported HyperPod instance types.",
+     "enum": [
+      "ml.c5.12xlarge",
+      "ml.c5.18xlarge",
+      "ml.c5.24xlarge",
+      "ml.c5.2xlarge",
+      "ml.c5.4xlarge",
+      "ml.c5.9xlarge",
+      "ml.c5.large",
+      "ml.c5.xlarge",
+      "ml.c5n.18xlarge",
+      "ml.c5n.2xlarge",
+      "ml.c5n.4xlarge",
+      "ml.c5n.9xlarge",
+      "ml.c5n.large",
+      "ml.c6a.12xlarge",
+      "ml.c6a.16xlarge",
+      "ml.c6a.24xlarge",
+      "ml.c6a.2xlarge",
+      "ml.c6a.32xlarge",
+      "ml.c6a.48xlarge",
+      "ml.c6a.4xlarge",
+      "ml.c6a.8xlarge",
+      "ml.c6a.large",
+      "ml.c6a.xlarge",
+      "ml.c6g.12xlarge",
+      "ml.c6g.16xlarge",
+      "ml.c6g.2xlarge",
+      "ml.c6g.4xlarge",
+      "ml.c6g.8xlarge",
+      "ml.c6g.large",
+      "ml.c6g.medium",
+      "ml.c6g.xlarge",
+      "ml.c6i.12xlarge",
+      "ml.c6i.16xlarge",
+      "ml.c6i.24xlarge",
+      "ml.c6i.2xlarge",
+      "ml.c6i.32xlarge",
+      "ml.c6i.4xlarge",
+      "ml.c6i.8xlarge",
+      "ml.c6i.large",
+      "ml.c6i.xlarge",
+      "ml.c7g.12xlarge",
+      "ml.c7g.16xlarge",
+      "ml.c7g.2xlarge",
+      "ml.c7g.4xlarge",
+      "ml.c7g.8xlarge",
+      "ml.c7g.large",
+      "ml.c7g.medium",
+      "ml.c7g.xlarge",
+      "ml.c8a.16xlarge",
+      "ml.c8g.12xlarge",
+      "ml.c8g.16xlarge",
+      "ml.c8g.24xlarge",
+      "ml.c8g.2xlarge",
+      "ml.c8g.48xlarge",
+      "ml.c8g.4xlarge",
+      "ml.c8g.8xlarge",
+      "ml.c8g.large",
+      "ml.c8g.medium",
+      "ml.c8g.xlarge",
+      "ml.g4dn.12xlarge",
+      "ml.g4dn.16xlarge",
+      "ml.g4dn.2xlarge",
+      "ml.g4dn.4xlarge",
+      "ml.g4dn.8xlarge",
+      "ml.g4dn.xlarge",
+      "ml.g5.12xlarge",
+      "ml.g5.16xlarge",
+      "ml.g5.24xlarge",
+      "ml.g5.2xlarge",
+      "ml.g5.48xlarge",
+      "ml.g5.4xlarge",
+      "ml.g5.8xlarge",
+      "ml.g5.xlarge",
+      "ml.g6.12xlarge",
+      "ml.g6.16xlarge",
+      "ml.g6.24xlarge",
+      "ml.g6.2xlarge",
+      "ml.g6.48xlarge",
+      "ml.g6.4xlarge",
+      "ml.g6.8xlarge",
+      "ml.g6.xlarge",
+      "ml.g6e.12xlarge",
+      "ml.g6e.16xlarge",
+      "ml.g6e.24xlarge",
+      "ml.g6e.2xlarge",
+      "ml.g6e.48xlarge",
+      "ml.g6e.4xlarge",
+      "ml.g6e.8xlarge",
+      "ml.g6e.xlarge",
+      "ml.g7.12xlarge",
+      "ml.g7.24xlarge",
+      "ml.g7.2xlarge",
+      "ml.g7.48xlarge",
+      "ml.g7.4xlarge",
+      "ml.g7.8xlarge",
+      "ml.g7e.12xlarge",
+      "ml.g7e.24xlarge",
+      "ml.g7e.2xlarge",
+      "ml.g7e.48xlarge",
+      "ml.g7e.4xlarge",
+      "ml.g7e.8xlarge",
+      "ml.gr6.4xlarge",
+      "ml.gr6.8xlarge",
+      "ml.i3en.12xlarge",
+      "ml.i3en.24xlarge",
+      "ml.i3en.2xlarge",
+      "ml.i3en.3xlarge",
+      "ml.i3en.6xlarge",
+      "ml.i3en.large",
+      "ml.i3en.xlarge",
+      "ml.m5.12xlarge",
+      "ml.m5.16xlarge",
+      "ml.m5.24xlarge",
+      "ml.m5.2xlarge",
+      "ml.m5.4xlarge",
+      "ml.m5.8xlarge",
+      "ml.m5.large",
+      "ml.m5.xlarge",
+      "ml.m6a.12xlarge",
+      "ml.m6a.16xlarge",
+      "ml.m6a.24xlarge",
+      "ml.m6a.2xlarge",
+      "ml.m6a.32xlarge",
+      "ml.m6a.48xlarge",
+      "ml.m6a.4xlarge",
+      "ml.m6a.8xlarge",
+      "ml.m6a.large",
+      "ml.m6a.xlarge",
+      "ml.m6g.12xlarge",
+      "ml.m6g.16xlarge",
+      "ml.m6g.2xlarge",
+      "ml.m6g.4xlarge",
+      "ml.m6g.8xlarge",
+      "ml.m6g.large",
+      "ml.m6g.medium",
+      "ml.m6g.xlarge",
+      "ml.m6i.12xlarge",
+      "ml.m6i.16xlarge",
+      "ml.m6i.24xlarge",
+      "ml.m6i.2xlarge",
+      "ml.m6i.32xlarge",
+      "ml.m6i.4xlarge",
+      "ml.m6i.8xlarge",
+      "ml.m6i.large",
+      "ml.m6i.xlarge",
+      "ml.m7g.12xlarge",
+      "ml.m7g.16xlarge",
+      "ml.m7g.2xlarge",
+      "ml.m7g.4xlarge",
+      "ml.m7g.8xlarge",
+      "ml.m7g.large",
+      "ml.m7g.medium",
+      "ml.m7g.xlarge",
+      "ml.m7i.12xlarge",
+      "ml.m7i.16xlarge",
+      "ml.m7i.24xlarge",
+      "ml.m7i.2xlarge",
+      "ml.m7i.48xlarge",
+      "ml.m7i.4xlarge",
+      "ml.m7i.8xlarge",
+      "ml.m7i.large",
+      "ml.m7i.xlarge",
+      "ml.m8a.16xlarge",
+      "ml.m8g.12xlarge",
+      "ml.m8g.16xlarge",
+      "ml.m8g.24xlarge",
+      "ml.m8g.2xlarge",
+      "ml.m8g.48xlarge",
+      "ml.m8g.4xlarge",
+      "ml.m8g.8xlarge",
+      "ml.m8g.large",
+      "ml.m8g.medium",
+      "ml.m8g.xlarge",
+      "ml.p4d.24xlarge",
+      "ml.p4de.24xlarge",
+      "ml.p5.48xlarge",
+      "ml.p5.4xlarge",
+      "ml.p5e.48xlarge",
+      "ml.p5en.48xlarge",
+      "ml.p6-b200.48xlarge",
+      "ml.p6-b300.48xlarge",
+      "ml.p6e-gb200.36xlarge",
+      "ml.r5d.16xlarge",
+      "ml.r6i.12xlarge",
+      "ml.r6i.16xlarge",
+      "ml.r6i.24xlarge",
+      "ml.r6i.2xlarge",
+      "ml.r6i.32xlarge",
+      "ml.r6i.4xlarge",
+      "ml.r6i.8xlarge",
+      "ml.r6i.large",
+      "ml.r6i.xlarge",
+      "ml.r7i.12xlarge",
+      "ml.r7i.16xlarge",
+      "ml.r7i.24xlarge",
+      "ml.r7i.2xlarge",
+      "ml.r7i.48xlarge",
+      "ml.r7i.4xlarge",
+      "ml.r7i.8xlarge",
+      "ml.r7i.large",
+      "ml.r7i.xlarge",
+      "ml.t3.2xlarge",
+      "ml.t3.large",
+      "ml.t3.medium",
+      "ml.t3.xlarge",
+      "ml.trn1.32xlarge",
+      "ml.trn1n.32xlarge",
+      "ml.trn2.3xlarge",
+      "ml.trn2.48xlarge"
+     ],
+     "type": "string"
+    },
+    "MemoryInGiB": {
+     "description": "The memory in GiB allocated to the team. Floating-point. SageMaker auto-fills Accelerators / VCpu ratio-proportionally if only this is set.",
+     "maximum": 10000000,
+     "minimum": 0,
+     "type": "number"
+    },
+    "VCpu": {
+     "description": "The number of vCPUs allocated to the team. Floating-point. SageMaker auto-fills Accelerators / MemoryInGiB ratio-proportionally if only this is set.",
+     "maximum": 10000000,
+     "minimum": 0,
+     "type": "number"
+    }
+   },
+   "required": [
+    "InstanceType"
+   ],
+   "type": "object"
+  },
+  "ComputeQuotaTarget": {
+   "additionalProperties": false,
+   "description": "The team this compute allocation rule applies to.",
+   "properties": {
+    "FairShareWeight": {
+     "description": "Relative fair-share weight when fair-share scheduling is enabled on the parent ClusterSchedulerConfig. Defaults service-side to 0 when omitted.",
+     "maximum": 100,
+     "minimum": 0,
+     "type": "integer"
+    },
+    "TeamName": {
+     "description": "The name of the team. Materialized as Kubernetes namespace 'hyperpod-ns-<TeamName>' on the EKS cluster, so the value must satisfy RFC 1123 namespace constraints. Reassignment is not supported (createOnly).",
+     "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9]){0,39}?$",
+     "type": "string"
+    }
+   },
+   "required": [
+    "TeamName"
+   ],
+   "type": "object"
+  },
+  "ResourceSharingConfig": {
+   "additionalProperties": false,
+   "description": "Idle-resource-sharing strategy for this team's quota.",
+   "properties": {
+    "AbsoluteBorrowLimits": {
+     "description": "Per-instance-type absolute caps on resources this team can borrow.",
+     "insertionOrder": false,
+     "items": {
+      "$ref": "#/definitions/ComputeQuotaResourceConfig"
+     },
+     "maxItems": 15,
+     "minItems": 0,
+     "type": "array"
+    },
+    "BorrowLimit": {
+     "description": "Maximum percentage of the team's idle quota that can be borrowed by other teams. Smithy admits 0..10000; in practice the service-documented operational range is 1..500. Defaults service-side to 50 when omitted on Create.",
+     "maximum": 10000,
+     "minimum": 0,
+     "type": "integer"
+    },
+    "Strategy": {
+     "description": "How this team participates in idle-resource sharing.",
+     "enum": [
+      "Lend",
+      "DontLend",
+      "LendAndBorrow"
+     ],
+     "type": "string"
+    }
+   },
+   "required": [
+    "Strategy"
+   ],
+   "type": "object"
+  },
+  "Tag": {
+   "additionalProperties": false,
+   "properties": {
+    "Key": {
+     "maxLength": 128,
+     "minLength": 1,
+     "pattern": "^([\\p{L}\\p{Z}\\p{N}_.:/=+\\-@]*)$",
+     "type": "string"
+    },
+    "Value": {
+     "maxLength": 256,
+     "minLength": 0,
+     "pattern": "^([\\p{L}\\p{Z}\\p{N}_.:/=+\\-@]*)$",
+     "type": "string"
+    }
+   },
+   "required": [
+    "Key",
+    "Value"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Resource Type definition for AWS::SageMaker::ComputeQuota. Defines a compute allocation rule for an EKS-orchestrated SageMaker HyperPod cluster's task governance. Available in 15 regions (us-east-1, us-east-2, us-west-1, us-west-2, ap-south-1, ap-southeast-1, ap-southeast-2, ap-southeast-3, ap-northeast-1, eu-central-1, eu-west-1, eu-west-2, eu-north-1, eu-south-2, sa-east-1).",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "sagemaker:CreateComputeQuota",
+    "sagemaker:DescribeComputeQuota",
+    "sagemaker:DescribeCluster",
+    "sagemaker:AddTags",
+    "sagemaker:ListTags",
+    "eks:AssociateAccessPolicy",
+    "eks:DescribeCluster",
+    "eks:ListAssociatedAccessPolicies"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "sagemaker:DeleteComputeQuota",
+    "sagemaker:DescribeComputeQuota",
+    "sagemaker:ListTags",
+    "sagemaker:DescribeCluster",
+    "eks:DescribeCluster",
+    "eks:DisassociateAccessPolicy",
+    "eks:DescribeAccessEntry",
+    "eks:ListAssociatedAccessPolicies"
+   ]
+  },
+  "list": {
+   "permissions": [
+    "sagemaker:ListComputeQuotas"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "sagemaker:DescribeComputeQuota",
+    "sagemaker:ListTags"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "sagemaker:UpdateComputeQuota",
+    "sagemaker:DescribeComputeQuota",
+    "sagemaker:DescribeCluster",
+    "eks:DescribeCluster",
+    "eks:AssociateAccessPolicy",
+    "eks:DisassociateAccessPolicy",
+    "eks:DescribeAccessEntry",
+    "eks:ListAssociatedAccessPolicies",
+    "sagemaker:AddTags",
+    "sagemaker:DeleteTags",
+    "sagemaker:ListTags"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/ComputeQuotaArn"
+ ],
+ "properties": {
+  "ActivationState": {
+   "description": "Whether the compute allocation rule is active. Defaults service-side to 'Enabled' when omitted on Create.",
+   "enum": [
+    "Enabled",
+    "Disabled"
+   ],
+   "type": "string"
+  },
+  "ClusterArn": {
+   "description": "The ARN of the EKS-orchestrated SageMaker HyperPod cluster the compute allocation definition is bound to. Slurm-orchestrated clusters are rejected by the service.",
+   "maxLength": 256,
+   "minLength": 20,
+   "pattern": "^arn:aws[a-z\\-]*:sagemaker:[a-z0-9\\-]*:[0-9]{12}:cluster/[a-z0-9]{12}$",
+   "type": "string"
+  },
+  "ComputeQuotaArn": {
+   "description": "The Amazon Resource Name (ARN) of the compute allocation definition.",
+   "maxLength": 2048,
+   "minLength": 1,
+   "pattern": "^arn:aws[a-z\\-]*:sagemaker:[a-z0-9\\-]*:[0-9]{12}:compute-quota/[a-z0-9]{12}$",
+   "type": "string"
+  },
+  "ComputeQuotaConfig": {
+   "$ref": "#/definitions/ComputeQuotaConfig",
+   "description": "Compute allocation rules: per-resource quotas, idle-borrowing strategy, and team-task preemption policy."
+  },
+  "ComputeQuotaId": {
+   "description": "The unique 12-character identifier of the compute allocation definition.",
+   "pattern": "^[a-z0-9]{12}$",
+   "type": "string"
+  },
+  "ComputeQuotaTarget": {
+   "$ref": "#/definitions/ComputeQuotaTarget",
+   "description": "The team this compute allocation rule applies to."
+  },
+  "ComputeQuotaVersion": {
+   "description": "The version of the compute allocation definition. Incremented on each successful Update; used for optimistic concurrency control.",
+   "type": "integer"
+  },
+  "CreationTime": {
+   "description": "The ISO-8601 timestamp at which the compute allocation definition was created.",
+   "format": "date-time",
+   "type": "string"
+  },
+  "Description": {
+   "description": "A free-form description of the compute allocation definition.",
+   "maxLength": 1024,
+   "minLength": 0,
+   "pattern": "^[\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}]*$",
+   "type": "string"
+  },
+  "LastModifiedTime": {
+   "description": "The ISO-8601 timestamp at which the compute allocation definition was last modified.",
+   "format": "date-time",
+   "type": "string"
+  },
+  "Name": {
+   "description": "The name of the compute allocation definition.",
+   "maxLength": 63,
+   "minLength": 1,
+   "pattern": "^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}$",
+   "type": "string"
+  },
+  "Status": {
+   "description": "The current lifecycle status of the compute allocation definition.",
+   "enum": [
+    "Creating",
+    "Created",
+    "CreateFailed",
+    "CreateRollbackFailed",
+    "Updating",
+    "Updated",
+    "UpdateFailed",
+    "UpdateRollbackFailed",
+    "Deleting",
+    "Deleted",
+    "DeleteFailed",
+    "DeleteRollbackFailed"
+   ],
+   "type": "string"
+  },
+  "Tags": {
+   "description": "Tags to associate with the compute allocation definition.",
+   "insertionOrder": false,
+   "items": {
+    "$ref": "#/definitions/Tag"
+   },
+   "maxItems": 50,
+   "minItems": 0,
+   "type": "array"
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/ComputeQuotaArn",
+  "/properties/ComputeQuotaId",
+  "/properties/ComputeQuotaVersion",
+  "/properties/Status",
+  "/properties/CreationTime",
+  "/properties/LastModifiedTime"
+ ],
+ "replacementStrategy": "delete_then_create",
+ "required": [
+  "Name",
+  "ClusterArn",
+  "ComputeQuotaConfig",
+  "ComputeQuotaTarget"
+ ],
+ "tagging": {
+  "cloudFormationSystemTags": false,
+  "permissions": [
+   "sagemaker:AddTags",
+   "sagemaker:DeleteTags",
+   "sagemaker:ListTags"
+  ],
+  "tagOnCreate": true,
+  "tagProperty": "/properties/Tags",
+  "tagUpdatable": true,
+  "taggable": true
+ },
+ "typeName": "AWS::SageMaker::ComputeQuota"
+}

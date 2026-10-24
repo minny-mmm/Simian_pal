@@ -1,0 +1,370 @@
+{
+  "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de": {
+    "validation_runs": [
+      {
+        "run_id": "real-checkpoint01-audit-v1",
+        "overall": "fail",
+        "audit_pass": true,
+        "valid_rows": 33,
+        "finished_utc": "2026-10-23T17:57:01.095337+00:00"
+      },
+      {
+        "run_id": "real-checkpoint01-readiness-v1",
+        "overall": "fail",
+        "audit_pass": true,
+        "valid_rows": 33,
+        "audit_statuses": {
+          "baseline_lock": "pass",
+          "hash_chain": "pass",
+          "reference_formulas": "pass",
+          "distances": "pass",
+          "null_handling": "pass",
+          "previous_day": "pass",
+          "coverage": "pass",
+          "official_reports": "pass",
+          "test_lock": "pass"
+        },
+        "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+        "tracks": [
+          "stability",
+          "loo",
+          "walkforward",
+          "valid",
+          "audit"
+        ],
+        "ready_cells": [
+          {
+            "dataset": "cops",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "cops",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": false,
+            "reasons": [
+              "jackknife_median_shift=not_evaluable",
+              "valid_level=unavailable"
+            ]
+          },
+          {
+            "dataset": "cops",
+            "metric": "rest_tremor_window_fraction",
+            "ready": false,
+            "reasons": [
+              "jackknife_median_shift=fail",
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": false,
+            "reasons": [
+              "jackknife_median_shift=not_evaluable",
+              "bootstrap_median_ci_width=fail",
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "rest_tremor_window_fraction",
+            "ready": false,
+            "reasons": [
+              "jackknife_median_shift=not_evaluable",
+              "valid_level=descriptive_only"
+            ]
+          }
+        ],
+        "finished_utc": "2026-10-24T08:34:37.343194+00:00"
+      }
+    ],
+    "comparisons": [
+      {
+        "run_id": "compare-pilot-local-py312-vs-ckpt01",
+        "category": "new_version_more_train",
+        "other": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945",
+        "validation": "revalidated"
+      }
+    ],
+    "source": "local",
+    "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+    "baseline_version": "real-cohort-reference-real-20261023-v1-checkpoint-01",
+    "validation_audit_passed": true
+  },
+  "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945": {
+    "validation_runs": [
+      {
+        "run_id": "real-pilot-20261024-v1",
+        "overall": "pass_with_unevaluable",
+        "audit_pass": false,
+        "valid_rows": 33,
+        "audit_statuses": {
+          "baseline_lock": "pass",
+          "hash_chain": "pass",
+          "reference_formulas": "pass",
+          "distances": "pass",
+          "null_handling": "pass",
+          "previous_day": "pass",
+          "coverage": "pass",
+          "official_reports": "not_evaluable",
+          "test_lock": "pass"
+        },
+        "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+        "tracks": [
+          "stability",
+          "loo",
+          "walkforward",
+          "valid",
+          "audit"
+        ],
+        "ready_cells": [
+          {
+            "dataset": "cops",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "cops",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": false,
+            "reasons": [
+              "valid_level=unavailable"
+            ]
+          },
+          {
+            "dataset": "cops",
+            "metric": "rest_tremor_window_fraction",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "rest_tremor_window_fraction",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          }
+        ],
+        "finished_utc": "2026-10-24T08:56:10.293539+00:00"
+      },
+      {
+        "run_id": "compare-pilot-local-py312-vs-ckpt01-validate",
+        "overall": "pass_with_unevaluable",
+        "audit_pass": false,
+        "valid_rows": 33,
+        "audit_statuses": {
+          "baseline_lock": "pass",
+          "hash_chain": "pass",
+          "reference_formulas": "pass",
+          "distances": "pass",
+          "null_handling": "pass",
+          "previous_day": "pass",
+          "coverage": "pass",
+          "official_reports": "not_evaluable",
+          "test_lock": "pass"
+        },
+        "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+        "tracks": [
+          "valid",
+          "audit",
+          "loo",
+          "stability",
+          "walkforward"
+        ],
+        "ready_cells": [
+          {
+            "dataset": "cops",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "cops",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": false,
+            "reasons": [
+              "valid_level=unavailable"
+            ]
+          },
+          {
+            "dataset": "cops",
+            "metric": "rest_tremor_window_fraction",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "rest_tremor_window_fraction",
+            "ready": false,
+            "reasons": [
+              "valid_level=descriptive_only"
+            ]
+          }
+        ],
+        "finished_utc": "2026-10-24T08:56:24.230453+00:00"
+      }
+    ],
+    "comparisons": [
+      {
+        "run_id": "compare-pilot-local-py312-vs-ckpt01",
+        "category": "new_version_more_train",
+        "other": "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de",
+        "validation": "revalidated"
+      }
+    ],
+    "validation_audit_passed": false,
+    "source": "aws",
+    "artifact_id": "9b65d11f9b86263b3a24eaae154657b72324302be5a4e148108c6f1f0510b76e",
+    "baseline_version": "real-data-pilot-aws-real-pilot-20261024-v1",
+    "handed_over_file_sha256": "4b623bcecb3f5298c56e24a5c56fcf9e9a2b60ab77215d36b4521f83a3c9b945"
+  },
+  "f8b422a825d6bb2c123aa6da65176f7177d87b3db69e21e74740f6355f302149": {
+    "validation_runs": [
+      {
+        "run_id": "real-full-v2-ckpt01-v2",
+        "overall": "pass_with_unevaluable",
+        "audit_pass": true,
+        "valid_rows": null,
+        "audit_statuses": {
+          "baseline_lock": "pass",
+          "hash_chain": "pass",
+          "reference_formulas": "pass",
+          "test_lock": "pass"
+        },
+        "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+        "tracks": [
+          "stability",
+          "loo",
+          "walkforward",
+          "audit"
+        ],
+        "ready_cells": null,
+        "finished_utc": "2026-10-24T10:05:09.643477+00:00"
+      }
+    ],
+    "comparisons": [],
+    "validation_audit_passed": false,
+    "source": "local",
+    "artifact_id": "53d53136798bd021eb806896c9d66a8622a11097f1d0f3337e5c7af7388baf89",
+    "baseline_version": "real-cohort-reference-real-20261024-full-v2-checkpoint-01"
+  },
+  "e2a35a02ff067505c6594a3abb944d063fe4d3a31a6c7cad586af55631510bc9": {
+    "validation_runs": [
+      {
+        "run_id": "real-full-v2-validate-v1",
+        "overall": "pass",
+        "audit_pass": true,
+        "valid_rows": 243,
+        "audit_statuses": {
+          "baseline_lock": "pass",
+          "hash_chain": "pass",
+          "reference_formulas": "pass",
+          "distances": "pass",
+          "null_handling": "pass",
+          "previous_day": "pass",
+          "coverage": "pass",
+          "official_reports": "pass",
+          "test_lock": "pass"
+        },
+        "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+        "tracks": [
+          "stability",
+          "loo",
+          "walkforward",
+          "valid",
+          "audit"
+        ],
+        "ready_cells": [
+          {
+            "dataset": "cops",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "cops",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "cops",
+            "metric": "rest_tremor_window_fraction",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "enmo_hourly_median_mean_g",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "walking_cadence_hourly_median_mean_hz",
+            "ready": true,
+            "reasons": []
+          },
+          {
+            "dataset": "nhanes",
+            "metric": "rest_tremor_window_fraction",
+            "ready": true,
+            "reasons": []
+          }
+        ],
+        "finished_utc": "2026-10-24T14:38:32.587090+00:00"
+      }
+    ],
+    "comparisons": [],
+    "validation_audit_passed": true,
+    "source": "local",
+    "artifact_id": "261afc222a0da65f8ea3e6f8567a5d480001d6967a8ee0c82b69e9d37089f4c3",
+    "baseline_version": "real-cohort-reference-real-20261024-full-v2"
+  }
+}

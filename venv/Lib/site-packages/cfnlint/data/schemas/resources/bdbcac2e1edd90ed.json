@@ -1,0 +1,133 @@
+{
+ "additionalIdentifiers": [
+  [
+   "/properties/Id"
+  ]
+ ],
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/EndpointConfig",
+  "/properties/EndpointType"
+ ],
+ "definitions": {
+  "EndpointConfig": {
+   "additionalProperties": false,
+   "description": "The configuration details for the cloud connector endpoint, including connection parameters and authentication requirements.",
+   "properties": {
+    "Lambda": {
+     "$ref": "#/definitions/LambdaConfig"
+    }
+   },
+   "type": "object"
+  },
+  "LambdaConfig": {
+   "additionalProperties": false,
+   "description": "Configuration details for an AWS Lambda function used as an endpoint for a cloud connector.",
+   "properties": {
+    "Arn": {
+     "description": "The Amazon Resource Name (ARN) of the Lambda function used as an endpoint.",
+     "pattern": "^(arn:aws:lambda:[0-9a-zA-Z-]+:[0-9]+:function:)?([a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?)$",
+     "type": "string"
+    }
+   },
+   "required": [
+    "Arn"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Resource type definition for AWS::IoTManagedIntegrations::CloudConnector. A cloud connector (C2C connector) points at an AWS Lambda endpoint that implements the managed integrations cloud-to-cloud connector contract, enabling discovery and control of third-party cloud devices.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "iotmanagedintegrations:CreateCloudConnector",
+    "lambda:InvokeFunction"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "iotmanagedintegrations:DeleteCloudConnector",
+    "iotmanagedintegrations:GetCloudConnector"
+   ]
+  },
+  "list": {
+   "permissions": [
+    "iotmanagedintegrations:ListCloudConnectors"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "iotmanagedintegrations:GetCloudConnector"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "iotmanagedintegrations:UpdateCloudConnector"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/Arn"
+ ],
+ "properties": {
+  "Arn": {
+   "description": "The Amazon Resource Name (ARN) of the cloud connector.",
+   "maxLength": 1011,
+   "minLength": 63,
+   "pattern": "^arn:aws:iotmanagedintegrations:[0-9a-zA-Z-]+:[0-9]+:cloud-connector/[A-Za-z0-9_-]+$",
+   "type": "string"
+  },
+  "Description": {
+   "description": "A description of the C2C connector.",
+   "maxLength": 256,
+   "minLength": 1,
+   "pattern": "^[0-9A-Za-z_\\- ]+$",
+   "type": "string"
+  },
+  "EndpointConfig": {
+   "$ref": "#/definitions/EndpointConfig"
+  },
+  "EndpointType": {
+   "description": "The type of endpoint used for the cloud connector, which defines how the connector communicates with external services.",
+   "enum": [
+    "LAMBDA"
+   ],
+   "type": "string"
+  },
+  "Id": {
+   "description": "The unique identifier of the cloud connector.",
+   "maxLength": 64,
+   "minLength": 1,
+   "pattern": "^[A-Za-z0-9-_]+$",
+   "type": "string"
+  },
+  "Name": {
+   "description": "The display name of the C2C connector.",
+   "maxLength": 128,
+   "minLength": 1,
+   "pattern": "^[A-Za-z0-9-_ ]+$",
+   "type": "string"
+  },
+  "Type": {
+   "description": "The type of cloud connector.",
+   "enum": [
+    "LISTED",
+    "UNLISTED"
+   ],
+   "type": "string"
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/Arn",
+  "/properties/Id",
+  "/properties/Type"
+ ],
+ "required": [
+  "Name",
+  "EndpointConfig"
+ ],
+ "tagging": {
+  "taggable": false
+ },
+ "typeName": "AWS::IoTManagedIntegrations::CloudConnector"
+}

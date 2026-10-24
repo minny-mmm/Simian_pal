@@ -1,5 +1,7 @@
 # Parkinson's wrist-sensor pipeline
 
+อัปเดต 21 ต.ค. 2026: งาน baseline ปัจจุบันเป็น **daily cohort-reference distances แยก COPS/NHANES** ดู [README_reference_baseline.md](README_reference_baseline.md) สำหรับโค้ด aggregation, fit/load/LOO, ตัวอย่างจำลอง และ SageMaker preparation เนื้อหา classifier และสถานะวันที่ 16 ต.ค. ด้านล่างเป็นบริบทงานเดิม ไม่ใช่ความหมายของ reference output รุ่นนี้
+
 เตรียมข้อมูล accelerometer ที่ข้อมือ เพื่อเทรน AI แยกผู้ป่วยพาร์กินสัน (PD) ออกจากคนปกติ
 
 - **PD**: COPS (GENEActiv 100 Hz) ผู้ป่วย 49 คนที่มีวันอยู่บ้าน ≥ 3 วัน
@@ -9,6 +11,8 @@
 ทุกขั้นจึงใช้โค้ดและเกณฑ์เดียวกันกับทั้งสองชุด ส่วนที่แยกตาม dataset มีแค่การอ่านไฟล์ และ `harmonize` ใน config
 
 ## สำหรับเพื่อนในทีม (อ่านก่อน)
+
+เดโมบน AWS: [วิธีใช้ ข้อจำกัดทรัพยากร และวิธีเชื่อม frontend ของทีม](README_demo_usage.md) · [รายละเอียด deployment](README_reference_deployment.md)
 
 **อ่านอะไรก่อน**
 

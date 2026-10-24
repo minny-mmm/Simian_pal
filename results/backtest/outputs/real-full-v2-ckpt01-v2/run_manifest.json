@@ -1,0 +1,102 @@
+{
+  "run_id": "real-full-v2-ckpt01-v2",
+  "mode": "real",
+  "tracks": [
+    "stability",
+    "loo",
+    "walkforward",
+    "audit"
+  ],
+  "status": "completed",
+  "created_utc": "2026-10-24T10:05:05.857145+00:00",
+  "config_path": "backtest\\workspace\\configs\\real-full-v2-ckpt01.yaml",
+  "backtest_config_fingerprint": "cedd01d66ae2df160fd2ed1722c27c07f6f046e93e1bb90332efb9633e89ff7d",
+  "gates": {
+    "jackknife_median_shift_max_scale": 0.5,
+    "bootstrap_median_ci_width_max_scale": 2.0,
+    "no_lookahead_mismatches_max": 0,
+    "baseline_unchanged": true,
+    "protected_paths_unchanged": true,
+    "known_answer_tolerance_sd": 0.75,
+    "device_flag_ratio": 2.0
+  },
+  "gates_fingerprint": "5d704d5edbbe478425c877d7579f50c1e9c49d843ddf289b907e5de253179903",
+  "synthetic_from": null,
+  "code_version": {
+    "git_commit": "d2a68229dff0d4289534b4fcd08bf7df356b12f5",
+    "dirty": false,
+    "files": {
+      "src/reference/__init__.py": "67c975615dc4c8d47b9585ba2704685bdc3308e40d34cf0066ec841b93a3244f",
+      "src/reference/common.py": "317fc8ba1b8427a37b0f708ffcbca354166a818ca587b4f4e2cb589e1c5b96b0",
+      "src/reference/daily.py": "c33d7a0493cd057c2be6d45b6f4b53205a84ea81703858902f7c60e0effd3b35",
+      "src/reference/io.py": "9014de080fff394e85c9b36d6ffa28e6c74a91e41a3776cd0e024c2d1c581c08",
+      "src/reference/model.py": "a759aa5bf89c0fca8343c87e7aede46fc42d9be413f33c350520fd9353435765",
+      "src/reference/output.py": "cf9c3a20aab8cd5bb145e99f57102501898f44f5ba0e577972c1e0cb0116a046",
+      "src/reference/provenance.py": "24c337427495d90ce742a970699279e18ec73020d9b6a67a291a3bed2754f8f1",
+      "tools/audit_reference_provenance.py": "0f446c2d72b99703213ecf1223a85816731eb86ea2cd96ba111b6908d1b0e024",
+      "tools/check_reference_demo.py": "4a9321ecd2e724a82b34d97ac4c2c5c9eced7b56029457705bd8b72b3cee1971",
+      "tools/deploy_reference_demo.py": "fc42217b04b325d5cc3759eadf73836b67266e573e550f1d30449f1eb50a64e4",
+      "tools/extract_reference_features.py": "c4b34a5bb79807f452fb1bb2f35ba29bd8059d89097fe3aa829a424871308446",
+      "tools/prepare_reference_aws.py": "b3abaf23221497e553767be6221ac7bdf0bae716bb43baa6108d3f5717f29bbb",
+      "tools/prepare_reference_training.py": "8a17da21b182fe6074a8caa31d965354fbfa8b4867323f0eff7df3da27fbe0bf",
+      "tools/prepare_reference_validator.py": "11506625e7b350b7f7fe3ae6fd38cd0f2f572b898fe48be526a61dd062aae13c",
+      "tools/reference_baseline.py": "aaf2d6a1823d14830d5e828742c64180f0a9bb385bd384319f809893ace717b2",
+      "tools/reference_demo.py": "213fcde4dd27651d0cc07878d38e85722d82089c02b01dcb2b0ee1214c5ffb91",
+      "tools/reference_demo_review.py": "004c0265404c013e33e7d7a239e5177ec7a052bb8a117eb405e585b56df485fc",
+      "tools/run_real_reference.py": "b4c64c124a3d2eb646735d6f857ed9123e5be048127a33d202163af18a7393a4",
+      "tools/run_reference_aws.py": "548d3cbc2509e452352228feb8cf538632307358fd06dc3a53783000f65e8f67",
+      "tools/sagemaker_fit_reference.py": "2c0e727f6f75757a2a91fd8683e67ebb143ec09da0962c4b6a1de2e7695f91eb"
+    }
+  },
+  "backtest_code": {
+    "backtest/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/aws_compare.py": "5e548fdf6aac1e9e8f62992f9f524a1cb66b97208504b5ea644e97978a12c151",
+    "backtest/config/backtest_config.yaml": "3bf3c11e6772d06d9ed85def6fbadc99294deb0f8e3f1989a6e1f32accdc1a08",
+    "backtest/evaluators/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/evaluators/metrics.py": "36bcf91f82a998f64880007cb10387e5959b60c90d392481392ef35d5e9657b5",
+    "backtest/evaluators/report_builder.py": "10e2f15853c7e5f248866065fe5bbb7ef3b7a3cd082c232ebfe99bf59ce05aa8",
+    "backtest/prepare_symptom.py": "04a567db40b71e12e18831f18f1766c71285449d45053e1f3d0efed56aaa81c5",
+    "backtest/prepare_test.py": "0317b7aad6b05a599fce9701baecb4383db110d8ccc6159ffb8b7b79b5c81730",
+    "backtest/run.py": "d019217be27bfd087fefc1c13725b7c731b71344ab449ac5a7c1047beedc9892",
+    "backtest/runners/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/runners/data_loader.py": "c09140854a0b4123b421d0513b332faaf7a617b16db795ebb6ff6397504c8303",
+    "backtest/runners/reference_backtest.py": "22b6ea1a6920ccc91694c8b6d82c6b68902dd0a0e1fc79587f89ee0217e5975a",
+    "backtest/runners/symptom_cv_backtest.py": "196a57a8c43970dc3b0e9754e04640c5c47679b8e3ed98eff2e051ddb834e1e9",
+    "backtest/runners/temporal_walkforward.py": "b46964ea8944d7e883840c3d31ac69c55902dbf8436f4408dd0d486e6ccec505",
+    "backtest/runners/validation_audit.py": "46732fdf37786da827b09b4123d0232ab3141defa7fb436fcde24f969bf0220a",
+    "backtest/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backtest/tests/test_backtest_suite.py": "38ba4e8edd6d33e2909d0211c634e2aa519d99d17ed79df965cc43e7c8c3c664",
+    "backtest/tests/test_test_unlock.py": "8a0f2dcfbefb2351d351614e3cf9945e5ef54908de146e1209a194c5bf29dbab",
+    "backtest/tests/test_validation_audit.py": "58bae1bfd29e024f865ad12331dd39ac5cb352cc9195bb7025bab87d2021ceab"
+  },
+  "runtime": {
+    "python": "3.12.10",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "pyyaml": "6.0.3"
+  },
+  "inputs": {
+    "baseline": {
+      "path": "D:\\AWS\\Simianpal-refrun\\data\\models\\reference-v1\\real-20261024-full-v2\\checkpoints\\checkpoint-01\\baseline.json",
+      "sha256": "f8b422a825d6bb2c123aa6da65176f7177d87b3db69e21e74740f6355f302149"
+    },
+    "train_bundle": {
+      "path": "D:\\AWS\\Simianpal-refrun\\data\\daily\\reference-v1\\real-20261024-full-v2\\checkpoints\\checkpoint-01\\train",
+      "manifest_sha256": "166a6054d7aeb91c9635b907b33ad18f653677221f185a750bb7e338a2ea07af"
+    }
+  },
+  "unavailable": [
+    {
+      "input": "valid_bundle",
+      "path": "data/daily/reference-v1/real-20261024-full-v2/checkpoints/checkpoint-01/valid",
+      "status": "unavailable"
+    },
+    {
+      "input": "test_bundle",
+      "path": null,
+      "status": "blocked_no_test_features"
+    }
+  ],
+  "overall": "pass_with_unevaluable",
+  "finished_utc": "2026-10-24T10:05:09.650066+00:00"
+}

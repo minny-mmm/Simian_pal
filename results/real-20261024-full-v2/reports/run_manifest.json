@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "data_kind": "real",
+  "is_demo": false,
+  "data_origin": "real",
+  "run_id": "real-20261024-full-v2",
+  "created_utc": "2026-10-24T08:58:06.742716+00:00",
+  "original_pipeline_config_sha256": "85ef718510c1ed678613c59a1e0ac86365aa4b69e5ffffc835b3bdf7f4bb52d4",
+  "pipeline_config_sha256": "62ef5c1615f43ecf51fe0844d57d27f2dd6c57bc98bf1ce0a34c830aac82a7f4",
+  "original_raw_dirs": {
+    "cops": "data/raw/cops",
+    "nhanes": "data/raw/nhanes/2013-2014"
+  },
+  "split_hashes": {
+    "metadata/cops_splits.csv": "7d8611b3cb67351eb983917d928addabe391076315c0e141e57b0a5efb5abe70",
+    "metadata/nhanes_splits.csv": "14f0d224cb13f2acf626f7d68c5addf5fad7f7cc4fc85eedcdc426bd45c6d869",
+    "reports/cops_visit_summary.csv": "f3b821979f20b457ddeb1ab018550c0d651bc0fa843a8adde41a3cb55ed12470"
+  },
+  "source_version": {
+    "git_commit": "70e7db7ac363997d569eb7e760e39ece13305873",
+    "files": {
+      "src/clean/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/clean/run.py": "370db3dd956ad73290e985899f6adc55bafbbd462c8c6c88841068001f01aabb",
+      "src/clean/steps.py": "7e5d41486434825188f632a8d8bcb33689e8f82e958c77a94e20f30d5059b46f",
+      "src/clean/noise_target.py": "a7f54756cc93074ec6755be4a8e8fa6a32f2c1ccf0179c27261cf0c3c9a378da",
+      "src/clean/report.py": "2d75ec0d639182573eca99e803d9c9e85a1cbea72a189f710364c045142c4c03",
+      "src/ingestion/__init__.py": "65c20dc8fa688cea7f3eabc0eb2570733883dc013100c0dd44f19977902884f2",
+      "src/ingestion/base.py": "6bc4e0eb8296ebbbf9b5e6e1c2f89b6b97d198f1acaecc9382949e1d364e49a1",
+      "src/ingestion/cops_reader.py": "5d0fb8ae0a72c954ac523bd2cbe22d603ec5915e0f74e10a55df91adb1f9cf3c",
+      "src/ingestion/nhanes_reader.py": "bb61a01bf9b19d13c945cce8c1dc8cee797cecee1d48b68acef8577f5fa9aa0a",
+      "src/ingestion/unzip_cops.py": "7927bd1492c758520cf2726d1f85789d6d12f4db46ec0020a251d43f0331448a"
+    }
+  },
+  "dependencies": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.5.4",
+      "pandas": "3.0.6",
+      "scipy": "1.18.1",
+      "pyarrow": "26.0.0",
+      "PyYAML": "6.0.3",
+      "s3fs": "2026.9.0"
+    }
+  },
+  "test_policy": "inventory names only; no test signal/QC content opened",
+  "policy": "Only storage routing and baseline run identifier changed; clean/feature/QC thresholds and splits retained."
+}

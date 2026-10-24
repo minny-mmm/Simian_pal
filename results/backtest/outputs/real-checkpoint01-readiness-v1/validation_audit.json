@@ -1,0 +1,199 @@
+{
+  "baseline_sha256": "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de",
+  "artifact_id": "a6918f7e2cd1d86cee68dea927b2c8ed8bab96054b498620170d8d1fcb704996",
+  "baseline_version": "real-cohort-reference-real-20261023-v1-checkpoint-01",
+  "fit_called_during_validation": false,
+  "fixture_fitted": false,
+  "limitations": [
+    "no hourly features: daily metric values cannot be recomputed from hourly rows",
+    "valid people per cohort {'cops': 1, 'nhanes': 1}: verifies pipeline correctness, not performance"
+  ],
+  "null_cases": {
+    "daily_insufficient_all_null": {
+      "n_exercised": 7,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "reference_insufficient_null_distance": {
+      "n_exercised": 4,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "zero_scale_distance_without_z": {
+      "n_exercised": 0,
+      "n_violations": 0,
+      "status": "not_exercised"
+    },
+    "ok_comparison_complete": {
+      "n_exercised": 48,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "csv_null_not_zero": {
+      "n_exercised": 7,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "tremor_zero_requires_windows": {
+      "n_exercised": 0,
+      "n_violations": 0,
+      "status": "not_exercised"
+    }
+  },
+  "previous_day_cases": {
+    "no_previous_day": {
+      "n": 0,
+      "status": "not_exercised"
+    },
+    "previous_day_missing": {
+      "n": 6,
+      "status": "exercised"
+    },
+    "current_day_insufficient_data": {
+      "n": 5,
+      "status": "exercised"
+    },
+    "previous_day_insufficient_data": {
+      "n": 2,
+      "status": "exercised"
+    },
+    "ok": {
+      "n": 20,
+      "status": "exercised"
+    }
+  },
+  "official_reports": {
+    "exact_rows": 33,
+    "roundoff_rows": 0,
+    "mismatch_rows": 0,
+    "max_relative_roundoff": 0.0,
+    "n_valid_excluded": 27
+  },
+  "float_parse_check": {
+    "n_values": 26,
+    "n_not_round_trip": 20,
+    "max_relative_difference": 4.6324077381355536e-15
+  },
+  "sha_after": "cb844f813f2adadb4fcb84dee4beaeaf60dd7ec3b79fe2df02ffc7226da760de",
+  "categories": {
+    "baseline_lock": {
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "hash_chain": {
+      "status": "pass",
+      "n_checked": 9,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "reference_formulas": {
+      "status": "pass",
+      "n_checked": 54,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "distances": {
+      "status": "pass",
+      "n_checked": 660,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "null_handling": {
+      "status": "pass",
+      "n_checked": 66,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "previous_day": {
+      "status": "pass",
+      "n_checked": 132,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "coverage": {
+      "status": "pass",
+      "n_checked": 381,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "official_reports": {
+      "status": "pass",
+      "n_checked": 59,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "test_lock": {
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    }
+  },
+  "category_table": [
+    {
+      "category": "baseline_lock",
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0
+    },
+    {
+      "category": "hash_chain",
+      "status": "pass",
+      "n_checked": 9,
+      "n_failed": 0
+    },
+    {
+      "category": "reference_formulas",
+      "status": "pass",
+      "n_checked": 54,
+      "n_failed": 0
+    },
+    {
+      "category": "distances",
+      "status": "pass",
+      "n_checked": 660,
+      "n_failed": 0
+    },
+    {
+      "category": "null_handling",
+      "status": "pass",
+      "n_checked": 66,
+      "n_failed": 0
+    },
+    {
+      "category": "previous_day",
+      "status": "pass",
+      "n_checked": 132,
+      "n_failed": 0
+    },
+    {
+      "category": "coverage",
+      "status": "pass",
+      "n_checked": 381,
+      "n_failed": 0
+    },
+    {
+      "category": "official_reports",
+      "status": "pass",
+      "n_checked": 59,
+      "n_failed": 0
+    },
+    {
+      "category": "test_lock",
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0
+    }
+  ]
+}

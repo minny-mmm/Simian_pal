@@ -1,0 +1,178 @@
+{
+ "additionalIdentifiers": [
+  [
+   "/properties/AccountAssociationId"
+  ]
+ ],
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/ConnectorDestinationId",
+  "/properties/GeneralAuthorization"
+ ],
+ "definitions": {
+  "GeneralAuthorization": {
+   "additionalProperties": false,
+   "description": "The General Authorization reference by authorization material name.",
+   "properties": {
+    "AuthMaterialName": {
+     "description": "The name of the authorization material.",
+     "maxLength": 100,
+     "minLength": 1,
+     "pattern": "^[a-zA-Z0-9=_+/-]+$",
+     "type": "string"
+    }
+   },
+   "type": "object"
+  },
+  "Tag": {
+   "additionalProperties": false,
+   "description": "A key-value pair to associate with the account association.",
+   "properties": {
+    "Key": {
+     "description": "The tag's key.",
+     "maxLength": 128,
+     "minLength": 1,
+     "type": "string"
+    },
+    "Value": {
+     "description": "The tag's value.",
+     "maxLength": 256,
+     "minLength": 0,
+     "type": "string"
+    }
+   },
+   "required": [
+    "Key",
+    "Value"
+   ],
+   "type": "object"
+  }
+ },
+ "description": "Resource type definition for AWS::IoTManagedIntegrations::AccountAssociation. An account association links a managed integrations connector destination to a third-party (cloud-to-cloud) account so that managed things can be discovered and controlled.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "iotmanagedintegrations:CreateAccountAssociation",
+    "iotmanagedintegrations:GetAccountAssociation",
+    "iotmanagedintegrations:TagResource",
+    "iotmanagedintegrations:ListTagsForResource",
+    "secretsmanager:GetSecretValue"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "iotmanagedintegrations:DeleteAccountAssociation",
+    "iotmanagedintegrations:GetAccountAssociation",
+    "iotmanagedintegrations:ListTagsForResource",
+    "secretsmanager:GetSecretValue"
+   ]
+  },
+  "list": {
+   "permissions": [
+    "iotmanagedintegrations:ListAccountAssociations"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "iotmanagedintegrations:GetAccountAssociation",
+    "iotmanagedintegrations:ListTagsForResource",
+    "secretsmanager:GetSecretValue"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "iotmanagedintegrations:UpdateAccountAssociation",
+    "iotmanagedintegrations:GetAccountAssociation",
+    "iotmanagedintegrations:TagResource",
+    "iotmanagedintegrations:UntagResource",
+    "iotmanagedintegrations:ListTagsForResource",
+    "secretsmanager:GetSecretValue"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/Arn"
+ ],
+ "properties": {
+  "AccountAssociationId": {
+   "description": "The unique identifier of the account association.",
+   "maxLength": 64,
+   "minLength": 1,
+   "pattern": "^[0-9a-zA-Z]+$",
+   "type": "string"
+  },
+  "Arn": {
+   "description": "The Amazon Resource Name (ARN) of the account association.",
+   "maxLength": 1011,
+   "minLength": 67,
+   "pattern": "^arn:[a-z-]+:iotmanagedintegrations:[0-9a-zA-Z-]+:[0-9]+:account-association/[0-9a-zA-Z]+$",
+   "type": "string"
+  },
+  "AssociationState": {
+   "description": "The current state of the account association.",
+   "enum": [
+    "ASSOCIATION_IN_PROGRESS",
+    "ASSOCIATION_FAILED",
+    "ASSOCIATION_SUCCEEDED",
+    "ASSOCIATION_DELETING",
+    "REFRESH_TOKEN_EXPIRED"
+   ],
+   "type": "string"
+  },
+  "ConnectorDestinationId": {
+   "description": "The identifier of the connector destination associated with this account association.",
+   "maxLength": 64,
+   "minLength": 1,
+   "pattern": "^[A-Za-z0-9-_]+$",
+   "type": "string"
+  },
+  "Description": {
+   "description": "A description of the account association.",
+   "maxLength": 4096,
+   "minLength": 1,
+   "pattern": "^[A-Za-z0-9-_ ]+$",
+   "type": "string"
+  },
+  "GeneralAuthorization": {
+   "$ref": "#/definitions/GeneralAuthorization"
+  },
+  "Name": {
+   "description": "The name of the account association.",
+   "maxLength": 128,
+   "minLength": 1,
+   "pattern": "^[A-Za-z0-9-_ ]+$",
+   "type": "string"
+  },
+  "Tags": {
+   "description": "A set of key/value pairs that are used to manage the account association.",
+   "insertionOrder": false,
+   "items": {
+    "$ref": "#/definitions/Tag"
+   },
+   "maxItems": 50,
+   "type": "array",
+   "uniqueItems": true
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/Arn",
+  "/properties/AccountAssociationId",
+  "/properties/AssociationState"
+ ],
+ "required": [
+  "ConnectorDestinationId"
+ ],
+ "tagging": {
+  "cloudFormationSystemTags": true,
+  "permissions": [
+   "iotmanagedintegrations:TagResource",
+   "iotmanagedintegrations:UntagResource",
+   "iotmanagedintegrations:ListTagsForResource"
+  ],
+  "tagOnCreate": true,
+  "tagProperty": "/properties/Tags",
+  "tagUpdatable": true,
+  "taggable": true
+ },
+ "typeName": "AWS::IoTManagedIntegrations::AccountAssociation"
+}

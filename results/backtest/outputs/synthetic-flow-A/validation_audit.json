@@ -1,0 +1,197 @@
+{
+  "baseline_sha256": "d56591cdbe26b91e574b968e7d36a645f7d707fcd402cf0e356bc0a6ebfe1317",
+  "artifact_id": "a17f1f21c973a4dd773cdc78cc5b443cd1cf29efe9cfbae0906e19aaa9224dca",
+  "baseline_version": "demo-reference-baseline-v1",
+  "fit_called_during_validation": false,
+  "fixture_fitted": true,
+  "limitations": [],
+  "null_cases": {
+    "daily_insufficient_all_null": {
+      "n_exercised": 26,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "reference_insufficient_null_distance": {
+      "n_exercised": 70,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "zero_scale_distance_without_z": {
+      "n_exercised": 72,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "ok_comparison_complete": {
+      "n_exercised": 286,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "csv_null_not_zero": {
+      "n_exercised": 26,
+      "n_violations": 0,
+      "status": "pass"
+    },
+    "tremor_zero_requires_windows": {
+      "n_exercised": 36,
+      "n_violations": 0,
+      "status": "pass"
+    }
+  },
+  "previous_day_cases": {
+    "no_previous_day": {
+      "n": 24,
+      "status": "exercised"
+    },
+    "previous_day_missing": {
+      "n": 24,
+      "status": "exercised"
+    },
+    "current_day_insufficient_data": {
+      "n": 26,
+      "status": "exercised"
+    },
+    "previous_day_insufficient_data": {
+      "n": 2,
+      "status": "exercised"
+    },
+    "ok": {
+      "n": 164,
+      "status": "exercised"
+    }
+  },
+  "official_reports": {
+    "exact_rows": 0,
+    "roundoff_rows": 0,
+    "mismatch_rows": 0,
+    "max_relative_roundoff": 0.0
+  },
+  "float_parse_check": {
+    "n_values": 214,
+    "n_not_round_trip": 116,
+    "max_relative_difference": 3.2483761651326383e-15
+  },
+  "sha_after": "d56591cdbe26b91e574b968e7d36a645f7d707fcd402cf0e356bc0a6ebfe1317",
+  "categories": {
+    "baseline_lock": {
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "hash_chain": {
+      "status": "pass",
+      "n_checked": 9,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "reference_formulas": {
+      "status": "pass",
+      "n_checked": 54,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "distances": {
+      "status": "pass",
+      "n_checked": 4800,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "null_handling": {
+      "status": "pass",
+      "n_checked": 516,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "previous_day": {
+      "status": "pass",
+      "n_checked": 960,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "coverage": {
+      "status": "pass",
+      "n_checked": 2631,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    },
+    "official_reports": {
+      "status": "not_evaluable",
+      "n_checked": 0,
+      "n_failed": 0,
+      "examples": [],
+      "notes": [
+        "official analysis not available"
+      ]
+    },
+    "test_lock": {
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0,
+      "examples": [],
+      "notes": []
+    }
+  },
+  "category_table": [
+    {
+      "category": "baseline_lock",
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0
+    },
+    {
+      "category": "hash_chain",
+      "status": "pass",
+      "n_checked": 9,
+      "n_failed": 0
+    },
+    {
+      "category": "reference_formulas",
+      "status": "pass",
+      "n_checked": 54,
+      "n_failed": 0
+    },
+    {
+      "category": "distances",
+      "status": "pass",
+      "n_checked": 4800,
+      "n_failed": 0
+    },
+    {
+      "category": "null_handling",
+      "status": "pass",
+      "n_checked": 516,
+      "n_failed": 0
+    },
+    {
+      "category": "previous_day",
+      "status": "pass",
+      "n_checked": 960,
+      "n_failed": 0
+    },
+    {
+      "category": "coverage",
+      "status": "pass",
+      "n_checked": 2631,
+      "n_failed": 0
+    },
+    {
+      "category": "official_reports",
+      "status": "not_evaluable",
+      "n_checked": 0,
+      "n_failed": 0
+    },
+    {
+      "category": "test_lock",
+      "status": "pass",
+      "n_checked": 3,
+      "n_failed": 0
+    }
+  ]
+}

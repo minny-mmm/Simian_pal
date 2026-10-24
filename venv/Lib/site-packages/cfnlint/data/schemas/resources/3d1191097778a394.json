@@ -1,0 +1,126 @@
+{
+ "additionalIdentifiers": [
+  [
+   "/properties/Namespace",
+   "/properties/AssignmentName"
+  ]
+ ],
+ "additionalProperties": false,
+ "createOnlyProperties": [
+  "/properties/AssignmentName",
+  "/properties/Namespace"
+ ],
+ "description": "Resource Type definition for AWS::QuickSight::Assignment, which manages an Amazon QuickSight IAM policy assignment that attaches an IAM policy to specified QuickSight users or groups within a namespace.",
+ "handlers": {
+  "create": {
+   "permissions": [
+    "quicksight:CreateIAMPolicyAssignment",
+    "quicksight:DescribeIAMPolicyAssignment"
+   ]
+  },
+  "delete": {
+   "permissions": [
+    "quicksight:DeleteIAMPolicyAssignment",
+    "quicksight:DescribeIAMPolicyAssignment"
+   ]
+  },
+  "list": {
+   "handlerSchema": {
+    "properties": {
+     "Namespace": {
+      "maxLength": 64,
+      "pattern": "^[a-zA-Z0-9._-]*$",
+      "type": "string"
+     }
+    },
+    "required": [
+     "Namespace"
+    ]
+   },
+   "permissions": [
+    "quicksight:ListIAMPolicyAssignments"
+   ]
+  },
+  "read": {
+   "permissions": [
+    "quicksight:DescribeIAMPolicyAssignment"
+   ]
+  },
+  "update": {
+   "permissions": [
+    "quicksight:UpdateIAMPolicyAssignment",
+    "quicksight:DescribeIAMPolicyAssignment"
+   ]
+  }
+ },
+ "primaryIdentifier": [
+  "/properties/Arn"
+ ],
+ "properties": {
+  "Arn": {
+   "description": "The Amazon Resource Name (ARN) of the IAM policy assignment. This is a synthesized identifier composed of the namespace and assignment name.",
+   "pattern": "^arn:[a-z0-9-]+:quicksight:[a-z0-9-]+:[0-9]{12}:assignment/.+$",
+   "type": "string"
+  },
+  "AssignmentId": {
+   "description": "The ID for the IAM policy assignment.",
+   "type": "string"
+  },
+  "AssignmentName": {
+   "description": "The name of the assignment, also called a rule. The name must be unique within the AWS account.",
+   "minLength": 1,
+   "pattern": "(?=^.{2,256}$)(?!.*\\s)[0-9a-zA-Z-_.:=+@]*$",
+   "type": "string"
+  },
+  "AssignmentStatus": {
+   "description": "The status of the assignment.",
+   "enum": [
+    "ENABLED",
+    "DRAFT",
+    "DISABLED"
+   ],
+   "type": "string"
+  },
+  "Identities": {
+   "additionalProperties": false,
+   "description": "The QuickSight users, groups, or both that you want to assign the policy to. This maps identity type to a list of identity names.",
+   "patternProperties": {
+    "[\\u0020-\\u00FF]+": {
+     "insertionOrder": false,
+     "items": {
+      "type": "string"
+     },
+     "type": "array"
+    }
+   },
+   "type": "object"
+  },
+  "Namespace": {
+   "description": "The namespace that contains the assignment.",
+   "maxLength": 64,
+   "minLength": 0,
+   "pattern": "^[a-zA-Z0-9._-]*$",
+   "type": "string"
+  },
+  "PolicyArn": {
+   "description": "The ARN for the IAM policy to apply to the QuickSight users and groups specified in this assignment.",
+   "type": "string"
+  }
+ },
+ "readOnlyProperties": [
+  "/properties/Arn",
+  "/properties/AssignmentId"
+ ],
+ "required": [
+  "AssignmentName",
+  "AssignmentStatus",
+  "Namespace"
+ ],
+ "tagging": {
+  "taggable": false
+ },
+ "typeName": "AWS::QuickSight::Assignment",
+ "writeOnlyProperties": [
+  "/properties/Identities"
+ ]
+}

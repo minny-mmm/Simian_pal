@@ -1,0 +1,181 @@
+{
+  "subject_id": "COPS-55",
+  "dataset": "cops",
+  "split": "train",
+  "wrist": "left",
+  "fs_native": 100,
+  "fs_out": 50,
+  "n_files": 169,
+  "n_unsorted_files": 0,
+  "n_duplicates": 0,
+  "n_interpolated": 7,
+  "n_long_gaps": 0,
+  "n_short_runs_dropped": 0,
+  "cal_points": 22214,
+  "cal_points_outlier": 0,
+  "cal_error_before_mg": 4.091098257664226,
+  "cal_error_after_mg": 2.7761400939152825,
+  "cal_status": "ok",
+  "cal_offset_x": 0.0018032997879732333,
+  "cal_offset_y": 0.0020290799770783774,
+  "cal_offset_z": -0.006652817661400315,
+  "cal_scale_x": 0.9978270390491991,
+  "cal_scale_y": 0.9999481270363837,
+  "cal_scale_z": 1.0032127185101378,
+  "pct_impossible_gravity": 0.0,
+  "noise_floor_before_mg": 5.265935538392646,
+  "noise_floor_after_mg": 5.381731830759985,
+  "noise_added_mg": 0.0,
+  "noise_target_mg": null,
+  "noise_source": "nonwear",
+  "noise_windows": 720,
+  "noise_floor_before_axes_mg": [
+    4.900156990106744,
+    4.93913261578914,
+    5.961311772193167
+  ],
+  "noise_floor_after_axes_mg": [
+    5.029423005945098,
+    5.066872500503291,
+    6.070475154107275
+  ],
+  "noise_added_axes_mg": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "noise_target_axes_mg": null,
+  "sleep_diary_hours": 168,
+  "sleep_accuracy": 0.911,
+  "sleep_sensitivity": 0.804,
+  "sleep_specificity": 0.957,
+  "sleep_kappa": 0.783,
+  "sleep_nights": 7,
+  "sleep_hours_per_night": 6.54,
+  "hours_total": 168.0,
+  "hours_recorded": 168.0,
+  "hours_missing": 0.0,
+  "pct_clip": 0.0,
+  "pct_abnormal": 0.01,
+  "pct_ism": 28.93,
+  "pct_nonwear": 1.19,
+  "pct_sleep": 27.28,
+  "pct_visit": 48.23,
+  "pct_awake_ism": 10.49,
+  "hours_valid": 50.49,
+  "n_days": 8,
+  "valid_days": 3,
+  "included": true,
+  "status": "ok",
+  "runtime_s": 154.9,
+  "days": [
+    {
+      "day": 0,
+      "recorded_h": 9.03,
+      "valid_h": 0.0,
+      "visit": "inpatient",
+      "valid": false
+    },
+    {
+      "day": 1,
+      "recorded_h": 24.0,
+      "valid_h": 0.0,
+      "visit": "inpatient",
+      "valid": false
+    },
+    {
+      "day": 2,
+      "recorded_h": 24.0,
+      "valid_h": 0.0,
+      "visit": "inpatient",
+      "valid": false
+    },
+    {
+      "day": 3,
+      "recorded_h": 24.0,
+      "valid_h": 0.0,
+      "visit": "mixed",
+      "valid": false
+    },
+    {
+      "day": 4,
+      "recorded_h": 24.0,
+      "valid_h": 16.95,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 5,
+      "recorded_h": 24.0,
+      "valid_h": 16.81,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 6,
+      "recorded_h": 24.0,
+      "valid_h": 16.73,
+      "visit": "outpatient",
+      "valid": true
+    },
+    {
+      "day": 7,
+      "recorded_h": 14.97,
+      "valid_h": 9.23,
+      "visit": "outpatient",
+      "valid": false
+    }
+  ],
+  "nights": [
+    {
+      "window": 1,
+      "start_s": 79930,
+      "end_s": 111145,
+      "hours": 8.67,
+      "threshold_deg": 0.5
+    },
+    {
+      "window": 2,
+      "start_s": 163710,
+      "end_s": 186585,
+      "hours": 6.35,
+      "threshold_deg": 0.371
+    },
+    {
+      "window": 3,
+      "start_s": 252350,
+      "end_s": 269095,
+      "hours": 4.65,
+      "threshold_deg": 0.394
+    },
+    {
+      "window": 4,
+      "start_s": 332890,
+      "end_s": 364715,
+      "hours": 8.84,
+      "threshold_deg": 0.486
+    },
+    {
+      "window": 5,
+      "start_s": 427750,
+      "end_s": 447520,
+      "hours": 5.49,
+      "threshold_deg": 0.5
+    },
+    {
+      "window": 6,
+      "start_s": 513070,
+      "end_s": 534390,
+      "hours": 5.92,
+      "threshold_deg": 0.409
+    },
+    {
+      "window": 7,
+      "start_s": 601505,
+      "end_s": 622715,
+      "hours": 5.89,
+      "threshold_deg": 0.5
+    }
+  ],
+  "noise_target_source": null
+}
