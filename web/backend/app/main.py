@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 from app import auth
-from app.router import aleart, assessment, dashboard, device, doctor, name_patient, report, appointment, me
+from app.router import ai, aleart, assessment, dashboard, device, doctor, name_patient, report, appointment, me
 
 
 
@@ -20,6 +20,7 @@ app.include_router(doctor.router)
 app.include_router(report.router)
 app.include_router(appointment.router)
 app.include_router(me.router)
+app.include_router(ai.router)            # ผล AI จากเดโมของทีม (app/reference.py)
 
 # อนุญาตหลายโดเมนได้ คั่นด้วย , เช่น "http://localhost:5173,https://main.xxxx.amplifyapp.com"
 ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(",")

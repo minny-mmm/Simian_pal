@@ -4,12 +4,15 @@
   AWS_PROFILE=minny python deploy/deploy_lambda.py            # build + role + lambda + API Gateway
   AWS_PROFILE=minny python deploy/deploy_lambda.py --stage build   # แค่ build zip (ไม่แตะ AWS)
   AWS_PROFILE=minny python deploy/deploy_lambda.py --stage api     # แค่ API Gateway (Lambda ต้องมีแล้ว)
-  AWS_PROFILE=minny python deploy/deploy_lambda.py --stage config  # แค่ env ของ Lambda (Cognito + CORS)
+  AWS_PROFILE=minny python deploy/deploy_lambda.py --stage config  # แค่สิทธิ์ role + env ของ Lambda (Cognito + CORS + เดโม AI)
 
 URL ของ API บันทึกไว้ที่ deploy/deployment.json (หน้าเว็บใช้ค่านี้ใน API_AWS ของ docter.html)
 
 ต้องมี python3.12 ในเครื่อง (ใช้ pip ของมันดึง package แบบ Linux/x86_64 มาใส่ zip)
 ค่า Cognito อ่านจาก cognito.env (สร้างโดย deploy/setup_cognito.py)
+เดโม AI ของทีม (app/reference.py): หา URL จาก API Gateway ชื่อ pd-reference-demo-v1 + ARN ของ secret รหัสเข้า
+  ทุกครั้งที่ deploy/config (เดโม stop แล้ว resume จะได้ URL ใหม่ -> รัน --stage config อีกครั้ง)
+  แค่อ่าน ไม่แก้ resource ของเดโม · รหัสไม่ถูกใส่ใน env (Lambda อ่านจาก Secrets Manager เอง)
 """
 import argparse
 import io
@@ -34,6 +37,8 @@ HERE = Path(__file__).resolve().parents[1]          # web/backend
 BUILD = HERE / ".build"
 ZIP = BUILD / f"{FUNCTION}.zip"
 PYTHON312 = os.environ.get("PYTHON312", "python3.12")
+REFERENCE_API = "pd-reference-demo-v1"          # API Gateway ของเดโม AI (ของเพื่อน ห้ามแก้)
+REFERENCE_SECRET = "pd-reference-demo-v1-login"  # secret รหัสเข้าเดโม
 
 
 # ---------------------------------------------------------------- 1. build
@@ -63,13 +68,15 @@ def build():
 
 # ---------------------------------------------------------------- 2. IAM role
 def ensure_role():
-    """role ของ Lambda: อ่าน/เขียนตาราง pd_* (เฉพาะคำสั่งที่โค้ดใช้) + เขียน log ของ function นี้ ไม่มีสิทธิ์อื่น"""
+    """role ของ Lambda: อ่าน/เขียนตาราง pd_* (เฉพาะคำสั่งที่โค้ดใช้) + เขียน log ของ function นี้
+    + อ่านรหัสเข้าเดโม AI (secret เดียว) ไม่มีสิทธิ์อื่น"""
     iam = boto3.client("iam")
     account = boto3.client("sts").get_caller_identity()["Account"]
     trust = {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"},
                                                       "Action": "sts:AssumeRole"}]}
     table = f"arn:aws:dynamodb:{REGION}:{account}:table/pd_*"
     log_group = f"arn:aws:logs:{REGION}:{account}:log-group:/aws/lambda/{FUNCTION}"
+    secret = f"arn:aws:secretsmanager:{REGION}:{account}:secret:{REFERENCE_SECRET}-*"   # -* = ท้าย ARN ที่ AWS สุ่มให้
     policy = {"Version": "2012-10-17", "Statement": [
         {"Sid": "PdTables", "Effect": "Allow",
          "Action": ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:Query"],
@@ -77,6 +84,8 @@ def ensure_role():
         {"Sid": "Logs", "Effect": "Allow", "Action": "logs:CreateLogGroup", "Resource": log_group},
         {"Sid": "LogEvents", "Effect": "Allow", "Action": ["logs:CreateLogStream", "logs:PutLogEvents"],
          "Resource": log_group + ":*"},
+        {"Sid": "ReferenceDemoToken", "Effect": "Allow", "Action": "secretsmanager:GetSecretValue",
+         "Resource": secret},
     ]}
     try:
         arn = iam.get_role(RoleName=ROLE)["Role"]["Arn"]
@@ -106,21 +115,38 @@ def cognito_env():
     return env
 
 
+def reference_env():
+    """URL + ARN ของ secret ของเดโม AI (อ่านอย่างเดียว) ไม่เจอ = ไม่ตั้ง หน้าเว็บจะขึ้นว่ายังไม่มีผล AI"""
+    gw = boto3.client("apigatewayv2", region_name=REGION)
+    api = next((a for a in gw.get_apis(MaxResults="100")["Items"] if a["Name"] == REFERENCE_API), None)
+    try:
+        arn = boto3.client("secretsmanager", region_name=REGION).describe_secret(SecretId=REFERENCE_SECRET)["ARN"]
+    except Exception:
+        arn = None
+    if not (api and arn):
+        print(f"ไม่พบ API หรือ secret ของเดโม AI ({REFERENCE_API}) — ไม่ตั้งค่าเดโม AI")
+        return {}
+    return {"REFERENCE_API_BASE_URL": api["ApiEndpoint"], "REFERENCE_SECRET_ID": arn}
+
+
 def lambda_env():
-    """env ของ Lambda = ค่า Cognito + โดเมนเว็บที่อนุญาต CORS (web_url ใน deployment.json จาก deploy_frontend.py)"""
+    """env ของ Lambda = ค่า Cognito + โดเมนเว็บที่อนุญาต CORS (web_url ใน deployment.json จาก deploy_frontend.py)
+    + ที่อยู่เดโม AI"""
     env = cognito_env()
     dep = HERE / "deploy" / "deployment.json"
     web_url = json.loads(dep.read_text()).get("web_url") if dep.exists() else None
     if web_url:
         env["CORS_ORIGINS"] = web_url
+    env.update(reference_env())
     return env
 
 
 def update_config():
     lam = boto3.client("lambda", region_name=REGION)
-    lam.update_function_configuration(FunctionName=FUNCTION, Environment={"Variables": lambda_env()})
+    env = lambda_env()
+    lam.update_function_configuration(FunctionName=FUNCTION, Environment={"Variables": env})
     lam.get_waiter("function_updated_v2").wait(FunctionName=FUNCTION)
-    print(f"อัปเดตแล้ว env ของ Lambda {FUNCTION}: {', '.join(lambda_env())}")
+    print(f"อัปเดตแล้ว env ของ Lambda {FUNCTION}: {', '.join(env)}")
 
 
 def deploy_function(role_arn, zip_path):
@@ -201,4 +227,5 @@ if __name__ == "__main__":
     if a.stage in ("all", "api"):
         ensure_api()
     if a.stage == "config":
+        ensure_role()   # สิทธิ์ใหม่ใน policy (เช่น อ่าน secret เดโม AI) มีผลโดยไม่ต้อง build ใหม่
         update_config()

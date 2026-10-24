@@ -40,6 +40,10 @@ amp = boto3.client("amplify", region_name=REGION)
 
 
 def site_zip():
+    # กันอัปโหลดหน้าที่ยังชี้ไป localhost: หน้าต้องมี URL ของ API Gateway (api_url ใน deployment.json)
+    api_url = json.loads(DEPLOYMENT.read_text()).get("api_url") if DEPLOYMENT.exists() else None
+    if not api_url or api_url not in PAGE.read_text():
+        sys.exit(f"docter.html ไม่มี API_AWS = {api_url} (รัน deploy_lambda.py ก่อน แล้วใส่ URL นี้ใน API_AWS) ยังไม่ได้อัปโหลด")
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
         z.write(PAGE, "docter.html")

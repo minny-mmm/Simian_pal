@@ -135,7 +135,7 @@ select.pill{border:0;font:inherit;font-size:12px;cursor:pointer;background:var(-
  <div class="flex sp wrap"><h1>การประเมินโดยแพทย์ <span class="mute sm">(Clinical Assessment)</span></h1><select class="sel" id="cl-pick" aria-label="เลือกผู้ป่วย"></select></div>
  <div class="sm" id="cl-err" style="color:var(--bad);margin-bottom:8px"></div>
  <div class="flex" style="margin-bottom:12px"><div class="av"></div><b id="cl-name">HN — &nbsp;ชื่อ-นามสกุล</b></div>
- <div class="seg" id="cl-type" style="max-width:680px;margin-bottom:16px"><span class="on" data-type="MDS-UPDRS">MDS-UPDRS (Part III)</span><span data-type="MoCA">MoCA</span><span data-type="CDR">CDR</span><span data-type="UPDRS-III-OFF">UPDRS III (OFF)</span></div>
+ <div class="seg" id="cl-type" style="max-width:680px;margin-bottom:16px"><span class="on" data-type="MDS-UPDRS">MDS-UPDRS (Part III)</span><span data-type="MoCA">MoCA</span><span data-type="CDR">CDR</span><span data-type="UPDRS-III-OFF" hidden>UPDRS III (OFF)</span></div><!-- UPDRS III (OFF) ซ่อนไว้: ยังไม่มีผู้ป่วยคนไหนมีข้อมูล ลบ hidden เพื่อแสดง -->
  <div class="g" style="grid-template-columns:1fr 2fr">
   <div class="card"><b id="cl-title">MDS-UPDRS III</b><div class="big" style="font-size:38px;margin:12px 0" id="cl-score">—</div><div class="sm mute" id="cl-date">วันที่ประเมิน —</div></div>
   <div class="card"><b>รายละเอียดคะแนน</b><table style="margin-top:8px" id="cl-items"><tr><th>หัวข้อ</th><th>คะแนน</th></tr><tr><td>อาการสั่นขณะพัก (Rest tremor)</td><td>—</td></tr><tr><td>การเคลื่อนไหวช้า (Bradykinesia)</td><td>—</td></tr><tr><td>ความแข็งเกร็ง (Rigidity)</td><td>—</td></tr><tr><td>การทรงตัว (Postural stability)</td><td>—</td></tr><tr><td>การเดิน (Gait)</td><td>—</td></tr></table></div></div>
@@ -303,7 +303,16 @@ $$('.sel').filter(e=>e.textContent.includes('📅')).forEach(el=>{
 });
 document.addEventListener('click',e=>{if(!e.target.closest('.dr'))$$('.dr.open').forEach(x=>x.classList.remove('open'))});
 // ===== เชื่อม backend (web/backend) =====
-const API='http://localhost:8000';  // ตอนขึ้น Lambda เปลี่ยนเป็น URL ของ API Gateway
+// API ที่ใช้: เว็บที่ deploy แล้ว = API Gateway บน AWS · เปิดจากเครื่องตัวเอง = backend ที่รันเอง (localhost:8000)
+// ทดสอบหน้าเว็บในเครื่องกับ API บน AWS: เปิด docter.html?api=aws (จำไว้ทั้งแท็บ) · กลับมาใช้ของในเครื่อง: ?api=local
+const API_AWS='https://y0axwl0nxb.execute-api.ap-southeast-1.amazonaws.com';   // จาก web/backend/deploy/deployment.json
+const API=(()=>{
+  const q=new URLSearchParams(location.search).get('api');
+  try{if(q)sessionStorage.setItem('pd_api',q)}catch(_){}
+  let pick=q;try{pick=pick||sessionStorage.getItem('pd_api')}catch(_){}
+  const local=['localhost','127.0.0.1'].includes(location.hostname);
+  return local&&pick!=='aws'?'http://localhost:8000':API_AWS;
+})();
 // ===== Login: Cognito หน้า login สำเร็จรูป (Hosted UI) + PKCE · โหมดมาจาก backend ที่ /api/auth/config =====
 // dev = ไม่ต้อง login (ทดสอบในเครื่อง) · cognito = ทุก request ต้องแนบ ID token
 const AUTH={mode:null,cfg:null,token:null};

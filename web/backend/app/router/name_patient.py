@@ -87,7 +87,7 @@ class NewPatient(BaseModel):
     """หน้าตาของข้อมูลที่ฟอร์ม "เพิ่มผู้ป่วย" ต้องส่งมา"""
     patient_id: str = Field(min_length=1, examples=["MG-011"])
     hn: str = Field(min_length=1, examples=["HN-000011"])
-    display_name: str = Field(min_length=1, examples=["นาย ทดสอบ ค.***"])
+    display_name: str = Field(min_length=1, examples=["นาย สรวิทธิ์ ค.***"])
     sex: Literal["M", "F"]
     birth_year: int = Field(ge=1900, le=2026)
     status: Literal["PD", "สงสัย PD", "ปกติ"] = "PD"
