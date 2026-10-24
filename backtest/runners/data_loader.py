@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from src.reference.common import ROOT, fingerprint, load_config, sha256
+from src.reference.common import ROOT, fingerprint, load_config, sha256, write_json
 from src.reference.daily import aggregate_daily
 from src.reference.io import load_bundle, write_bundle
 from src.reference.model import load_reference
@@ -127,13 +127,34 @@ def build_synthetic(bcfg, workdir):
         hourly.loc[rows, 'enmo_median'] += t['shift_value']
     for split in ['valid', 'test']:
         _write_split_bundle(bundles[split], hourly, roster, split, scfg['days'], cfg, provenance)
+    # Persist the fixture so a later run can reuse the SAME baseline file (e.g. a separate test-unlock run).
+    hourly.to_csv(workdir / 'hourly.csv', index=False)
+    roster.to_csv(workdir / 'roster.csv', index=False)
+    write_json(workdir / 'fixture.json', dict(truth=truth, days=scfg['days'], provenance=provenance))
+    return _synthetic_inputs(workdir, hourly, roster, truth, scfg['days'], provenance)
+
+
+def load_synthetic(workdir):
+    """Reload a synthetic fixture written by build_synthetic: no rebuild and no refit, so the baseline SHA is kept."""
+    workdir = Path(workdir)
+    if not (workdir / 'fixture.json').exists():
+        raise FileNotFoundError(f'No synthetic fixture at {workdir}; run the source run first')
+    meta = json.loads((workdir / 'fixture.json').read_text(encoding='utf-8'))
+    return _synthetic_inputs(workdir, pd.read_csv(workdir / 'hourly.csv'), pd.read_csv(workdir / 'roster.csv'),
+                             meta['truth'], meta['days'], meta['provenance'])
+
+
+def _synthetic_inputs(workdir, hourly, roster, truth, days, provenance):
+    bundles = {s: workdir / 'bundles' / s for s in ['train', 'valid', 'test']}
+    baseline = workdir / 'model/baseline.json'
+    artifact = load_reference(baseline)
     train_daily, *_ = load_bundle(bundles['train'])
     valid_daily, *_ = load_bundle(bundles['valid'])
-    expected = {(r['dataset'], r['subject_id'], r['day']) for r in _expected_days(roster, 'valid', scfg['days'])}
+    expected = {(r['dataset'], r['subject_id'], r['day']) for r in _expected_days(roster, 'valid', days)}
     return dict(mode='synthetic', artifact=artifact, baseline_path=baseline, cfg=artifact['config'],
                 train_daily=train_daily, valid_daily=valid_daily, test_bundle=bundles['test'], test_plan=None,
                 hourly={s: hourly[hourly.split.eq(s)].reset_index(drop=True) for s in ['train', 'valid']},
-                roster=roster, provenance=provenance, truth=truth, days=scfg['days'],
+                roster=roster, provenance=provenance, truth=truth, days=days,
                 sources=_sources(baseline, {s: bundles[s] for s in ['train', 'valid']}), unavailable=[],
                 bundles={s: bundles[s] for s in ['train', 'valid']}, official={}, expected_days={'valid': expected},
                 # The fixture baseline is fitted while building inputs; validation itself never fits.
@@ -147,8 +168,14 @@ PATH_KEYS = ['train_bundle', 'valid_bundle', 'baseline', 'test_plan', 'test_bund
 
 
 def real_paths(bcfg):
+    """checkpoint: null selects the full-run layout (no checkpoints/<name>/), where fit writes the test plan."""
     r = bcfg['real']
-    return {k: (str(r[k]).format(run_id=r['run_id'], checkpoint=r['checkpoint']) if r.get(k) else None) for k in PATH_KEYS}
+
+    def resolve(template):
+        if not r.get('checkpoint'):
+            template = template.replace('/checkpoints/{checkpoint}', '')
+        return template.format(run_id=r['run_id'], checkpoint=r.get('checkpoint'))
+    return {k: (resolve(str(r[k])) if r.get(k) else None) for k in PATH_KEYS}
 
 
 class BaselineNotApproved(ValueError):
@@ -195,7 +222,8 @@ def materialize(rel, workspace, pull=False):
 def load_real(bcfg, pull=False):
     rel = real_paths(bcfg)
     ws = bcfg['paths']['workspace']
-    found = {k: materialize(v, ws, pull) for k, v in rel.items() if k not in ('report_dir',)}
+    # The test bundle is only located locally, never pulled: test contents must not be downloaded before unlock.
+    found = {k: materialize(v, ws, pull and k != 'test_bundle') for k, v in rel.items() if k not in ('report_dir',)}
     if found['baseline'] is None:
         raise FileNotFoundError(f"Real baseline not found: {rel['baseline']}. Run with --pull "
                                 "(after `aws sso login --profile minny`) or copy it into the workspace.")
@@ -242,9 +270,9 @@ def _sources(baseline, bundles):
     return out
 
 
-def load_inputs(mode, bcfg, workdir, pull=False):
+def load_inputs(mode, bcfg, workdir, pull=False, synthetic_from=None):
     if mode == 'synthetic':
-        return build_synthetic(bcfg, workdir)
+        return load_synthetic(synthetic_from) if synthetic_from else build_synthetic(bcfg, workdir)
     if mode == 'real':
         return load_real(bcfg, pull)
     raise ValueError(f'Unknown mode: {mode}')

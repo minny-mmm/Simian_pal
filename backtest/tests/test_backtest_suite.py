@@ -9,6 +9,7 @@ from src.reference.common import ROOT, fingerprint, load_config, sha256
 from src.reference.output import build_analysis
 
 from backtest.evaluators.metrics import (average_precision, balanced_accuracy, snapshot_diff, tree_snapshot)
+from backtest.evaluators.report_builder import update_registry
 from backtest.run import run
 from backtest.runners import reference_backtest as ref
 from backtest.runners import symptom_cv_backtest as symptom
@@ -142,6 +143,11 @@ def test_test_gate(inputs, tmp_path):
         ref.run_test(inputs, cfg, tmp_path, unlock=False, approved_sha=sha)
     with pytest.raises(ref.TestLocked, match='SHA256'):
         ref.run_test(inputs, cfg, tmp_path, unlock=True, approved_sha='0' * 64)
+    with pytest.raises(ref.TestNotReady, match='no validation run'):
+        ref.run_test(inputs, cfg, tmp_path, unlock=True, approved_sha=sha)
+    update_registry(tmp_path, sha, name='synthetic_registry.json', validation_run=dict(
+        run_id='v', overall='pass', audit_pass=True, valid_rows=10, gates_fingerprint=fingerprint(cfg['gates']),
+        ready_cells=[dict(dataset='cops', metric='enmo_hourly_median_mean_g', ready=True, reasons=[])]))
     blocked, doc = ref.run_test(dict(inputs, test_bundle=None), cfg, tmp_path, unlock=True, approved_sha=sha)
     assert blocked['status'] == 'blocked_no_test_features' and doc is None
     assert not (tmp_path / '_test_opened').exists()

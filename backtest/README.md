@@ -23,7 +23,8 @@ venv\Scripts\python -X utf8 -m pytest backtest/tests -q
 - real mode อ่านเฉพาะ baseline ที่ SHA256 ตรง `real.approved_baseline_sha256` (baseline ที่ส่งไป `cb844f…`) ถ้าไม่ตรงจะหยุดก่อนอ่านไฟล์
 - validate baseline อื่น (เช่นของ AWS): `--baseline <baseline.json> --approved-baseline-sha256 <sha> [--train-bundle ...] [--valid-bundle ...]`
 - `--run-id` ต้องใหม่ทุกครั้ง ห้ามเขียนทับ run เดิม
-- exit code 1 เมื่อมี gate ใด `fail`; `not_evaluable` ไม่ใช่ fail แต่ห้ามสรุปผลจาก cell นั้น
+- exit code 1 เมื่อมี gate ใด `fail`; 2 เมื่อขอ test แต่ยังล็อก/ไม่พร้อม; `not_evaluable` ไม่ใช่ fail แต่ห้ามสรุปผลจาก cell นั้น
+- สถานะล่าสุดของ train/valid/test และลำดับคำสั่งตั้งแต่ขยายข้อมูลจนถึงเปิด test: [RUNBOOK.md](RUNBOOK.md)
 - real mode ใช้ไฟล์ใน `data/...` ของเครื่องก่อนถ้ามี ไม่มีจึงใช้/ดึงลง `backtest/workspace/real/<path เดิม>` (ไม่แตะ `data/` ของทีม)
   path ตั้งใน `config/backtest_config.yaml` → `real` (ค่าปัจจุบัน `real-20261023-v1` / `checkpoint-01`)
 
@@ -56,14 +57,20 @@ venv\Scripts\python -X utf8 -m pytest backtest/tests -q
    - synthetic มี **known-answer**: ฝัง shift 3 SD ใน ENMO ของคน valid คนละ cohort แล้วต้องกู้ได้ +3 SD เทียบกับค่าที่ไม่ได้ฝังของคนเดียวกัน
      รวมเคส zero_scale (NHANES tremor = 0 ทั้งหมด), ไม่มี walking window, วันหายกลางช่วง (`previous_day_missing`)
 4. **Test (ล็อก)** — รันได้เมื่อครบทั้ง 3 อย่าง: `test.allow_test_split: true` ใน config, `--unlock-test`, และ
-   `--approved-baseline-sha256` ที่ตรงกับไฟล์ baseline (real mode ต้องตรง `locked_baseline_sha256` ใน `test_plan_NOT_EXECUTED.json` ด้วย)
-   compare อย่างเดียว ไม่ fit; เปิดได้ **ครั้งเดียวต่อ baseline** (`outputs/_test_opened/<sha>.json`) ตอนนี้ยังไม่มี test features → `blocked_no_test_features`
+   `--approved-baseline-sha256` ที่ตรงกับไฟล์ baseline (real mode ต้องตรง `locked_baseline_sha256` ใน `test_plan_NOT_EXECUTED.json` ด้วย
+   ซึ่งมีเฉพาะ baseline จาก `--stage fit` — checkpoint baseline เปิด test ไม่ได้) **และ** baseline ต้องพร้อม: มี validation run ของ SHA นี้ใน registry
+   ที่ไม่ fail, audit ผ่าน, gates fingerprint เดิม, ทุก cell ที่ reference ok มี jackknife+bootstrap `pass` และ valid `distribution` (ไม่งั้น `locked_not_ready`)
+   compare อย่างเดียว ไม่ fit; เปิดได้ **ครั้งเดียวต่อ baseline** (`outputs/_test_opened/<sha>.json` เขียนก่อนอ่านแถว test) และตรวจ `config_hash`/`preprocessing_version`/รายชื่อคนของ test bundle
+   test bundle สร้างด้วย `python -X utf8 -m backtest.prepare_test` (ล็อกชุดเดียวกัน + config/source/noise lock ที่ล็อกไว้) ไม่ถูกดึงด้วย `--pull`
+   ตอนนี้ยังไม่มี test features → `blocked_no_test_features` — ขั้นตอนเต็มอยู่ใน [RUNBOOK.md](RUNBOOK.md)
+   synthetic: `--synthetic-from <run>` ใช้ baseline ไฟล์เดิมของ run ก่อนหน้า (registry แยก `synthetic_registry.json`)
 5. **Track B: symptom CV (สำรวจ ไม่ใช่เป้าหมายของ baseline)** — COPS เท่านั้น TremorScore 0 vs 1/2
    GroupKFold ตามคนบน train, impute ด้วย median ของ fold + missing indicator (ไม่เติม 0, คอลัมน์ที่ไม่มีค่าเลยถูกตัด),
    standardize/class weight จาก fold, logistic L2 (numpy ไม่ต้องติดตั้ง scikit-learn), เทียบ dummy, CI 95% แบบ bootstrap คน, ผลรายคน
    valid ประเมินเมื่อมี ≥ `min_valid_subjects` คนและครบสองคลาส ไม่อ่าน test; ไม่ใช้คอลัมน์ต้องห้ามใน `symptom.exclude_columns`
    real mode ต้องมี `data/features/cops/*.csv` และตั้ง `symptom.labels_path` (เช่น `diary_labels_REVIEW_ONLY.csv` จาก `tools/audit_model_readiness.py`)
-   ต้องตรวจก่อนว่า day/hour ของ diary กับ features ตรงกัน (ดู README_signal_audit.md)
+   ต้องตรวจก่อนว่า day/hour ของ diary กับ features ตรงกัน (ดู README_signal_audit.md; `source` รายงาน label match rate)
+   เปิดเฉพาะไฟล์ `<subject_id>.csv` ของคน train/valid ตาม roster ไฟล์ของคน test ไม่ถูกอ่าน
 
 ## Validation audit (track `audit`) — ใช้ baseline ที่ส่งไป ไม่ fit ใหม่
 

@@ -172,13 +172,24 @@ def build_markdown(results):
     flags = _get(results, ('tracks', 'valid', 'device_confound', 'flags')) or []
     if flags:
         lines += ['', '## Device-confound flags', ''] + [f'- {f}' for f in flags]
+    cells = results.get('test_ready_cells') or []
+    if cells:
+        lines += ['', '## ความพร้อมเปิด test (ต่อ cohort × ตัวชี้วัดที่ reference ok)', '', '| dataset | metric | ready | เหตุผล |',
+                  '| --- | --- | --- | --- |']
+        lines += [f"| {c['dataset']} | {c['metric']} | {c['ready']} | {', '.join(c['reasons']) or '—'} |" for c in cells]
+    test = _get(results, ('tracks', 'test'))
+    if isinstance(test, dict):
+        lines += ['', '## Test hold-out', '', f"- status: **{test.get('status')}**"]
+        lines += [f'- {_fmt(r)}' for r in (test.get('readiness') or {}).get('reasons', [])]
+        if test.get('reason'):
+            lines.append(f"- {test['reason']}")
     lines += ['', 'ตารางเต็มอยู่ในไฟล์ CSV และ results.json ในโฟลเดอร์เดียวกัน; dashboard.html เปิดได้แบบ offline']
     return '\n'.join(lines) + '\n'
 
 
-def update_registry(outputs_root, baseline_sha, validation_run=None, comparison=None, **fields):
+def update_registry(outputs_root, baseline_sha, validation_run=None, comparison=None, name='baseline_registry.json', **fields):
     """baseline_registry.json keyed by baseline SHA256: validation is always tied to the exact artifact."""
-    path = Path(outputs_root) / 'baseline_registry.json'
+    path = Path(outputs_root) / name
     registry = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
     entry = registry.setdefault(baseline_sha, dict(validation_runs=[], comparisons=[], validation_audit_passed=False))
     entry.update({k: v for k, v in fields.items() if v is not None})

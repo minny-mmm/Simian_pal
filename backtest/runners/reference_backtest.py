@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.reference.common import sha256, write_json
+from src.reference.common import fingerprint, sha256, write_json
 from src.reference.daily import METRICS
 from src.reference.io import load_bundle
 from src.reference.model import summarize
@@ -272,28 +272,114 @@ class TestLocked(RuntimeError):
     pass
 
 
-def run_test(inputs, bcfg, outputs_root, unlock=False, approved_sha=None):
-    """Compare-only on test, once per baseline. Requires config allow_test_split, --unlock-test and the SHA."""
+class TestNotReady(TestLocked):
+    def __init__(self, readiness):
+        super().__init__(f"Baseline not ready for test: {readiness['reasons']}")
+        self.readiness = readiness
+
+
+def registry_name(mode):
+    # Synthetic fixtures never share the registry of real baselines.
+    return 'baseline_registry.json' if mode == 'real' else 'synthetic_registry.json'
+
+
+def ready_cells(evaluability, gates):
+    """Per (cohort, metric) with an ok reference: stability gates passed (not merely not_evaluable) and
+    enough valid people for a distribution. Cells whose reference is insufficient/zero_scale cannot be compared."""
+    status = {g['gate']: g['status'] for g in gates}
+    out = []
+    for e in evaluability:
+        if e['reference_status'] != 'ok':
+            continue
+        key = f"{e['dataset']}/{e['metric']}"
+        reasons = [f"{name}={status.get(f'{name}[{key}]', 'missing')}"
+                   for name in ['jackknife_median_shift', 'bootstrap_median_ci_width'] if status.get(f'{name}[{key}]') != 'pass']
+        if e['valid_level'] != 'distribution':
+            reasons.append(f"valid_level={e['valid_level']}")
+        out.append(dict(dataset=e['dataset'], metric=e['metric'], ready=not reasons, reasons=reasons))
+    return out
+
+
+def readiness_for_test(outputs_root, mode, baseline_sha, gates_fingerprint):
+    """Test may open only after a recorded validation run of THIS baseline file passed under the same gates."""
+    path = Path(outputs_root) / registry_name(mode)
+    runs = (json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}).get(baseline_sha, {}).get('validation_runs', [])
+    rejected = []
+    for r in runs:
+        why = []
+        if r.get('overall') not in ('pass', 'pass_with_unevaluable'):
+            why.append(f"overall={r.get('overall')}")
+        # Synthetic fixtures have no official checkpoint reports, so only that audit category may be not_evaluable there.
+        audit = r.get('audit_statuses') or {}
+        synthetic_ok = (mode == 'synthetic' and bool(audit) and r.get('valid_rows')
+                        and all(s == 'pass' or (k == 'official_reports' and s == 'not_evaluable') for k, s in audit.items()))
+        if not (r.get('audit_pass') and r.get('valid_rows')) and not synthetic_ok:
+            why.append('validation_audit_not_passed')
+        if r.get('gates_fingerprint') != gates_fingerprint:
+            why.append('gates_fingerprint_differs_or_missing')
+        cells = r.get('ready_cells') or []
+        if not cells:
+            why.append('no_comparable_cells_recorded')
+        why += [f"{c['dataset']}/{c['metric']}: {', '.join(c['reasons'])}" for c in cells if not c['ready']]
+        if not why:
+            return dict(ready=True, validation_run=r['run_id'], reasons=[])
+        rejected.append(dict(run_id=r.get('run_id'), reasons=why))
+    return dict(ready=False, validation_run=None,
+                reasons=rejected or [f'no validation run recorded for {baseline_sha} in {path.name}'])
+
+
+def check_test_bundle(daily, cfg, artifact, roster, plan_subjects=None):
+    """The test bundle must be built with the locked baseline config and contain only planned test subjects."""
+    if fingerprint(cfg) != artifact['config_hash'] or not daily.config_hash.eq(artifact['config_hash']).all():
+        raise ValueError('Test bundle config_hash differs from the baseline; rebuild it with the locked config')
+    if not daily.preprocessing_version.eq(artifact['preprocessing_version']).all():
+        raise ValueError('Test bundle preprocessing_version differs from the baseline')
+    if not daily.split.eq('test').all():
+        raise ValueError('Test bundle contains non-test rows')
+    ids = set(daily.subject_id)
+    if not ids <= set(roster[roster.split.eq('test')].subject_id):
+        raise ValueError('Test bundle has subjects outside the roster test split')
+    if plan_subjects is not None and not ids <= {s['subject_id'] for s in plan_subjects}:
+        raise ValueError('Test bundle has subjects outside test_plan_NOT_EXECUTED.json')
+
+
+def check_test_locks(inputs, bcfg, outputs_root, unlock, approved_sha):
+    """Every lock except the bundle itself; shared by run_test and prepare_test. Returns (sha, plan or None)."""
     if not (bcfg['test']['allow_test_split'] and unlock):
         raise TestLocked('Test split locked: needs test.allow_test_split=true AND --unlock-test')
     actual = sha256(inputs['baseline_path'])
     if not approved_sha or approved_sha != actual:
         raise TestLocked('Approved baseline SHA256 missing or does not match the baseline file')
+    plan = None
     if inputs['test_plan'] is not None:
-        locked = json.loads(Path(inputs['test_plan']).read_text(encoding='utf-8')).get('locked_baseline_sha256')
-        if locked != actual:
+        plan = json.loads(Path(inputs['test_plan']).read_text(encoding='utf-8'))
+        if plan.get('locked_baseline_sha256') != actual:
             raise TestLocked('Baseline differs from locked_baseline_sha256 in test_plan_NOT_EXECUTED.json')
     elif inputs['mode'] == 'real':
-        raise TestLocked('Real test requires the test_plan_NOT_EXECUTED.json written after fit')
+        raise TestLocked('Real test requires the test_plan_NOT_EXECUTED.json written by a full-train fit '
+                         '(checkpoint baselines have none and cannot open test)')
+    readiness = readiness_for_test(outputs_root, inputs['mode'], actual, fingerprint(bcfg['gates']))
+    if not readiness['ready']:
+        raise TestNotReady(readiness)
     marker = Path(outputs_root) / '_test_opened' / f'{actual}.json'
     if marker.exists():
         raise TestLocked(f'Test already opened for this baseline: {marker}')
+    return actual, plan, readiness
+
+
+def run_test(inputs, bcfg, outputs_root, unlock=False, approved_sha=None):
+    """Compare-only on test, once per baseline. Requires config allow_test_split, --unlock-test, the SHA and a
+    recorded validation run of this baseline that passed every pre-registered gate."""
+    actual, plan, readiness = check_test_locks(inputs, bcfg, outputs_root, unlock, approved_sha)
     if inputs['test_bundle'] is None:
-        return dict(status='blocked_no_test_features', baseline_sha256=actual), None
-    daily, *_ = load_bundle(inputs['test_bundle'])
-    if not daily.split.eq('test').all():
-        raise ValueError('Test bundle contains non-test rows')
+        return dict(status='blocked_no_test_features', baseline_sha256=actual, readiness=readiness), None
+    marker = Path(outputs_root) / '_test_opened' / f'{actual}.json'
+    # Written BEFORE any test row is read: a failed attempt still counts as opened.
+    opened = dict(baseline_sha256=actual, opened_utc=datetime.now(timezone.utc).isoformat(), fit=False,
+                  status='opening', validation_run=readiness['validation_run'], test_bundle=str(inputs['test_bundle']))
+    write_json(marker, opened)
+    daily, _, cfg, _ = load_bundle(inputs['test_bundle'])
+    check_test_bundle(daily, cfg, inputs['artifact'], inputs['roster'], plan.get('subjects') if plan else None)
     document, check = run_analysis(daily, inputs['artifact'], inputs['baseline_path'])
-    write_json(marker, dict(baseline_sha256=actual, opened_utc=datetime.now(timezone.utc).isoformat(),
-                            n_rows=check['n_rows'], fit=False))
-    return dict(status='compared_once', **check), document
+    write_json(marker, dict(opened, status='compared_once', n_rows=check['n_rows']))
+    return dict(status='compared_once', readiness=readiness, **check), document

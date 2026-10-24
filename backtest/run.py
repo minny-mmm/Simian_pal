@@ -3,7 +3,8 @@
 Run from the repo root:
   python -X utf8 -m backtest.run --mode synthetic
   python -X utf8 -m backtest.run --mode real --pull                 # needs `aws sso login --profile minny`
-  python -X utf8 -m backtest.run --mode real --tracks test --unlock-test --approved-baseline-sha256 <sha>
+  python -X utf8 -m backtest.run --mode real --config <unlock config> --tracks test --unlock-test --approved-baseline-sha256 <sha>
+  python -X utf8 -m backtest.run --mode synthetic --synthetic-from <earlier run> --config <unlock config> --tracks test --unlock-test ...
   python -X utf8 -m backtest.run --mode real --baseline <other baseline.json> --approved-baseline-sha256 <its sha>
 
 Reads project code/config/splits read-only; writes only backtest/workspace and backtest/outputs/<run_id>.
@@ -137,14 +138,18 @@ def _gates(results, inputs, bcfg, baseline_start):
 
 def run(mode, run_id=None, tracks=None, config_path=DEFAULT_CONFIG, overrides=None, pull=False,
         unlock_test=False, approved_sha=None, outputs_root=None, workspace_root=None, baseline=None,
-        train_bundle=None, valid_bundle=None):
+        train_bundle=None, valid_bundle=None, synthetic_from=None, test_bundle=None):
     bcfg = load_backtest_config(config_path, overrides)
+    if synthetic_from and mode != 'synthetic':
+        raise ValueError('--synthetic-from is only valid with --mode synthetic')
     if baseline is not None:
         # Validating another artifact (e.g. AWS): checkpoint reports/train bundle do not describe it.
         bcfg['real'].update(baseline=str(Path(baseline).resolve()), report_dir=None, fit_report=None,
                             train_bundle=str(Path(train_bundle).resolve()) if train_bundle else None)
     if valid_bundle is not None:
         bcfg['real']['valid_bundle'] = str(Path(valid_bundle).resolve())
+    if test_bundle is not None:
+        bcfg['real']['test_bundle'] = str(Path(test_bundle).resolve())
     if approved_sha:
         bcfg['real']['approved_baseline_sha256'] = approved_sha
     tracks = list(tracks or DEFAULT_TRACKS)
@@ -162,14 +167,15 @@ def run(mode, run_id=None, tracks=None, config_path=DEFAULT_CONFIG, overrides=No
     protected_before = tree_snapshot(ROOT, bcfg['paths']['protected'])
     manifest = dict(run_id=run_id, mode=mode, tracks=tracks, status='started', created_utc=_now().isoformat(),
                     config_path=str(config_path), backtest_config_fingerprint=fingerprint(bcfg),
-                    gates=bcfg['gates'], gates_fingerprint=fingerprint(bcfg['gates']),
+                    gates=bcfg['gates'], gates_fingerprint=fingerprint(bcfg['gates']), synthetic_from=synthetic_from,
                     code_version=code_version(), backtest_code=_backtest_code(),
                     runtime=dict(python=platform.python_version(), numpy=np.__version__, pandas=pd.__version__,
                                  pyyaml=yaml.__version__))
     # Gates are registered on disk before any valid/test data is opened.
     write_json(out / 'run_manifest.json', manifest)
     try:
-        inputs = load_inputs(mode, bcfg, workspace_root / 'synthetic' / run_id, pull)
+        inputs = load_inputs(mode, bcfg, workspace_root / 'synthetic' / run_id, pull,
+                             synthetic_from=workspace_root / 'synthetic' / synthetic_from if synthetic_from else None)
         baseline_start = sha256(inputs['baseline_path'])
         manifest.update(inputs=inputs['sources'], unavailable=inputs['unavailable'])
         write_json(out / 'run_manifest.json', manifest)
@@ -211,6 +217,8 @@ def run(mode, run_id=None, tracks=None, config_path=DEFAULT_CONFIG, overrides=No
                     rows = ref.analysis_rows(document)
                     t['test'].update(distribution=ref.distribution(rows))
                     write_json(out / f"analysis_TEST_{mode.upper()}.json", document)
+            except ref.TestNotReady as exc:
+                t['test'] = dict(status='locked_not_ready', reason=str(exc), readiness=exc.readiness)
             except ref.TestLocked as exc:
                 t['test'] = dict(status='locked', reason=str(exc))
         results['gates'] = _gates(results, inputs, bcfg, baseline_start)
@@ -219,14 +227,21 @@ def run(mode, run_id=None, tracks=None, config_path=DEFAULT_CONFIG, overrides=No
         results['gates'].append(_gate('protected_paths_unchanged', changed[:20], bcfg['paths']['protected'], not changed))
         statuses = {g['status'] for g in results['gates']}
         results['overall'] = 'fail' if 'fail' in statuses else 'pass_with_unevaluable' if 'not_evaluable' in statuses else 'pass'
+        if {'stability', 'valid'} <= set(tracks):
+            results['test_ready_cells'] = ref.ready_cells(evaluable, results['gates'])
         write_report(out, results)
-        if mode == 'real' and 'audit' in t:
+        if 'audit' in t:
+            # Validation evidence per baseline SHA; the test track reads it back (ref.readiness_for_test).
             audit_pass = all(c['status'] == 'pass' for c in t['audit']['categories'].values())
-            update_registry(outputs_root, baseline_start, source=bcfg['real'].get('source', 'local'),
+            update_registry(outputs_root, baseline_start, name=ref.registry_name(mode),
+                            source=bcfg['real'].get('source', 'local') if mode == 'real' else 'synthetic',
                             artifact_id=inputs['artifact']['artifact_id'],
                             baseline_version=inputs['artifact'].get('baseline_version'),
                             validation_run=dict(run_id=run_id, overall=results['overall'], audit_pass=audit_pass,
                                                 valid_rows=t.get('valid', {}).get('check', {}).get('n_rows'),
+                                                audit_statuses={k: v['status'] for k, v in t['audit']['categories'].items()},
+                                                gates_fingerprint=manifest['gates_fingerprint'], tracks=tracks,
+                                                ready_cells=results.get('test_ready_cells'),
                                                 finished_utc=_now().isoformat()))
         manifest.update(status='completed', overall=results['overall'], finished_utc=_now().isoformat())
         write_json(out / 'run_manifest.json', manifest)
@@ -249,19 +264,25 @@ def main(argv=None):
     p.add_argument('--baseline', type=Path, help='real mode: validate this baseline.json instead of the configured one')
     p.add_argument('--train-bundle', type=Path, help='with --baseline: the train bundle it was fitted on (hash chain)')
     p.add_argument('--valid-bundle', type=Path, help='real mode: valid bundle to compare (default from config)')
+    p.add_argument('--test-bundle', type=Path, help='real mode: test bundle built by backtest.prepare_test (opened only by the test track)')
+    p.add_argument('--synthetic-from', help='synthetic mode: reuse the fixture (same baseline file) of an earlier run ID')
     a = p.parse_args(argv)
     if a.baseline and not a.approved_baseline_sha256:
         p.error('--baseline requires --approved-baseline-sha256')
     results, out = run(a.mode, a.run_id, a.tracks, a.config, pull=a.pull, unlock_test=a.unlock_test,
                        approved_sha=a.approved_baseline_sha256, baseline=a.baseline, train_bundle=a.train_bundle,
-                       valid_bundle=a.valid_bundle)
+                       valid_bundle=a.valid_bundle, synthetic_from=a.synthetic_from,
+                       test_bundle=a.test_bundle)
     failed = [g['gate'] for g in results['gates'] if g['status'] == 'fail']
     print(f"[{results['data_kind'].upper()}] overall={results['overall']} -> {out}")
     for g in failed:
         print(f'  FAIL {g}')
-    if isinstance(results['tracks'].get('test'), dict):
-        print(f"  test: {results['tracks']['test']['status']}")
-    return 1 if failed else 0
+    test = results['tracks'].get('test')
+    if isinstance(test, dict):
+        print(f"  test: {test['status']}" + (f" ({test['reason']})" if test.get('reason') else ''))
+    if failed:
+        return 1
+    return 2 if isinstance(test, dict) and test['status'].startswith('locked') else 0
 
 
 if __name__ == '__main__':

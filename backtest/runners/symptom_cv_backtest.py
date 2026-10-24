@@ -41,23 +41,31 @@ def synthetic_symptom_table(seed, n_train=12, n_valid=4, days=4):
     return pd.DataFrame(rows)
 
 
-def load_real_symptom_table(scfg, roster):
-    files = sorted(glob.glob(str(ROOT / scfg['features_glob'])))
-    labels_path = ROOT / scfg['labels_path'] if scfg.get('labels_path') else None
+def load_real_symptom_table(scfg, roster, root=ROOT):
+    split = roster[roster.dataset.eq('cops') & roster.split.isin(['train', 'valid'])][['subject_id', 'split']]
+    allowed = set(split.subject_id)
+    # One CSV per subject (<subject_id>.csv): select by roster split BEFORE reading, so test files are never opened.
+    found = sorted(glob.glob(str(Path(root) / scfg['features_glob'])))
+    files = [f for f in found if Path(f).stem in allowed]
+    labels_path = Path(root) / scfg['labels_path'] if scfg.get('labels_path') else None
     if not files:
-        return None, f"no feature CSVs at {scfg['features_glob']}"
+        return None, f"no train/valid COPS feature CSVs at {scfg['features_glob']}"
     if labels_path is None or not labels_path.exists():
         return None, 'diary labels not configured/found (symptom.labels_path)'
     features = pd.concat([pd.read_csv(f) for f in files], ignore_index=True)
     features = features[features.dataset.eq('cops')].drop(columns=['split'], errors='ignore')
-    split = roster[roster.dataset.eq('cops')][['subject_id', 'split']]
     features = features.merge(split, on='subject_id', how='inner', validate='many_to_one')
     labels = pd.read_csv(labels_path)
+    labels = labels[labels.subject_id.isin(allowed)]  # drop test label rows immediately
     if scfg.get('candidate_column') in labels:
         labels = labels[labels[scfg['candidate_column']].astype(str).str.lower().eq('true')]
     labels = labels.drop(columns=['split'], errors='ignore')
     table = features.merge(labels, on=['subject_id', 'day', 'hour'], how='inner', validate='one_to_one')
-    return table, f'{len(table)} matched hours from {len(features)} feature hours and {len(labels)} label hours'
+    # A low match rate usually means diary and feature day/hour indexing disagree (README_signal_audit.md).
+    note = (f'{len(table)} matched hours from {len(features)} feature hours and {len(labels)} label hours '
+            f'({len(files)} train/valid files; {len(found) - len(files)} other files not opened); '
+            f'label match rate {len(table) / len(labels):.3f}' if len(labels) else 'no label hours')
+    return table, note
 
 
 # ---------------------------------------------------------------------------
