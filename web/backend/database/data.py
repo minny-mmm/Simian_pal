@@ -18,7 +18,7 @@ from pathlib import Path
 from statistics import median
 
 ROOT = Path(__file__).resolve().parents[3]
-MODEL_VERSION = "demo-cohort-reference-v1"   # ค่ากลุ่มอ้างอิงใน pd_reference (ยังเป็นค่าจาก demo output.pdf)
+MODEL_VERSION = "real-data-pilot-aws-real-pilot-20261024-v1"   # ค่ากลุ่มอ้างอิงใน pd_reference = baseline ของเดโม AI ของทีม
 METRICS_VERSION = "features-daily-v1"        # ค่ารายวันใน pd_daily_metrics (รวมจาก data/features ของ src.features.run)
 START_DATE = date(2026, 10, 1)           # วันแรกที่ใช้ของทุกคน (ข้อมูลจริงไม่มีวันที่)
 METRICS = ["enmo_g", "cadence_steps_s", "tremor_rest_fraction"]
@@ -59,7 +59,7 @@ DOCTORS = [
 # - ไม่ผ่านเกณฑ์ = None + insufficient_coverage (เดโมเรียก insufficient_data)
 # - ชั่วโมงในช่วง 09-21 (รวม = 12): wear = ใช้ได้, no_signal = ไม่มีข้อมูล/ไม่ได้ใส่ (nonwear),
 #   low_quality = ใส่อยู่แต่ใช้ไม่ได้ (นิ่งผิดปกติ / ค่าผิดปกติ / clip / หลับ)
-# คำนวณใหม่ได้ด้วย: python web/backend/database/make_daily_rows.py cops/COPS-7 nhanes/NHANES-81262 nhanes/NHANES-73558
+# คำนวณใหม่ได้ด้วย (พิมพ์ทั้ง DAILY_ROWS และ DAILY_WINDOWS): python web/backend/database/make_daily_rows.py cops/COPS-7 nhanes/NHANES-81262 nhanes/NHANES-73558
 # เทียบกับเดโม: เพิ่ม --check <daily.csv ใน valid bundle ของเดโม> หน้ารายชื่อ
 DAILY_ROWS = {
     # COPS-7 (VALID-A): วัน 3-6 ของต้นฉบับ · เดินน้อยกว่าเกณฑ์ทุกวัน -> ไม่มี cadence
@@ -91,12 +91,47 @@ DAILY_ROWS = {
     ],
 }
 
+# จำนวน window ที่ใช้คิดค่าแต่ละตัว (= metric_windows ของเดโม) + เหตุผล QC (= reasons ของเดโม) ทุกค่าตรงกับเดโม
+# ใช้คิดค่าเฉลี่ยหลายวันแบบถ่วงน้ำหนัก (app/metrics.py): tremor = sum(n_tremor)/sum(n_rest),
+#   cadence ถ่วงด้วย n_walk, ENMO ถ่วงด้วย n_windows · หน้าคุณภาพข้อมูลใช้บอกเหตุผลที่วันนั้นขาดค่าได้
+# date, n_windows, n_walk, n_rest, n_tremor, day_valid_minutes, day_eligible_hours, qc_reasons
+COV = {"cadence": "metric_coverage_below_minimum"}   # เดินน้อยกว่าเกณฑ์ (2 ชม. / 5 นาที)
+DAILY_WINDOWS = {
+    "Patient-001": [
+        ("2026-10-01", 4043, 2,  1862, 235, 673.83, 12, COV),
+        ("2026-10-02", 3899, 4,  1518, 146, 649.83, 12, COV),
+        ("2026-10-03", 3727, 12, 1495, 88,  621.17, 12, COV),
+        ("2026-10-04", 3927, 2,  1836, 298, 654.5,  12, COV),
+    ],
+    "Patient-002": [
+        ("2026-10-01", 4202, 29,  1073, 25,  700.33, 12, COV),
+        ("2026-10-02", 4003, 46,  1200, 30,  667.17, 12, {}),
+        ("2026-10-03", 4107, 106, 1316, 43,  684.5,  12, {}),
+        ("2026-10-04", 3998, 68,  1295, 42,  666.33, 12, {}),
+        ("2026-10-05", 4045, 25,  1232, 66,  674.17, 12, COV),
+        ("2026-10-06", 3873, 27,  1568, 133, 645.5,  12, COV),
+        ("2026-10-07", 4002, 56,  1358, 59,  667.0,  12, {}),
+    ],
+    "Patient-003": [
+        ("2026-10-01", 3966, 80, 1238, 29, 661.0,  12, {}),
+        ("2026-10-02", 3752, 47, 1630, 41, 625.33, 12, {}),
+        ("2026-10-03", 3787, 89, 1404, 33, 631.17, 12, {}),
+        ("2026-10-04", 3978, 79, 1287, 54, 663.0,  12, {}),
+        ("2026-10-05", 3727, 48, 1226, 32, 621.17, 12, {}),
+        ("2026-10-06", 3022, 26, 1332, 28, 503.67, 12, COV),
+        ("2026-10-07", 3828, 60, 1286, 33, 638.0,  12, {}),
+    ],
+}
+WINDOWS = {(pid, r[0]): dict(zip(("n_windows", "n_walk", "n_rest", "n_tremor", "day_valid_minutes",
+                                  "day_eligible_hours", "qc_reasons"), r[1:]))
+           for pid, rows in DAILY_WINDOWS.items() for r in rows}
+
 DAILY_METRICS = [
     {"patient_id": pid, "date": dt, "day": (date.fromisoformat(dt) - START_DATE).days + 1, "source_day": src,
      "enmo_g": enmo, "cadence_steps_s": cad, "tremor_rest_fraction": tremor,
      "wear_hours": wear, "no_signal_hours": nosig, "low_quality_hours": lowq,
      "enmo_qc": enmo_qc, "cadence_qc": cad_qc, "tremor_qc": tremor_qc,
-     "model_version": METRICS_VERSION, "is_demo": True}
+     **WINDOWS[(pid, dt)], "model_version": METRICS_VERSION, "is_demo": True}
     for pid, rows in DAILY_ROWS.items()
     for dt, src, enmo, cad, tremor, wear, nosig, lowq, enmo_qc, cad_qc, tremor_qc in rows
 ]
@@ -168,22 +203,25 @@ PATIENTS = [
 ]
 
 # ================================================================ 4. pd_reference
-# key: metric + cohort                                 ใช้ในหน้า: 3, 6
-# median จาก demo output.pdf (กลุ่มละ 6 คน); p25/p75 ยังไม่มีใน output -> None
-# metric, cohort, p25, median, p75, n_people
+# key: metric + cohort                                 ใช้ใน: GET /api/reports/percentiles
+# ค่าจาก baseline ที่เดโม AI ของทีมใช้ (baseline.json ใน S3: data/models/reference-v1/aws-real-pilot-20261024-v1/
+#   local_py312_compat, artifact 9b65d11f…) = ค่าเดียวกับ reference_comparisons ในหน้ารายงาน
+# fit จากชุด train (COPS 8 คน / NHANES 8 คน) ถ่วงน้ำหนักให้แต่ละคนเท่ากัน · quantile ไม่ interpolate
+# cadence มีคนที่ข้อมูลเดินพอ COPS 7 / NHANES 6 คน
+# metric, cohort, p25, median, p75, n_people, n_days
 REFERENCE_ROWS = [
-    ("enmo_g",               "COPS",   None, 0.03525,   None, 6),
-    ("enmo_g",               "NHANES", None, 0.06525,   None, 6),
-    ("cadence_steps_s",      "COPS",   None, 1.43,      None, 6),
-    ("cadence_steps_s",      "NHANES", None, 1.78,      None, 6),
-    ("tremor_rest_fraction", "COPS",   None, 0.05,      None, 6),
-    ("tremor_rest_fraction", "NHANES", None, 0.0166667, None, 6),
+    ("enmo_g",               "COPS",   0.0159925901418679, 0.0211329671121317, 0.0263659602496753, 8, 40),
+    ("enmo_g",               "NHANES", 0.0220709040535444, 0.0260830407872579, 0.0328065148390804, 8, 51),
+    ("cadence_steps_s",      "COPS",   1.709536315794579,  1.8165591500234075, 1.894191385783487,  7, 29),
+    ("cadence_steps_s",      "NHANES", 1.7539085653876945, 1.8335235009628708, 1.9426475585428704, 6, 36),
+    ("tremor_rest_fraction", "COPS",   0.0226854690374003, 0.0487084870848708, 0.0886392009987515, 8, 40),
+    ("tremor_rest_fraction", "NHANES", 0.0271646859083191, 0.0401554404145077, 0.057037037037037,  8, 51),
 ]
 
 REFERENCE = [
     {"metric": m, "cohort": c, "p25": q25, "median": med, "p75": q75,
-     "n_people": n, "version": MODEL_VERSION}
-    for m, c, q25, med, q75, n in REFERENCE_ROWS
+     "n_people": n, "n_days": nd, "version": MODEL_VERSION}
+    for m, c, q25, med, q75, n, nd in REFERENCE_ROWS
 ]
 
 # ================================================================ 5. pd_alerts
