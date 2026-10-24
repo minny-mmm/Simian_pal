@@ -17,6 +17,8 @@ a{color:inherit;text-decoration:none}
 .logo{font-weight:700;font-size:19px;margin:0 0 16px 8px}
 .nav{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-size:14px;margin-bottom:2px;cursor:pointer}
 .nav:hover{background:var(--pri2)}.nav.on{background:var(--pri);color:#fff}
+.login{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:16px}.login[hidden]{display:none}
+.badge{margin-left:auto;background:var(--bad);color:#fff;border-radius:10px;font-size:11px;padding:0 7px;line-height:18px}
 main{flex:1;min-width:0;padding:20px 24px}
 .pg{display:none;max-width:1100px}.pg.on{display:block}
 h1{font-size:22px;margin:0 0 16px;font-weight:600}
@@ -42,6 +44,8 @@ th{font-weight:500;color:var(--mute);text-align:left;padding:9px 10px;background
 td{padding:11px 10px;border-bottom:1px solid var(--line);color:var(--mute)}
 tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
 .pager{display:flex;gap:6px;align-items:center;margin-top:14px}.pager b{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;font-weight:400;cursor:pointer}.pager b.on{background:var(--pri2);color:var(--pri);font-weight:600}
+.pager b.off{opacity:.35;cursor:default}
+.pill{display:inline-block;min-width:44px;text-align:center;padding:3px 8px;border-radius:7px;font-weight:600}.pill.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}.pill.bad{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .seg{display:flex;background:var(--wait);border-radius:9px;overflow:hidden}.seg span{flex:1;text-align:center;padding:9px;font-size:13px;cursor:pointer}.seg .on{background:var(--pri);color:#fff}
 .chart{height:220px;border:1px dashed var(--line);border-radius:10px;background:var(--card);display:grid;place-items:center;color:var(--mute);font-size:13px}
 .bar{height:36px;border-radius:6px;background:var(--wait);margin:6px 0}
@@ -51,7 +55,8 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
 .item{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .ln{height:10px;border-radius:5px;background:var(--wait);flex:1;max-width:260px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:2px}
-.cal span{padding:9px 0;border-radius:8px}.cal .h{color:var(--mute);font-size:12px}.cal .d{cursor:pointer}.cal .d:hover{background:var(--pri2)}.cal .sel{background:var(--pri);color:#fff}
+.cal span{padding:9px 0;border-radius:8px}.cal .h{color:var(--mute);font-size:12px}.cal .d{cursor:pointer}.cal .d:hover{background:var(--pri2)}.cal .d.on{background:var(--pri);color:#fff}.cal .today{font-weight:700;outline:1px solid var(--pri)}.cal .d small{display:block;font-size:10px;line-height:1.2;color:var(--pri)}.cal .d.on small{color:#fff}
+select.pill{border:0;font:inherit;font-size:12px;cursor:pointer;background:var(--wait);color:var(--ink)}
 .back{color:var(--pri);cursor:pointer;font-size:13px}
 .dr{position:relative;display:inline-block}.dr>.sel{cursor:pointer}.dr>.sel:focus-visible{outline:2px solid var(--pri)}.pop{display:none;position:absolute;right:0;top:calc(100% + 6px);z-index:20;width:310px;max-width:86vw;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 10px 28px rgba(0,0,0,.16)}.dr.open .pop{display:block}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.chips .tab{font-size:12px;padding:5px 10px}.pop .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pop .acts{margin-top:14px}.pop .btn{padding:7px 12px;font-size:13px}.rng{font-size:12px;color:var(--mute);margin-top:10px}
 .frm{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.fld{display:grid;gap:5px;font-size:13px;align-content:start}.fld.w{grid-column:1/-1}.fld>span{color:var(--mute)}.fld input,.fld select,.fld textarea{border:1px solid var(--line);border-radius:9px;padding:9px 12px;background:var(--card);color:var(--ink);font:inherit;width:100%}.fld input:focus,.fld select:focus,.fld textarea:focus{outline:2px solid var(--pri);outline-offset:0}.acts{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.drop{border:1.5px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--mute);cursor:pointer}.drop:hover{background:var(--pri2)}.tot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:14px;border-radius:10px;background:var(--pri2);color:var(--pri);font-weight:600}
@@ -67,9 +72,10 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
  <a class="nav" href="#device">▤ ข้อมูลจากอุปกรณ์</a>
  <a class="nav" href="#clinical">✎ การประเมินโดยแพทย์</a>
  <a class="nav" href="#reports">▥ รายงาน</a>
- <a class="nav" href="#alerts">🔔 การแจ้งเตือน</a>
+ <a class="nav" href="#alerts">🔔 การแจ้งเตือน<span class="badge" id="nav-al" hidden></span></a>
  <a class="nav" href="#appts">▦ นัดหมาย</a>
  <a class="nav" href="#settings">⚙ ตั้งค่า</a>
+ <div id="auth-mode" class="sm mute" hidden style="margin:14px 12px 0">🔓 โหมดทดสอบ: ไม่ต้อง login</div>
 </nav>
 <main>
  
@@ -77,59 +83,64 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
 <section class="pg" id="home">
  <div class="flex sp wrap"><h1>หน้าหลัก <span class="mute sm">(Dashboard)</span></h1><span class="sel">📅 เลือกช่วงวันที่ <span>⌄</span></span></div>
  <div class="g c2">
-  <div class="card flex"><div class="ic">👥</div><div><div class="big">—</div><div class="sm">ผู้ป่วยทั้งหมด</div></div></div>
-  <div class="card flex"><div class="ic">⌚</div><div><div class="big">—</div><div class="sm">สวมใส่อุปกรณ์</div></div></div>
-  <div class="card flex"><div class="ic">👤</div><div><div class="big">—</div><div class="sm">ได้รับการประเมินล่าสุด ภายใน 3 เดือน</div></div></div>
-  <div class="card flex"><div class="ic" style="color:var(--bad)">⚠</div><div><div class="big">—</div><div class="sm">การแจ้งเตือน</div></div></div>
+  <div class="card flex"><div class="ic">👥</div><div><div class="big" id="s-total">—</div><div class="sm">ผู้ป่วยทั้งหมด</div></div></div>
+  <div class="card flex"><div class="ic">⌚</div><div><div class="big" id="s-wear">—</div><div class="sm">สวมใส่อุปกรณ์ <span class="mute" id="s-wear-th"></span></div></div></div>
+  <div class="card flex"><div class="ic">👤</div><div><div class="big" id="s-assess">—</div><div class="sm">ได้รับการประเมินล่าสุด ภายใน 3 เดือน</div></div></div>
+  <div class="card flex"><div class="ic" style="color:var(--bad)">⚠</div><div><div class="big" id="s-alerts">—</div><div class="sm">การแจ้งเตือน</div></div></div>
  </div>
+ <div class="sm" id="s-err" style="color:var(--bad);margin-top:8px"></div>
  <div class="flex sp"><h3>การแจ้งเตือนล่าสุด</h3><a class="back" href="#alerts">ดูทั้งหมด →</a></div>
- <div class="scroll"><table><tr><th>ประเภท</th><th>รายละเอียด</th><th>ผู้ป่วย</th><th>เวลา</th></tr>
+ <div class="scroll"><table id="home-al"><tr><th>ประเภท</th><th>รายละเอียด</th><th>ผู้ป่วย</th><th>เวลา</th></tr>
  <tr class="go" data-go="alerts"><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr class="go" data-go="alerts"><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr class="go" data-go="alerts"><td>—</td><td>—</td><td>—</td><td>—</td></tr></table></div>
 </section>
  
 <!-- ผู้ป่วย -->
 <section class="pg" id="patients">
  <h1>รายชื่อผู้ป่วย <span class="mute sm">(Patients)</span></h1>
- <div class="flex wrap" style="margin-bottom:12px"><div class="in">🔍 <input placeholder="ค้นหา HN, ชื่อ, นามสกุล..."></div><span class="sel">📅 เลือกช่วงวันที่ <span>⌄</span></span><button class="btn" data-go="newpatient">＋ เพิ่มผู้ป่วย</button></div>
- <div class="tabs"><button class="tab on">ทั้งหมด</button><button class="tab">สวมใส่อุปกรณ์</button><button class="tab">ไม่ได้ใส่</button><button class="tab">ต้องติดตาม</button></div>
- <div class="scroll"><table id="pt"><tr><th></th><th>HN</th><th>ชื่อ-นามสกุล</th><th>อายุ</th><th>ชม.การใส่ (ชม./วัน)</th><th>สถานะ</th><th>แนวโน้ม 7 วัน</th></tr></table></div>
- <div class="flex sp wrap pager"><div class="flex" style="gap:6px"><b>‹</b><b class="on">1</b><b>2</b><b>3</b><b>›</b></div><span class="sm mute">แสดง — จาก — รายการ</span></div>
+ <div class="flex wrap" style="margin-bottom:12px"><div class="in">🔍 <input id="pt-q" placeholder="ค้นหา HN, ชื่อ, นามสกุล..."></div><span class="sel">📅 เลือกช่วงวันที่ <span>⌄</span></span><button class="btn" data-go="newpatient">＋ เพิ่มผู้ป่วย</button></div>
+ <div class="tabs" id="pt-tabs"><button class="tab on" data-f="all">ทั้งหมด <span></span></button><button class="tab" data-f="wearing">สวมใส่อุปกรณ์ <span></span></button><button class="tab" data-f="not_wearing">ไม่ได้ใส่ <span></span></button><button class="tab" data-f="follow_up">ต้องติดตาม <span></span></button></div>
+ <div class="sm" id="pt-err" style="color:var(--bad);margin-bottom:8px"></div>
+ <div class="scroll"><table id="pt"><tr><th></th><th>HN</th><th>ชื่อ-นามสกุล</th><th>อายุ</th><th>ชม.การใส่ (ชม./วัน)</th><th>สถานะการติดตาม</th><th>แนวโน้ม 7 วัน</th></tr></table></div>
+ <div class="flex sp wrap pager"><div class="flex" style="gap:6px" id="pt-pg"></div><span class="sm mute" id="pt-info"></span></div>
 </section>
  
 <!-- โปรไฟล์ผู้ป่วย -->
 <section class="pg" id="profile">
  <a class="back" href="#patients">‹ ผู้ป่วย</a>
- <div class="flex wrap" style="margin:12px 0 16px"><div class="av" style="width:64px;height:64px"></div><div style="flex:1"><h1 style="margin:0">HN — &nbsp;ชื่อ-นามสกุล</h1><div class="sm mute">เพศ | อายุ | HN</div></div><button class="btn l" data-go="clinical">ประเมินโดยแพทย์</button><button class="btn l" data-go="device">ข้อมูลอุปกรณ์</button></div>
+ <div class="flex wrap" style="margin:12px 0 16px"><div class="av" style="width:64px;height:64px"></div><div style="flex:1"><h1 style="margin:0" id="pf-name">HN — &nbsp;ชื่อ-นามสกุล</h1><div class="sm mute" id="pf-sub">เพศ | อายุ | HN</div><div class="flex wrap" id="pf-tags" style="gap:6px;margin-top:6px"></div></div><button class="btn l" data-go="clinical">ประเมินโดยแพทย์</button><button class="btn l" data-go="device">ข้อมูลอุปกรณ์</button></div>
+ <div class="sm" id="pf-err" style="color:var(--bad);margin-bottom:8px"></div>
  <div class="tabs"><button class="tab on">ภาพรวม</button><button class="tab">ข้อมูลทั่วไป</button><button class="tab">การเคลื่อนไหว</button><button class="tab">ติดตามผล</button><button class="tab">ประวัติการรักษา</button></div>
  <h3>สรุปข้อมูลล่าสุด (7 วันล่าสุด)</h3>
- <div class="g c3"><div class="card"><div class="sm">Rest Tremor</div><div class="big">—</div></div><div class="card"><div class="sm">Walking Cadence</div><div class="big">—</div></div><div class="card"><div class="sm">Activity Level</div><div class="big">—</div></div></div>
+ <div class="g c3" id="pf-sum"><div class="card"><div class="sm">Rest Tremor</div><div class="big">—</div></div><div class="card"><div class="sm">Walking Cadence</div><div class="big">—</div></div><div class="card"><div class="sm">Activity Level</div><div class="big">—</div></div></div>
  <h3>ระดับการสั่น (Rest Tremor)</h3>
- <div class="tabs"><button class="tab on">7 วัน</button><button class="tab">30 วัน</button><button class="tab">90 วัน</button></div>
- <div class="g c4" style="grid-template-columns:3fr 1fr"><div class="chart">ยังไม่มีข้อมูลกราฟ</div><div class="g"><div class="card sm">ค่าเฉลี่ย<div class="big">—</div></div><div class="card sm">ค่าสูงสุด<div class="big">—</div></div><div class="card sm">ค่าต่ำสุด<div class="big">—</div></div></div></div>
+ <div class="tabs" id="pf-days"><button class="tab on" data-d="7">7 วัน</button><button class="tab" data-d="30">30 วัน</button><button class="tab" data-d="90">90 วัน</button></div>
+ <div class="g c4" style="grid-template-columns:3fr 1fr"><div class="chart" id="pf-chart" style="height:auto;min-height:220px;padding:8px">ยังไม่มีข้อมูลกราฟ</div><div class="g"><div class="card sm">ค่าเฉลี่ย<div class="big" id="pf-mean">—</div></div><div class="card sm">ค่าสูงสุด<div class="big" id="pf-max">—</div></div><div class="card sm">ค่าต่ำสุด<div class="big" id="pf-min">—</div></div></div></div>
 </section>
  
 <!-- ข้อมูลจากอุปกรณ์ -->
 <section class="pg" id="device">
- <div class="flex sp wrap"><h1>ข้อมูลจากอุปกรณ์ <span class="mute sm">(Device Data)</span></h1><span class="sel">📅 เลือกช่วงวันที่ <span>⌄</span></span></div>
+ <div class="flex sp wrap"><h1>ข้อมูลจากอุปกรณ์ <span class="mute sm">(Device Data)</span></h1><div class="flex wrap"><select class="sel" id="dv-pick" aria-label="เลือกผู้ป่วย"></select><span class="sel">📅 เลือกช่วงวันที่ <span>⌄</span></span></div></div>
+ <div class="sm" id="dv-err" style="color:var(--bad);margin-bottom:8px"></div>
  <div class="tabs"><button class="tab on">การเคลื่อนไหว</button><button class="tab">การนอน</button><button class="tab">คุณภาพข้อมูล</button></div>
- <div class="g c4"><div class="card"><div class="sm">สวมใส่อุปกรณ์</div><div class="big">—</div></div><div class="card"><div class="sm">Rest Tremor</div><div class="big">—</div></div><div class="card"><div class="sm">Walking Cadence</div><div class="big">—</div></div><div class="card"><div class="sm">Activity Level</div><div class="big">—</div></div></div>
+ <div class="g c4" id="dv-cards"><div class="card"><div class="sm">สวมใส่อุปกรณ์</div><div class="big">—</div></div><div class="card"><div class="sm">Rest Tremor</div><div class="big">—</div></div><div class="card"><div class="sm">Walking Cadence</div><div class="big">—</div></div><div class="card"><div class="sm">Activity Level</div><div class="big">—</div></div></div>
  <h3>คุณภาพข้อมูล <span class="mute sm">(Data Quality)</span></h3>
- <div class="card flex wrap" style="gap:20px"><div class="ring"><b>—%</b></div><div class="sm mute" style="display:grid;gap:8px"><div>● สวมใส่ต่อเนื่อง —</div><div>● ช่วงเวลาที่ไม่มีข้อมูล —</div><div>● สัญญาณมีคุณภาพต่ำ —</div></div></div>
+ <div class="card flex wrap" style="gap:20px"><div class="ring" id="dv-ring"><b>—%</b></div><div class="sm mute" style="display:grid;gap:8px" id="dv-q"><div>● สวมใส่ต่อเนื่อง —</div><div>● ช่วงเวลาที่ไม่มีข้อมูล —</div><div>● สัญญาณมีคุณภาพต่ำ —</div></div></div>
  <h3>รายละเอียดอุปกรณ์</h3>
  <div class="card flex wrap" style="gap:20px;align-items:flex-start"><div class="av" style="width:70px;height:90px;border-radius:14px"></div>
-  <table style="max-width:420px"><tr><td>รุ่น</td><td>—</td></tr><tr><td>SN</td><td>—</td></tr><tr><td>เฟิร์มแวร์</td><td>—</td></tr><tr><td>อัปเดตล่าสุด</td><td>—</td></tr></table></div>
+  <table style="max-width:420px" id="dv-info"><tr><td>รุ่น</td><td>—</td></tr><tr><td>SN</td><td>—</td></tr><tr><td>เฟิร์มแวร์</td><td>—</td></tr><tr><td>อัปเดตล่าสุด</td><td>—</td></tr></table></div>
 </section>
  
 <!-- การประเมินโดยแพทย์ -->
 <section class="pg" id="clinical">
- <h1>การประเมินโดยแพทย์ <span class="mute sm">(Clinical Assessment)</span></h1>
- <div class="flex" style="margin-bottom:12px"><div class="av"></div><b>HN — &nbsp;ชื่อ-นามสกุล</b></div>
- <div class="seg" style="max-width:520px;margin-bottom:16px"><span class="on">MDS-UPDRS (Part III)</span><span>MoCA</span><span>CDR</span></div>
+ <div class="flex sp wrap"><h1>การประเมินโดยแพทย์ <span class="mute sm">(Clinical Assessment)</span></h1><select class="sel" id="cl-pick" aria-label="เลือกผู้ป่วย"></select></div>
+ <div class="sm" id="cl-err" style="color:var(--bad);margin-bottom:8px"></div>
+ <div class="flex" style="margin-bottom:12px"><div class="av"></div><b id="cl-name">HN — &nbsp;ชื่อ-นามสกุล</b></div>
+ <div class="seg" id="cl-type" style="max-width:680px;margin-bottom:16px"><span class="on" data-type="MDS-UPDRS">MDS-UPDRS (Part III)</span><span data-type="MoCA">MoCA</span><span data-type="CDR">CDR</span><span data-type="UPDRS-III-OFF">UPDRS III (OFF)</span></div>
  <div class="g" style="grid-template-columns:1fr 2fr">
-  <div class="card"><b>MDS-UPDRS III</b><div class="big" style="font-size:38px;margin:12px 0">—</div><div class="sm mute">วันที่ประเมิน —</div></div>
-  <div class="card"><b>รายละเอียดคะแนน</b><table style="margin-top:8px"><tr><th>ท่าทาง</th><th>คะแนน</th></tr><tr><td>การเดิน (Rest tremor)</td><td>—</td></tr><tr><td>การเคลื่อนไหวช้า (Bradykinesia)</td><td>—</td></tr><tr><td>ความแข็งเกร็ง (Rigidity)</td><td>—</td></tr><tr><td>การทรงตัว (Postural stability)</td><td>—</td></tr><tr><td>การเดิน (Gait)</td><td>—</td></tr></table></div></div>
+  <div class="card"><b id="cl-title">MDS-UPDRS III</b><div class="big" style="font-size:38px;margin:12px 0" id="cl-score">—</div><div class="sm mute" id="cl-date">วันที่ประเมิน —</div></div>
+  <div class="card"><b>รายละเอียดคะแนน</b><table style="margin-top:8px" id="cl-items"><tr><th>หัวข้อ</th><th>คะแนน</th></tr><tr><td>อาการสั่นขณะพัก (Rest tremor)</td><td>—</td></tr><tr><td>การเคลื่อนไหวช้า (Bradykinesia)</td><td>—</td></tr><tr><td>ความแข็งเกร็ง (Rigidity)</td><td>—</td></tr><tr><td>การทรงตัว (Postural stability)</td><td>—</td></tr><tr><td>การเดิน (Gait)</td><td>—</td></tr></table></div></div>
  <h3>ประวัติการประเมิน</h3>
- <div class="scroll"><table><tr><th>วันที่</th><th>MDS-UPDRS III</th><th>ผู้ประเมิน</th><th>หมายเหตุ</th></tr><tr><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>—</td><td>—</td><td>—</td><td>—</td></tr></table></div>
+ <div class="scroll"><table id="cl-hist"><tr><th>วันที่</th><th>MDS-UPDRS III</th><th>ผู้ประเมิน</th><th>หมายเหตุ</th></tr><tr><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>—</td><td>—</td><td>—</td><td>—</td></tr></table></div>
  <button class="btn" data-go="newassess" style="width:100%;margin-top:14px">＋ บันทึกผลการประเมินใหม่</button>
 </section>
  
@@ -137,39 +148,44 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
 <section class="pg" id="reports">
  <div class="flex sp wrap"><h1>รายงานและวิเคราะห์ <span class="mute sm">(Reports &amp; Analytics)</span></h1><span class="sel">📅 เลือกช่วงวันที่ <span>⌄</span></span></div>
  <div class="tabs"><button class="tab on">ภาพรวม</button><button class="tab">เปรียบเทียบรายบุคคล</button><button class="tab">กลุ่มผู้ป่วย</button><button class="tab">แนวโน้มระยะยาว</button></div>
- <div class="g c3"><div class="card"><div class="sm">Rest Tremor (เฉลี่ย)</div><div class="big">—</div></div><div class="card"><div class="sm">Walking Cadence (เฉลี่ย)</div><div class="big">—</div></div><div class="card"><div class="sm">Activity Level (เฉลี่ย)</div><div class="big">—</div></div></div>
- <h3>เปรียบเทียบกับกลุ่มอ้างอิง (Percentile)</h3>
- <div class="seg" style="margin-bottom:10px"><span class="on">COPS (PD)</span><span>NHANES (ปกติ)</span></div>
- <div class="g c3"><div><div class="sm">Rest Tremor (%)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div><div><div class="sm">Walking Cadence (ก้าว/นาที)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div><div><div class="sm">Activity Level (ซม./วัน)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div></div>
- <h3>Rest Tremor (%)</h3><div class="chart">ยังไม่มีข้อมูลกราฟ</div>
+ <div class="sm" id="rp-err" style="color:var(--bad);margin-bottom:8px"></div>
+ <div class="g c3" id="rp-cards"><div class="card"><div class="sm">Rest Tremor (เฉลี่ย)</div><div class="big">—</div></div><div class="card"><div class="sm">Walking Cadence (เฉลี่ย)</div><div class="big">—</div></div><div class="card"><div class="sm">Activity Level (เฉลี่ย)</div><div class="big">—</div></div></div>
+ <div class="flex sp wrap"><h3>เปรียบเทียบกับกลุ่มอ้างอิง (Percentile) <span class="mute sm">7 วันล่าสุดของผู้ป่วย</span></h3><select class="sel" id="rp-pick" aria-label="เลือกผู้ป่วย"></select></div>
+ <div class="seg" id="rp-cohort" style="margin-bottom:10px"><span class="on" data-c="COPS">COPS (PD)</span><span data-c="NHANES">NHANES (ปกติ)</span></div>
+ <div class="g c3" id="rp-pct"><div><div class="sm">Rest Tremor (%)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div><div><div class="sm">Walking Cadence (ก้าว/นาที)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div><div><div class="sm">Activity Level (mg)</div><div class="bar"></div><div class="flex sp sm mute"><span>P25</span><span>P50</span><span>P75</span></div></div></div>
+ <h3>Rest Tremor × Walking Cadence <span class="mute sm">(ค่าเฉลี่ยรายผู้ป่วยในช่วงที่เลือก · คลิกจุดเพื่อดูโปรไฟล์)</span></h3><div class="chart" id="rp-scatter" style="height:auto;min-height:220px;padding:8px">ยังไม่มีข้อมูลกราฟ</div>
 </section>
  
 <!-- การแจ้งเตือน -->
 <section class="pg" id="alerts">
  <h1>การแจ้งเตือน <span class="mute sm">(Alerts)</span></h1>
- <div class="tabs"><button class="tab on">ทั้งหมด</button><button class="tab">ข้อมูลหายไป</button><button class="tab">การประเมินเกินกำหนด</button></div>
- <div class="card" id="al"></div>
+ <div class="tabs" id="al-tabs"><button class="tab on" data-t="">ทั้งหมด <span></span></button><button class="tab" data-t="device">ข้อมูลจากอุปกรณ์ <span></span></button><button class="tab" data-t="assessment">การประเมินผล <span></span></button></div>
+ <div class="sm" id="al-err" style="color:var(--bad);margin-bottom:8px"></div>
+ <div class="card" id="al"><div class="mute">กำลังโหลด…</div></div>
 </section>
  
 <!-- นัดหมาย -->
 <section class="pg" id="appts">
  <div class="flex sp wrap"><h1>นัดหมาย <span class="mute sm">(Appointments)</span></h1><button class="btn" data-go="newappt">＋ เพิ่มนัดหมาย</button></div>
  <div class="g" style="grid-template-columns:3fr 2fr">
-  <div class="card"><div class="flex sp" style="margin-bottom:8px"><b class="back" style="font-size:18px">‹</b><b>ตุลาคม 2568</b><b class="back" style="font-size:18px">›</b></div><div class="cal" id="cal"></div></div>
-  <div class="card"><b>นัดหมายวันที่ <span id="dlab">—</span></b><div class="item"><span class="sm mute">เวลา</span><div class="ln"></div><span class="sm mute">สถานะ</span></div><div class="item"><span class="sm mute">เวลา</span><div class="ln"></div><span class="sm mute">สถานะ</span></div><div class="item" style="border:0"><span class="sm mute">เวลา</span><div class="ln"></div><span class="sm mute">สถานะ</span></div></div></div>
+  <div class="card"><div class="flex sp wrap" style="margin-bottom:8px"><b class="back" style="font-size:18px" id="ap-prev" role="button" aria-label="เดือนก่อน">‹</b><div class="flex" style="gap:8px"><b id="ap-mlabel">—</b><input type="month" id="ap-month" class="sel" style="padding:3px 8px;font-size:12px" aria-label="ไปที่เดือน"><button class="tab" id="ap-today" style="padding:4px 10px;font-size:12px">วันนี้</button></div><b class="back" style="font-size:18px" id="ap-next" role="button" aria-label="เดือนถัดไป">›</b></div><div class="cal" id="cal"></div></div>
+  <div class="card"><b>นัดหมายวันที่ <span id="dlab">—</span></b><div id="ap-list"><div class="mute sm" style="padding:14px 0">เลือกวันในปฏิทิน</div></div></div></div>
+ <div class="sm" id="ap-err" style="color:var(--bad);margin-top:8px"></div>
 </section>
  
 <!-- ตั้งค่า -->
 <section class="pg" id="settings">
  <h1>ตั้งค่า <span class="mute sm">(Settings)</span></h1>
- <div class="card flex" style="margin-bottom:12px"><div class="av" style="width:56px;height:56px"></div><div style="flex:1"><b>ชื่อผู้ใช้งาน</b><div class="sm mute">ตำแหน่ง</div></div><span>›</span></div>
+ <div class="card flex" style="margin-bottom:12px"><div class="av" style="width:56px;height:56px"></div><div style="flex:1"><b id="st-name">ชื่อผู้ใช้งาน</b><div class="sm mute" id="st-pos">ตำแหน่ง</div></div><button class="btn l" id="st-logout" hidden>ออกจากระบบ</button></div>
  <div class="card"><div class="row" data-go="devconn"><span>⛨ &nbsp;การเชื่อมต่ออุปกรณ์</span><span>›</span></div><div class="row" data-go="alerts"><span>🔔 &nbsp;การแจ้งเตือน</span><span>›</span></div><div class="row" data-go="org" style="border:0"><span>⚙ &nbsp;ข้อมูลหน่วยงาน</span><span>›</span></div></div>
  <h3>การแสดงผล</h3>
  <div class="card g" style="gap:14px">
   <div class="flex sp"><span>ธีม</span><div class="seg" style="width:240px" id="theme"><span class="on" data-t="light">สว่าง</span><span data-t="dark">มืด</span><span data-t="auto">ตามระบบ</span></div></div>
-  <div class="flex sp"><span>ภาษา</span><span class="sel">ไทย <span>⌄</span></span></div>
-  <div class="flex sp"><span>รูปแบบวันที่</span><span class="sel">พ.ศ. <span>⌄</span></span></div>
+  <div class="flex sp"><span>ภาษา</span><select class="sel" id="st-lang"><option value="th">ไทย</option><option value="en" disabled>English (ยังไม่รองรับ)</option></select></div>
+  <div class="flex sp"><span>รูปแบบวันที่</span><select class="sel" id="st-date"><option value="short">พ.ศ. แบบย่อ (24 ต.ค. 2569)</option><option value="full">พ.ศ. แบบเต็ม (24 ตุลาคม 2569)</option></select></div>
+  <label class="flex sp"><span>แสดงจำนวนแจ้งเตือนใหม่ที่เมนู</span><input type="checkbox" id="st-notify" style="width:18px;height:18px"></label>
  </div>
+ <div class="sm" id="st-msg" style="margin-top:8px"></div>
 </section>
  
 <!-- เพิ่มผู้ป่วย -->
@@ -185,11 +201,12 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
 <section class="pg" id="newassess">
  <a class="back" href="#clinical">‹ การประเมินโดยแพทย์</a>
  <h1 style="margin-top:10px">บันทึกผลการประเมินใหม่</h1>
- <div class="seg" style="max-width:520px;margin-bottom:14px"><span class="on">MDS-UPDRS (Part III)</span><span>MoCA</span><span>CDR</span></div>
+ <div class="seg" id="na-type" style="max-width:520px;margin-bottom:14px"><span class="on" data-type="MDS-UPDRS">MDS-UPDRS (Part III)</span><span data-type="MoCA">MoCA</span><span data-type="CDR">CDR</span></div>
  <div class="card"><b>ข้อมูลการประเมิน</b><div class="frm" style="margin-top:12px" data-form="fa"></div></div>
- <div class="card" style="margin-top:12px"><b>คะแนนรายหัวข้อ</b><div class="frm" style="margin-top:12px" data-form="fs"></div><div class="tot"><span>คะแนนรวม</span><span id="tot">—</span></div></div>
+ <div class="card" id="na-items" style="margin-top:12px"><b>คะแนนรายหัวข้อ</b><div class="frm" style="margin-top:12px" data-form="fs"></div><div class="tot"><span>รวมคะแนนรายหัวข้อ</span><span id="tot">—</span></div></div>
  <div class="card" style="margin-top:12px"><div class="frm" data-form="fn"></div></div>
- <div class="acts"><button class="btn l" data-go="clinical">ยกเลิก</button><button class="btn" data-go="clinical">บันทึกผลการประเมิน</button></div>
+ <div class="sm" id="na-err" style="color:var(--bad);margin-top:10px;text-align:right"></div>
+ <div class="acts"><button class="btn l" data-go="clinical">ยกเลิก</button><button class="btn" id="na-save">บันทึกผลการประเมิน</button></div>
 </section>
  
 <!-- เพิ่มนัดหมาย -->
@@ -197,7 +214,8 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
  <a class="back" href="#appts">‹ นัดหมาย</a>
  <h1 style="margin-top:10px">เพิ่มนัดหมาย</h1>
  <div class="card"><div class="frm" data-form="fm"></div></div>
- <div class="acts"><button class="btn l" data-go="appts">ยกเลิก</button><button class="btn" data-go="appts">บันทึกนัดหมาย</button></div>
+ <div class="sm" id="apn-err" style="color:var(--bad);margin-top:10px;text-align:right"></div>
+ <div class="acts"><button class="btn l" data-go="appts">ยกเลิก</button><button class="btn" id="ap-save">บันทึกนัดหมาย</button></div>
 </section>
  
 <!-- การเชื่อมต่ออุปกรณ์ -->
@@ -220,11 +238,16 @@ tr.go{cursor:pointer}tr.go:hover td{background:var(--pri2)}
  
 </main>
 </div>
+<!-- หน้า login (บังทั้งเว็บจนกว่าจะเข้าสู่ระบบ เฉพาะโหมด cognito) -->
+<div id="login" class="login" hidden><div class="card" style="max-width:360px;width:100%;text-align:center;padding:28px">
+ <div class="logo" style="margin:0 0 6px">🌿 pakinson</div><div class="mute sm" style="margin-bottom:18px">ระบบติดตามผู้ป่วยพาร์กินสันสำหรับแพทย์</div>
+ <button class="btn" id="login-btn" style="width:100%">เข้าสู่ระบบ</button><div class="sm" id="login-msg" style="color:var(--bad);margin-top:12px"></div>
+</div></div>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const hl={profile:'patients',newpatient:'patients',newassess:'clinical',newappt:'appts',devconn:'settings',org:'settings'};
 function route(){
-  let h=(location.hash||'#home').slice(1);if(!$('#'+h))h='home';
+  let h=(location.hash||'#home').slice(1).split('/')[0];if(!document.getElementById(h))h='home';  // #profile/<id> -> หน้า profile
   $$('.pg').forEach(p=>p.classList.toggle('on',p.id===h));
   $$('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+(hl[h]||h)));
   scrollTo(0,0);
@@ -235,25 +258,18 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('.tab');if(t){t.parentElement.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));return}
   const s=e.target.closest('.seg span');if(s){s.parentElement.querySelectorAll('span').forEach(x=>x.classList.toggle('on',x===s));
     if(s.dataset.t){try{s.dataset.t==='auto'?document.documentElement.removeAttribute('data-theme'):document.documentElement.dataset.theme=s.dataset.t}catch(_){}}return}
-  const d=e.target.closest('.cal .d');if(d){$$('.cal .d').forEach(x=>x.classList.toggle('sel',x===d));$('#dlab').textContent=d.textContent+' ต.ค. 2568'}
 });
-// ตารางผู้ป่วย (ว่าง) — คลิกแถวเพื่อไปโปรไฟล์
-for(let i=0;i<10;i++)$('#pt').insertAdjacentHTML('beforeend','<tr class="go" data-go="profile"><td><input type="checkbox" aria-label="เลือก"></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>');
-// รายการแจ้งเตือน (ว่าง)
-for(let i=0;i<4;i++)$('#al').insertAdjacentHTML('beforeend','<div class="item" style="'+(i==3?'border:0':'')+'"><div class="ic">!</div><div style="flex:1"><div class="ln"></div><div class="ln" style="height:8px;margin-top:8px;max-width:160px"></div></div><button class="btn l" data-go="profile">ดูรายละเอียด</button></div>');
-// ปฏิทิน
-const c=$('#cal');["อา.","จ.","อ.","พ.","พฤ.","ศ.","ส."].forEach(d=>c.insertAdjacentHTML('beforeend','<span class="h">'+d+'</span>'));
-[null,null,...Array.from({length:31},(_,i)=>i+1)].forEach(d=>c.insertAdjacentHTML('beforeend',d?'<span class="d">'+d+'</span>':'<span></span>'));
 // ฟอร์ม (ช่องว่างทั้งหมด กรอกเอง)
-const F=(l,t,w)=>'<label class="fld'+(w?' w':'')+'"><span>'+l+'</span>'+(Array.isArray(t)?'<select><option value="">เลือก…</option>'+t.map(o=>'<option>'+o+'</option>').join('')+'</select>':t==='ta'?'<textarea rows="3"></textarea>':'<input type="'+t+'">')+'</label>';
+// F(ป้าย, ชนิด, เต็มแถว, name) · ตัวเลือกเป็น 'ข้อความ' หรือ ['value','ข้อความ']
+const F=(l,t,w,n)=>{const nm=n?' name="'+n+'"':'';return '<label class="fld'+(w?' w':'')+'"><span>'+l+'</span>'+(Array.isArray(t)?'<select'+nm+'><option value="">เลือก…</option>'+t.map(o=>Array.isArray(o)?'<option value="'+o[0]+'">'+o[1]+'</option>':'<option>'+o+'</option>').join('')+'</select>':t==='ta'?'<textarea rows="3"'+nm+'></textarea>':'<input type="'+t+'"'+nm+'>')+'</label>'};
 const sc=['0','1','2','3','4'];
 const forms={
  fp:[['HN','text'],['เลขบัตรประชาชน','text'],['คำนำหน้า',['นาย','นาง','น.ส.']],['เพศ',['ชาย','หญิง']],['ชื่อ','text'],['นามสกุล','text'],['วันเกิด','date'],['เบอร์โทรศัพท์','tel'],['ผู้ดูแล / ผู้ติดต่อฉุกเฉิน','text'],['เบอร์ผู้ดูแล','tel'],['หมายเหตุ','ta',1]],
  fpd:[['อุปกรณ์ที่ผูก',[]],['วันที่เริ่มใช้งาน','date']],
- fa:[['ผู้ป่วย',[]],['วันที่ประเมิน','date'],['ผู้ประเมิน',[]],['สถานะยา',['ก่อนยา (OFF)','หลังยา (ON)']]],
- fs:[['การเดิน (Rest tremor)',sc],['การเคลื่อนไหวช้า (Bradykinesia)',sc],['ความแข็งเกร็ง (Rigidity)',sc],['การทรงตัว (Postural stability)',sc],['การเดิน (Gait)',sc]],
- fn:[['หมายเหตุ','ta',1]],
- fm:[['ผู้ป่วย',[]],['แพทย์',[]],['วันที่','date'],['เวลา','time'],['ประเภทนัด',['ติดตามอาการ','ประเมิน MDS-UPDRS','ประเมิน MoCA','ปรับแผนการดูแล']],['หมายเหตุ','ta',1]],
+ fa:[['ผู้ป่วย',[],0,'patient'],['วันที่ประเมิน','date',0,'date'],['ผู้ประเมิน','text',0,'assessor'],['สถานะยา',[['OFF','ก่อนยา (OFF)'],['ON','หลังยา (ON)']],0,'med_state']],
+ fs:[['อาการสั่นขณะพัก (Rest tremor)',sc,0,'rest_tremor'],['การเคลื่อนไหวช้า (Bradykinesia)',sc,0,'bradykinesia'],['ความแข็งเกร็ง (Rigidity)',sc,0,'rigidity'],['การทรงตัว (Postural stability)',sc,0,'postural_stability'],['การเดิน (Gait)',sc,0,'gait']],
+ fn:[['คะแนนรวม','number',0,'total'],['หมายเหตุ','ta',1,'note']],
+ fm:[['ผู้ป่วย',[],0,'patient'],['แพทย์','text',0,'doctor'],['วันที่','date',0,'date'],['เวลา','time',0,'time'],['ประเภทนัด',['ติดตามอาการ','ประเมิน MDS-UPDRS','ประเมิน MoCA','ปรับแผนการดูแล'],0,'purpose'],['หมายเหตุ','ta',1,'note']],
  fd:[['รุ่น','text'],['SN','text'],['ผู้ป่วยที่ผูก',[]],['รหัสจับคู่ (Pairing code)','text']],
  fo:[['ชื่อหน่วยงาน','text',1],['ที่อยู่','ta',1],['เบอร์โทรศัพท์','tel'],['อีเมล','email'],['เลขที่ใบอนุญาต','text'],['เว็บไซต์','url']]
 };
@@ -261,7 +277,9 @@ $$('[data-form]').forEach(e=>e.innerHTML=forms[e.dataset.form].map(x=>F(...x)).j
 $$('[data-form=fs] select').forEach(s=>s.addEventListener('change',()=>{const v=$$('[data-form=fs] select').map(x=>x.value).filter(x=>x!=='');$('#tot').textContent=v.length?v.reduce((a,b)=>a+ +b,0):'—'}));
 // ตัวเลือกช่วงวันที่ (หน้าหลัก / รายชื่อผู้ป่วย / ข้อมูลจากอุปกรณ์ / รายงาน)
 const pad=n=>String(n).padStart(2,'0'),iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-const fmt=v=>v?new Date(v+'T00:00').toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'}):'';
+var SET={theme:'light',lang:'th',date_format:'short',notify_alerts:true};  // การตั้งค่าของหมอ (โหลดจาก /api/me/settings ตอนเปิดเว็บ)
+const MON=()=>SET.date_format==='full'?'long':'short';
+const fmt=v=>v?new Date(v+'T00:00').toLocaleDateString('th-TH',{day:'numeric',month:MON(),year:'numeric'}):'';
 $$('.sel').filter(e=>e.textContent.includes('📅')).forEach(el=>{
   const w=document.createElement('div');w.className='dr';el.replaceWith(w);
   el.innerHTML='📅 <span class="lb">เลือกช่วงวันที่</span> <span>⌄</span>';
@@ -284,6 +302,475 @@ $$('.sel').filter(e=>e.textContent.includes('📅')).forEach(el=>{
     w.dispatchEvent(new CustomEvent('range',{bubbles:true,detail:{from:f.value,to:t.value}}))};
 });
 document.addEventListener('click',e=>{if(!e.target.closest('.dr'))$$('.dr.open').forEach(x=>x.classList.remove('open'))});
+// ===== เชื่อม backend (web/backend) =====
+const API='http://localhost:8000';  // ตอนขึ้น Lambda เปลี่ยนเป็น URL ของ API Gateway
+// ===== Login: Cognito หน้า login สำเร็จรูป (Hosted UI) + PKCE · โหมดมาจาก backend ที่ /api/auth/config =====
+// dev = ไม่ต้อง login (ทดสอบในเครื่อง) · cognito = ทุก request ต้องแนบ ID token
+const AUTH={mode:null,cfg:null,token:null};
+const ss={get:k=>{try{return sessionStorage.getItem(k)}catch(_){return null}},set:(k,v)=>{try{sessionStorage.setItem(k,v)}catch(_){}},del:k=>{try{sessionStorage.removeItem(k)}catch(_){}}};
+const b64url=buf=>btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const jwtClaims=t=>{try{const s=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(s),c=>c.charCodeAt(0))))}catch(_){return {}}};
+const REDIRECT=location.origin+location.pathname;   // ต้องตรงกับ Callback URL / Sign-out URL ใน Cognito app client
+const NEVER=()=>new Promise(()=>{});                 // ยังไม่ได้ login: ทุก request รอไปเรื่อยๆ จนกว่าจะ login
+function showLogin(msg){
+  AUTH.token=null;ss.del('pd_id_token');
+  $('#login-btn').hidden=AUTH.mode!=='cognito';$('#login-msg').textContent=msg||'';$('#login').hidden=false;
+}
+async function login(){
+  const verifier=b64url(crypto.getRandomValues(new Uint8Array(48))),state=b64url(crypto.getRandomValues(new Uint8Array(16)));
+  const challenge=b64url(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(verifier)));
+  ss.set('pd_pkce',JSON.stringify({verifier,state,hash:location.hash}));   // จำหน้าที่อยู่ไว้ กลับมาแล้วไปหน้าเดิม
+  location.href=AUTH.cfg.domain+'/oauth2/authorize?'+new URLSearchParams({response_type:'code',client_id:AUTH.cfg.client_id,
+    redirect_uri:REDIRECT,scope:'openid email profile',code_challenge_method:'S256',code_challenge:challenge,state});
+}
+function logout(){ss.del('pd_id_token');location.href=AUTH.cfg.domain+'/logout?'+new URLSearchParams({client_id:AUTH.cfg.client_id,logout_uri:REDIRECT})}
+async function initAuth(){
+  const cfg=AUTH.cfg=await fetch(API+'/api/auth/config').then(r=>r.json());AUTH.mode=cfg.mode;
+  if(cfg.mode==='dev'){$('#auth-mode').hidden=false;return}
+  if(cfg.mode!=='cognito'){showLogin('เซิร์ฟเวอร์ยังไม่ได้ตั้งค่าระบบ login');return NEVER()}
+  $('#st-logout').hidden=false;
+  const p=new URLSearchParams(location.search);
+  if(p.get('code')||p.get('error')){   // กลับมาจากหน้า login ของ Cognito
+    const saved=JSON.parse(ss.get('pd_pkce')||'{}');ss.del('pd_pkce');
+    history.replaceState(null,'',REDIRECT+(saved.hash||''));   // ลบ ?code= ออกจาก URL
+    if(p.get('error')||saved.state!==p.get('state')){showLogin('เข้าสู่ระบบไม่สำเร็จ ลองใหม่อีกครั้ง');return NEVER()}
+    const r=await fetch(cfg.domain+'/oauth2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams({grant_type:'authorization_code',client_id:cfg.client_id,code:p.get('code'),redirect_uri:REDIRECT,code_verifier:saved.verifier})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.id_token){showLogin('เข้าสู่ระบบไม่สำเร็จ ('+(j.error||r.status)+')');return NEVER()}
+    ss.set('pd_id_token',j.id_token);
+    if(saved.hash)setTimeout(()=>dispatchEvent(new HashChangeEvent('hashchange')));   // เปิดหน้าที่อยู่ก่อน login
+  }
+  const t=ss.get('pd_id_token');
+  if(!t||jwtClaims(t).exp*1000<Date.now()+60e3){showLogin();return NEVER()}   // ยังไม่ login / token ใกล้หมดอายุ
+  AUTH.token=t;
+}
+const AUTH_READY=initAuth().catch(e=>{showLogin('ติดต่อเซิร์ฟเวอร์ไม่ได้ ('+e.message+')');return NEVER()});
+// ทุก request ไป API: รอ login เสร็จ แล้วแนบ ID token · ได้ 401 = token หมดอายุ -> กลับหน้า login
+async function api(path,opt={}){
+  await AUTH_READY;
+  const headers={...(opt.headers||{})};if(AUTH.token)headers.Authorization='Bearer '+AUTH.token;
+  const r=await fetch(API+path,{...opt,headers});
+  if(r.status===401&&AUTH.mode==='cognito'){showLogin('เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่');throw new Error('กรุณาเข้าสู่ระบบใหม่')}
+  return r;
+}
+const get=(path,q)=>api(path+(q?'?'+new URLSearchParams(q):'')).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()});
+const esc=s=>String(s??'—').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const when=s=>new Date(s).toLocaleString('th-TH',{day:'numeric',month:MON(),year:'numeric',hour:'2-digit',minute:'2-digit'});
+const ICON={tremor_rest_fraction:'📈',cadence_steps_s:'🚶',enmo_g:'⌚'};
+// หน้าหลัก: การ์ด 4 ใบ (ตามช่วงวันที่) + การแจ้งเตือนล่าสุด 5 รายการ
+async function loadHome(range){
+  $('#s-err').textContent='';
+  try{
+    const [s,al]=await Promise.all([get('/api/dashboard/summary',range),get('/api/alerts',{limit:5})]);
+    const pct=n=>s.total_patients?' ('+Math.round(n/s.total_patients*100)+'%)':'';
+    $('#s-total').textContent=s.total_patients;
+    $('#s-wear').textContent=s.wearing+pct(s.wearing);
+    $('#s-wear-th').textContent='เฉลี่ย ≥ '+s.wear_hours_threshold+' ชม./วัน';
+    $('#s-assess').textContent=s.assessed_3m+pct(s.assessed_3m);
+    $('#s-alerts').textContent=s.alerts;
+    if(!range)$('#home .dr .lb').textContent=fmt(s.from)+' – '+fmt(s.to);  // ยังไม่เลือก = แสดงช่วงที่ backend ใช้
+    $('#home-al').innerHTML='<tr><th>ประเภท</th><th>รายละเอียด</th><th>ผู้ป่วย</th><th>เวลา</th></tr>'+(al.length
+      ?al.map(a=>'<tr class="go" data-go="alerts"><td>'+(ICON[a.metric]||'🔔')+'</td><td style="color:var(--ink)">'+esc(a.text)+'</td><td>'+esc(a.hn||a.patient_id)+'</td><td>'+when(a.created_at)+'</td></tr>').join('')
+      :'<tr><td colspan="4">ยังไม่มีการแจ้งเตือน</td></tr>');
+  }catch(e){$('#s-err').textContent='ดึงข้อมูลจาก API ไม่ได้ ('+e.message+') เปิด backend ที่ '+API+' แล้วหรือยัง?'}
+}
+let HOME_RANGE=null;
+$('#home').addEventListener('range',e=>{HOME_RANGE=e.detail;loadHome(HOME_RANGE)});
+addEventListener('hashchange',()=>{if(location.hash==='#home')loadHome(HOME_RANGE)});
+loadHome(null);
+// หน้า 2 รายชื่อผู้ป่วย: แท็บ + ค้นหา + ช่วงวันที่ + แบ่งหน้า (ทุกอย่างคำนวณที่ backend)
+const PT={filter:'all',search:'',page:1,range:null};
+const PT_HEAD='<tr><th></th><th>HN</th><th>ชื่อ-นามสกุล</th><th>อายุ</th><th>ชม.การใส่ (ชม./วัน)</th><th>สถานะการติดตาม</th><th>แนวโน้ม 7 วัน</th></tr>';
+// กราฟเส้นเล็ก ชม.ใส่ 7 วัน (แกน y 0-12 ชม.) วันที่ไม่มีข้อมูลเว้นช่อง
+const spark=v=>{let d='',dots='',pen=0;v.forEach((h,i)=>{if(h==null){pen=0;return}const x=i*12+2,y=(20-Math.min(h,12)/12*18).toFixed(1);d+=(pen?'L':'M')+x+' '+y;dots+='<circle cx="'+x+'" cy="'+y+'" r="1.6"/>';pen=1});
+  return d?'<svg width="76" height="22" viewBox="0 0 76 22" fill="var(--pri)"><path d="'+d+'" fill="none" stroke="var(--pri)" stroke-width="1.5"/>'+dots+'</svg>':'—'};
+const ptRow=r=>'<tr class="go" data-go="profile/'+encodeURIComponent(r.patient_id)+'"><td><input type="checkbox" aria-label="เลือก" onclick="event.stopPropagation()"></td><td>'+esc(r.hn)+'</td><td style="color:var(--ink)">'+esc(r.display_name)+'</td><td>'+esc(r.age)+'</td>'
+  +'<td>'+(r.wear_hours==null?'—':'<span class="pill '+(r.wearing?'ok':'bad')+'">'+r.wear_hours+'</span>')
+  +(PT.range||!r.data_to?'':'<div class="sm mute" style="margin-top:2px">'+fmt(r.data_from)+' – '+fmt(r.data_to)+'</div>')+'</td>'  // ไม่เลือกช่วง: แต่ละคนใช้ช่วงของตัวเอง จึงบอกวันที่ไว้
+  +'<td>'+(r.follow_up?'<span style="color:var(--bad)">● ต้องติดตาม</span>':'<span style="color:var(--ok)">● ปกติ</span>')+'</td><td>'+spark(r.trend_7d)+'</td></tr>';
+async function loadPatients(){
+  $('#pt-err').textContent='';
+  try{
+    const q={filter:PT.filter,page:PT.page};
+    if(PT.search)q.search=PT.search;
+    if(PT.range){q.from=PT.range.from;q.to=PT.range.to}
+    const r=await get('/api/patients',q);
+    $$('#pt-tabs [data-f]').forEach(b=>b.querySelector('span').textContent='('+r.counts[b.dataset.f]+')');
+    if(!PT.range)$('#patients .dr .lb').textContent='7 วันล่าสุดที่มีข้อมูล';
+    $('#pt').innerHTML=PT_HEAD+(r.items.length?r.items.map(ptRow).join(''):'<tr><td colspan="7">ไม่พบผู้ป่วย</td></tr>');
+    const pages=Math.max(1,Math.ceil(r.total/r.page_size)),a=r.total?(r.page-1)*r.page_size+1:0;
+    $('#pt-pg').innerHTML='<b data-p="'+(r.page-1)+'"'+(r.page>1?'':' class="off"')+'>‹</b>'
+      +Array.from({length:pages},(_,i)=>'<b data-p="'+(i+1)+'"'+(i+1===r.page?' class="on"':'')+'>'+(i+1)+'</b>').join('')
+      +'<b data-p="'+(r.page+1)+'"'+(r.page<pages?'':' class="off"')+'>›</b>';
+    $('#pt-info').textContent='แสดง '+a+'-'+Math.min(r.page*r.page_size,r.total)+' จาก '+r.total+' รายการ';
+  }catch(e){$('#pt-err').textContent='ดึงข้อมูลจาก API ไม่ได้ ('+e.message+') เปิด backend ที่ '+API+' แล้วหรือยัง?'}
+}
+$('#pt-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){PT.filter=b.dataset.f;PT.page=1;loadPatients()}});
+$('#pt-pg').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(b&&!b.matches('.off,.on')){PT.page=+b.dataset.p;loadPatients()}});
+let ptTimer;$('#pt-q').addEventListener('input',e=>{clearTimeout(ptTimer);ptTimer=setTimeout(()=>{PT.search=e.target.value.trim();PT.page=1;loadPatients()},300)});
+$('#patients').addEventListener('range',e=>{PT.range=e.detail;PT.page=1;loadPatients()});
+// โหลดใหม่ทุกครั้งที่เข้าหน้า (เพิ่มผู้ป่วยแล้วกลับมาจะเห็นทันที)
+addEventListener('hashchange',()=>{if(location.hash==='#patients')loadPatients()});
+if(location.hash==='#patients')loadPatients();
+// หน้า 3 โปรไฟล์ผู้ป่วย (#profile/<patient_id>): ข้อมูลทั่วไป + การ์ดสรุป 7 วัน + กราฟ Rest Tremor
+const PF={id:null,days:7};
+let CUR=null;  // ผู้ป่วยที่กำลังดูอยู่ ส่งต่อกันระหว่างหน้า 3 / 4 / 5
+const WORSE_UP={tremor:true,cadence:false,activity:false};  // ทิศที่แย่ลง: tremor เพิ่ม = แย่, อื่นๆ ลด = แย่
+const num=v=>v==null?'—':(+v).toLocaleString('th-TH',{maximumFractionDigits:2});
+const pfCard=(k,c,foot)=>{if(!c)return '';  // foot = บรรทัดล่างสุด (ไม่ส่ง = จำนวนวันที่มีข้อมูล)const up=c.change_pct>0,bad=up===WORSE_UP[k];
+  return '<div class="card"><div class="sm">'+esc(c.label)+'</div><div class="big">'+num(c.value)+' <span class="sm mute">'+esc(c.unit)+'</span></div>'
+    +(c.change_pct==null?'<div class="sm mute">ยังไม่มีช่วงก่อนหน้าให้เทียบ</div>':'<div class="sm" style="color:var(--'+(c.change_pct===0?'mute':bad?'bad':'ok')+')">'+(up?'↑':c.change_pct<0?'↓':'')+' '+Math.abs(c.change_pct)+'% จากช่วงก่อนหน้า</div>')
+    +'<div class="sm mute">'+(foot||'มีข้อมูล '+c.valid_days+' วัน')+'</div></div>'};
+// วันที่ -> เลขวัน (นับแบบ UTC จะได้จำนวนเต็ม และแปลงกลับด้วย toISOString ได้วันเดิม)
+const day=s=>Date.parse(s+'T00:00Z')/864e5;
+// กราฟเส้นรายวัน แกน x = วันในช่วงที่เลือก (วันไม่มีข้อมูลเว้นช่อง)
+function lineChart(m,days){
+  const pts=m.points.filter(p=>p.value!=null);if(!pts.length)return 'ยังไม่มีข้อมูลในช่วงนี้';
+  const W=640,H=220,L=44,R=14,T=12,B=30,max=Math.max(...pts.map(p=>p.value))*1.15||1;
+  const last=day(m.points[m.points.length-1].date),first=last-(days-1);
+  const x=s=>L+(days<2?0:(day(s)-first)/(days-1))*(W-L-R),y=v=>T+(H-T-B)*(1-v/max);
+  let g='',d='',prev=null;
+  for(let i=0;i<=4;i++){const v=max*i/4;g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)"/><text x="'+(L-6)+'" y="'+(y(v)+4)+'" text-anchor="end">'+num(v)+'</text>'}
+  pts.forEach(p=>{d+=(prev!=null&&day(p.date)-prev===1?'L':'M')+x(p.date).toFixed(1)+' '+y(p.value).toFixed(1);prev=day(p.date)});
+  const step=Math.max(1,Math.ceil(days/7)),lab=[];for(let i=0;i<days;i+=step)lab.push(new Date((first+i)*864e5).toISOString().slice(0,10));
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="font-size:11px;fill:var(--mute)">'+g
+    +lab.map(s=>'<text x="'+x(s)+'" y="'+(H-8)+'" text-anchor="middle">'+new Date(s+'T00:00').toLocaleDateString('th-TH',{day:'numeric',month:'short'})+'</text>').join('')
+    +'<path d="'+d+'" fill="none" stroke="var(--pri)" stroke-width="2"/>'
+    +pts.map(p=>'<circle cx="'+x(p.date)+'" cy="'+y(p.value)+'" r="3.5" fill="var(--pri)"><title>'+p.date+': '+num(p.value)+' '+esc(m.unit)+'</title></circle>').join('')+'</svg>'}
+const tremorAPI=()=>get('/api/patients/'+encodeURIComponent(PF.id)+'/metrics',{metric:'tremor',days:PF.days});
+// 7 วัน: แสดงเสมอ · 30/90 วัน: แสดงเมื่อติดตามมาครบจำนวนวันแล้ว (วันเริ่มติดตาม -> วันล่าสุดที่มีข้อมูล)
+function renderTremor(m){
+  const pts=m.points.filter(p=>p.value!=null),start=PF.start||(pts[0]&&pts[0].date);
+  const tracked=pts.length&&start?day(pts[pts.length-1].date)-day(start)+1:0;
+  if(PF.days>7&&tracked<PF.days){
+    $('#pf-chart').innerHTML='<div style="text-align:center">ข้อมูลยังไม่ครบ '+PF.days+' วัน<div class="sm">ตอนนี้ติดตามมา '+tracked+' วัน จะแสดงกราฟเมื่อครบ '+PF.days+' วัน</div></div>';
+    $('#pf-mean').textContent=$('#pf-max').textContent=$('#pf-min').textContent='—';return}
+  $('#pf-chart').innerHTML=lineChart(m,PF.days);
+  const u=' <span class="sm mute">'+esc(m.unit)+'</span>';
+  $('#pf-mean').innerHTML=num(m.mean)+u;$('#pf-max').innerHTML=num(m.max)+u;$('#pf-min').innerHTML=num(m.min)+u;
+}
+const loadTremor=async()=>{const want=PF.id+'/'+PF.days,m=await tremorAPI();if(want===PF.id+'/'+PF.days)renderTremor(m)};  // กดปุ่มเร็วๆ ใช้เฉพาะผลของปุ่มล่าสุด
+async function loadProfile(id){
+  $('#pf-err').textContent='';PF.id=id;PF.start=null;if(id)CUR=id;
+  if(!id){$('#pf-err').textContent='เลือกผู้ป่วยจากหน้ารายชื่อก่อน';return}
+  $('#pf-name').textContent='กำลังโหลด…';$('#pf-sub').textContent='';$('#pf-tags').innerHTML='';
+  try{
+    const enc=encodeURIComponent(id),[p,s,m]=await Promise.all([get('/api/patients/'+enc),get('/api/patients/'+enc+'/summary'),tremorAPI()]);
+    PF.start=p.monitoring_start;renderTremor(m);  // ต้องรู้วันเริ่มติดตามก่อน ถึงจะตัดสินได้ว่าครบ 30/90 วันหรือยัง
+    $('#pf-name').textContent=(p.hn||'')+'  '+(p.display_name||'');
+    $('#pf-sub').textContent=[{M:'ชาย',F:'หญิง'}[p.sex]||'—','อายุ '+(p.age??'—')+' ปี','HN: '+(p.hn||'—'),p.status].join(' | ');
+    $('#pf-tags').innerHTML=(p.wear_hours==null?'<span class="pill sm" style="background:var(--wait)">ไม่มีข้อมูลการใส่</span>':'<span class="pill sm '+(p.wearing?'ok">● สวมใส่อุปกรณ์ ':'bad">● ใส่น้อย ')+p.wear_hours+' ชม./วัน</span>')
+      +(p.follow_up?'<span class="pill sm bad">● ต้องติดตาม</span>':'');
+    $('#pf-sum').innerHTML=['tremor','cadence','activity'].map(k=>pfCard(k,s[k])).join('')||'<div class="card mute">ยังไม่มีข้อมูลรายวัน</div>';
+  }catch(e){$('#pf-name').textContent='—';$('#pf-err').textContent='ดึงข้อมูลผู้ป่วยไม่ได้ ('+e.message+')'}
+}
+$('#pf-days').addEventListener('click',e=>{const b=e.target.closest('[data-d]');if(b&&PF.id){PF.days=+b.dataset.d;loadTremor().catch(err=>$('#pf-err').textContent='โหลดกราฟไม่ได้ ('+err.message+')')}});
+const pfRoute=()=>{const [h,id]=location.hash.slice(1).split('/');if(h==='profile')loadProfile(id&&decodeURIComponent(id))};
+addEventListener('hashchange',pfRoute);pfRoute();
+// ===== หน้า 4 / 5: ข้อมูลของผู้ป่วยทีละคน (#device/<id>, #clinical/<id>) =====
+// ไม่มี id ใน URL (กดจากเมนูซ้าย) = ใช้ผู้ป่วยที่ดูล่าสุด หรือคนแรกในรายชื่อ
+let PICK=null;  // รายชื่อผู้ป่วยทั้งหมดสำหรับช่องเลือก (โหลดครั้งเดียว ดึงทุกหน้าของ /api/patients)
+async function patientOptions(){
+  if(!PICK){let all=[],page=1,r;do{r=await get('/api/patients',{page:page++});all=all.concat(r.items)}while(r.items.length&&all.length<r.total);PICK=all}
+  return PICK}
+const LABEL={tremor:'Rest Tremor',cadence:'Walking Cadence',activity:'Activity Level'};
+// หน้า 4: การ์ด 4 ใบ + วงกลมคุณภาพข้อมูล + รายละเอียดอุปกรณ์
+const DV={range:null};
+const QCOL={wear_hours:'var(--ok)',no_signal_hours:'#d9962b',low_quality_hours:'var(--bad)'};
+async function loadDevice(id){
+  $('#dv-err').textContent='';
+  const enc=encodeURIComponent(id),q=DV.range&&{from:DV.range.from,to:DV.range.to};
+  try{
+    const [s,dq,dev]=await Promise.all([get('/api/patients/'+enc+'/summary',q),get('/api/patients/'+enc+'/data-quality',q),
+      get('/api/patients/'+enc+'/device').catch(()=>null)]);  // 404 = ยังไม่ได้ผูกอุปกรณ์
+    if(id!==CUR)return;  // ระหว่างรอ ผู้ใช้เปลี่ยนไปดูคนอื่นแล้ว
+    const w=dq.parts.find(p=>p.key==='wear_hours');
+    if(!DV.range)$('#device .dr .lb').textContent='7 วันล่าสุดที่มีข้อมูล';
+    $('#dv-cards').innerHTML='<div class="card"><div class="sm">สวมใส่อุปกรณ์</div><div class="big">'+(dq.has_data?num(w.per_day)+' <span class="sm mute">ชม./วัน</span>':'—')+'</div><div class="sm mute">'
+      +(dq.days?'เฉลี่ย '+dq.days+' วัน ('+fmt(dq.from)+' – '+fmt(dq.to)+')':'ไม่มีข้อมูลในช่วงนี้')+'</div></div>'
+      +['tremor','cadence','activity'].map(k=>pfCard(k,s[k])||'<div class="card"><div class="sm">'+LABEL[k]+'</div><div class="big">—</div><div class="sm mute">ไม่มีข้อมูลในช่วงนี้</div></div>').join('');
+    let acc=0;const stops=dq.parts.map((p,i)=>{const a=acc;acc=i===dq.parts.length-1?100:acc+(p.pct||0);return QCOL[p.key]+' '+a+'% '+acc+'%'}).join(',');
+    $('#dv-ring').style.background=dq.has_data?'conic-gradient('+stops+')':'';
+    $('#dv-ring').innerHTML='<b>'+(dq.has_data?w.pct+'%':'—%')+'</b>';
+    $('#dv-q').innerHTML=dq.has_data?dq.parts.map(p=>'<div><span style="color:'+QCOL[p.key]+'">●</span> '+esc(p.label)+' '+num(p.per_day)+' ชม./วัน ('+p.pct+'%)</div>').join(''):'<div>ยังไม่มีข้อมูลชั่วโมงสวมใส่ในช่วงนี้</div>';
+    $('#dv-info').innerHTML=dev?[['รุ่น',dev.model],['SN',dev.serial],['เฟิร์มแวร์',dev.firmware],['อัปเดตล่าสุด',dev.last_sync&&when(dev.last_sync)]]
+      .map(([k,v])=>'<tr><td>'+k+'</td><td style="color:var(--ink)">'+esc(v)+'</td></tr>').join(''):'<tr><td>ผู้ป่วยนี้ยังไม่ได้ผูกอุปกรณ์</td></tr>';
+  }catch(e){$('#dv-err').textContent='ดึงข้อมูลอุปกรณ์ไม่ได้ ('+e.message+')'}
+}
+$('#device').addEventListener('range',e=>{DV.range=e.detail;if(CUR)loadDevice(CUR)});
+// หน้า 5: คะแนนล่าสุด + รายข้อ + ประวัติ ของแบบประเมินที่เลือก
+const CL={type:'MDS-UPDRS'};
+const TITLE={'MDS-UPDRS':'MDS-UPDRS III',MoCA:'MoCA',CDR:'CDR','UPDRS-III-OFF':'UPDRS III ฉบับเดิม (OFF)'};
+const ITEM_TH={rest_tremor:'อาการสั่นขณะพัก (Rest tremor)',bradykinesia:'การเคลื่อนไหวช้า (Bradykinesia)',rigidity:'ความแข็งเกร็ง (Rigidity)',postural_stability:'การทรงตัว (Postural stability)',gait:'การเดิน (Gait)'};
+async function loadClinical(id){
+  $('#cl-err').textContent='';
+  try{
+    const a=await get('/api/patients/'+encodeURIComponent(id)+'/assessments',{type:CL.type});
+    if(id!==CUR)return;
+    const p=(PICK||[]).find(x=>x.patient_id===id),L=a.latest,t=TITLE[a.type],it=(L&&L.items)||{};
+    $('#cl-name').textContent=p?p.hn+'  '+p.display_name:id;
+    $('#cl-title').textContent=t;
+    $('#cl-score').innerHTML=L?num(L.total)+'<span class="mute" style="font-size:20px">/'+a.max+'</span>':'—';
+    $('#cl-date').textContent=L?'วันที่ประเมิน '+fmt(L.date)+(L.med_state?' · '+(L.med_state==='OFF'?'ก่อนยา (OFF)':'หลังยา (ON)'):''):'ยังไม่มีผลการประเมิน '+t;
+    const keys=[...Object.keys(ITEM_TH).filter(k=>k in it),...Object.keys(it).filter(k=>!(k in ITEM_TH))];  // เรียงตามลำดับในฟอร์ม
+    $('#cl-items').innerHTML='<tr><th>หัวข้อ</th><th>คะแนน</th></tr>'+(keys.length
+      ?keys.map(k=>'<tr><td>'+esc(ITEM_TH[k]||k)+'</td><td style="color:var(--ink)">'+num(it[k])+'</td></tr>').join('')
+      :'<tr><td colspan="2">'+(L?'แบบประเมินนี้ไม่มีคะแนนรายข้อ':'—')+'</td></tr>');
+    $('#cl-hist').innerHTML='<tr><th>วันที่</th><th>'+t+'</th><th>ผู้ประเมิน</th><th>หมายเหตุ</th></tr>'+(a.history.length
+      ?a.history.map(h=>'<tr><td>'+fmt(h.date)+'</td><td style="color:var(--ink)">'+num(h.total)+'/'+h.max+'</td><td>'+esc(h.assessor_name||h.assessor_id)+'</td><td>'+esc(h.note)+'</td></tr>').join('')
+      :'<tr><td colspan="4">ยังไม่มีประวัติการประเมิน '+t+'</td></tr>');
+  }catch(e){$('#cl-err').textContent='ดึงผลการประเมินไม่ได้ ('+e.message+')'}
+}
+$('#cl-type').addEventListener('click',e=>{const s=e.target.closest('[data-type]');if(s&&CUR){CL.type=s.dataset.type;loadClinical(CUR)}});
+// เปิดหน้า 4/5: หา id -> เติมช่องเลือกผู้ป่วย -> โหลดข้อมูล
+const PT_PAGES={device:[loadDevice,'#dv-pick','#dv-err'],clinical:[loadClinical,'#cl-pick','#cl-err']};
+async function ptPageRoute(){
+  const [h,raw]=location.hash.slice(1).split('/'),pg=PT_PAGES[h];if(!pg)return;
+  const [load,pick,err]=pg;
+  try{
+    const opts=await patientOptions();
+    let id=raw?decodeURIComponent(raw):CUR||(opts[0]&&opts[0].patient_id);
+    if(!id){$(err).textContent='ยังไม่มีผู้ป่วย';return}
+    if(!raw)history.replaceState(null,'','#'+h+'/'+encodeURIComponent(id));  // ใส่ id ใน URL (ไม่ทำให้เกิด hashchange ซ้ำ)
+    $(pick).innerHTML=opts.map(p=>'<option value="'+esc(p.patient_id)+'">'+esc(p.hn)+'  '+esc(p.display_name)+'</option>').join('');
+    $(pick).value=id;CUR=id;load(id);
+  }catch(e){$(err).textContent='ดึงรายชื่อผู้ป่วยไม่ได้ ('+e.message+')'}
+}
+['#dv-pick','#cl-pick'].forEach(s=>$(s).addEventListener('change',e=>{location.hash=location.hash.slice(1).split('/')[0]+'/'+encodeURIComponent(e.target.value)}));
+addEventListener('hashchange',ptPageRoute);ptPageRoute();
+// ===== ฟอร์ม "บันทึกผลการประเมินใหม่" -> POST /api/patients/<id>/assessments =====
+const send=(method,path,body)=>api(path,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+  .then(async r=>{const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(typeof j.detail==='string'?j.detail:(j.detail&&j.detail[0]&&j.detail[0].msg)||'HTTP '+r.status);return j});
+const post=(path,body)=>send('POST',path,body);
+const NA={type:'MDS-UPDRS'},MAX={'MDS-UPDRS':132,MoCA:30,CDR:3};
+const naF=n=>$('#newassess [name="'+n+'"]');
+let ME=null;  // หมอที่ login (โหลดครั้งเดียว)
+function naType(t){  // สลับแบบประเมิน: MoCA / CDR ไม่มีคะแนนรายข้อและสถานะยา กรอกแค่คะแนนรวม
+  NA.type=t;
+  $$('#na-type [data-type]').forEach(s=>s.classList.toggle('on',s.dataset.type===t));
+  $('#na-items').style.display=t==='MDS-UPDRS'?'':'none';
+  naF('med_state').closest('.fld').style.display=t==='MDS-UPDRS'?'':'none';
+  const tot=naF('total');tot.min=0;tot.max=MAX[t];tot.step=t==='CDR'?'0.5':'1';
+  tot.placeholder=t==='MDS-UPDRS'?'เว้นว่าง = ใช้ผลรวมคะแนนรายหัวข้อ':'0–'+MAX[t];
+  tot.previousElementSibling.textContent='คะแนนรวม '+TITLE[t]+' (เต็ม '+MAX[t]+')';
+}
+async function openNewAssess(){
+  $('#na-err').textContent='';naType(MAX[CL.type]?CL.type:'MDS-UPDRS');  // UPDRS ฉบับเดิมไม่ใช้บันทึกใหม่แล้ว -> เริ่มที่ MDS-UPDRS
+  const d=naF('date');d.max=iso(new Date());if(!d.value)d.value=d.max;
+  try{
+    const [opts,me]=await Promise.all([patientOptions(),ME||get('/api/me')]);ME=me;
+    naF('patient').innerHTML='<option value="">เลือก…</option>'+opts.map(p=>'<option value="'+esc(p.patient_id)+'">'+esc(p.hn)+'  '+esc(p.display_name)+'</option>').join('');
+    naF('patient').value=CUR||'';
+    const a=naF('assessor');a.value=me.name||me.doctor_id;a.readOnly=true;  // ผู้ประเมิน = หมอที่ login (backend ไม่รับค่านี้จากฟอร์ม)
+  }catch(e){$('#na-err').textContent='ดึงข้อมูลสำหรับฟอร์มไม่ได้ ('+e.message+')'}
+}
+$('#na-type').addEventListener('click',e=>{const s=e.target.closest('[data-type]');if(s)naType(s.dataset.type)});
+addEventListener('hashchange',()=>{if(location.hash==='#newassess')openNewAssess()});
+if(location.hash==='#newassess')openNewAssess();
+$('#na-save').addEventListener('click',async()=>{
+  const err=$('#na-err'),pid=naF('patient').value,date=naF('date').value,tot=naF('total').value,items={};
+  if(NA.type==='MDS-UPDRS')$$('[data-form=fs] select').forEach(s=>{if(s.value!=='')items[s.name]=+s.value});
+  if(!pid){err.textContent='กรุณาเลือกผู้ป่วย';return}
+  if(!date){err.textContent='กรุณาใส่วันที่ประเมิน';return}
+  if(tot===''&&!Object.keys(items).length){err.textContent=NA.type==='MDS-UPDRS'?'กรุณาให้คะแนนอย่างน้อย 1 หัวข้อ หรือใส่คะแนนรวม':'กรุณาใส่คะแนนรวม';return}
+  const body={type:NA.type,date,items};
+  if(tot!=='')body.total=+tot;
+  if(NA.type==='MDS-UPDRS'&&naF('med_state').value)body.med_state=naF('med_state').value;
+  if(naF('note').value.trim())body.note=naF('note').value.trim();
+  const btn=$('#na-save');btn.disabled=true;err.textContent='';
+  try{
+    await post('/api/patients/'+encodeURIComponent(pid)+'/assessments',body);
+    // ล้างฟอร์ม แล้วกลับไปหน้า 5 ของผู้ป่วยคนนี้ ที่แท็บแบบประเมินที่เพิ่งบันทึก
+    $$('#newassess select, #newassess textarea, #newassess input:not([name=assessor])').forEach(x=>x.value='');$('#tot').textContent='—';
+    CL.type=NA.type;$$('#cl-type [data-type]').forEach(s=>s.classList.toggle('on',s.dataset.type===CL.type));
+    CUR=pid;location.hash='clinical/'+encodeURIComponent(pid);
+  }catch(e){err.textContent='บันทึกไม่สำเร็จ: '+e.message}finally{btn.disabled=false}
+});
+// ===== หน้า 6 รายงาน: ภาพรวมทั้งกลุ่ม + เทียบกลุ่มอ้างอิง (รายคน) + กราฟกระจาย =====
+const RP={range:null,cohort:'COPS'};
+// แถบเทียบกลุ่มอ้างอิง: แถบ P25–P75 (ถ้ามี) + เส้น P50 + จุดค่าผู้ป่วย
+function pctBar(m){
+  const head='<div class="sm">'+esc(m.label)+' ('+esc(m.unit)+')</div>',vals=[m.value,m.p25,m.p50,m.p75].filter(v=>v!=null);
+  if(!vals.length)return '<div class="card">'+head+'<div class="bar"></div><div class="sm mute">ไม่มีข้อมูล</div></div>';
+  const W=300,max=Math.max(...vals)*1.25||1,x=v=>(10+v/max*(W-20)).toFixed(1);
+  let s='<svg viewBox="0 0 '+W+' 46" width="100%" style="font-size:10px;fill:var(--mute)"><rect x="10" y="14" width="'+(W-20)+'" height="10" rx="5" style="fill:var(--wait)"/>';
+  if(m.p25!=null&&m.p75!=null)s+='<rect x="'+x(m.p25)+'" y="14" width="'+(x(m.p75)-x(m.p25))+'" height="10" style="fill:color-mix(in srgb,var(--pri) 30%,transparent)"/>';
+  [['P25',m.p25],['P50',m.p50],['P75',m.p75]].forEach(([l,v])=>{if(v!=null)s+='<line x1="'+x(v)+'" x2="'+x(v)+'" y1="9" y2="29" stroke="var(--ink)" stroke-width="'+(l==='P50'?2:1)+'"/><text x="'+x(v)+'" y="42" text-anchor="middle">'+l+' '+num(v)+'</text>'});
+  if(m.value!=null)s+='<circle cx="'+x(m.value)+'" cy="19" r="6" style="fill:var(--pri);stroke:var(--card)" stroke-width="2"><title>ผู้ป่วย '+num(m.value)+'</title></circle>';
+  const cmp=m.vs_median_pct==null?'':' · '+(m.vs_median_pct>0?'สูงกว่า':'ต่ำกว่า')+'ค่ากลาง '+Math.abs(m.vs_median_pct)+'%';
+  return '<div class="card">'+head+s+'</svg><div class="sm"><span style="color:var(--pri)">●</span> ผู้ป่วย '+num(m.value)+cmp+'</div>'
+    +(m.p25==null||m.p75==null?'<div class="sm mute">กลุ่มอ้างอิงมีแค่ค่ากลาง (P50) จาก '+(m.n_people??'—')+' คน ยังไม่มี P25/P75</div>':'')+'</div>'}
+// กราฟกระจาย: 1 จุด = ผู้ป่วย 1 คน (ค่าเฉลี่ยในช่วง)
+function scatterChart(sc){
+  if(!sc.points.length)return 'ไม่มีผู้ป่วยที่มีข้อมูลครบทั้ง 2 ค่าในช่วงนี้';
+  const W=900,H=330,L=60,R=24,T=16,B=46;
+  const rng=a=>{const lo=Math.min(...a),hi=Math.max(...a),pad=(hi-lo||Math.abs(hi)||1)*0.25;return [Math.max(0,lo-pad),hi+pad]};
+  const [x0,x1]=rng(sc.points.map(p=>p.x)),[y0,y1]=rng(sc.points.map(p=>p.y));
+  const X=v=>(L+(v-x0)/(x1-x0)*(W-L-R)).toFixed(1),Y=v=>(T+(1-(v-y0)/(y1-y0))*(H-T-B)).toFixed(1);
+  let g='';
+  for(let i=0;i<=4;i++){const vx=x0+(x1-x0)*i/4,vy=y0+(y1-y0)*i/4;
+    g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(vy)+'" y2="'+Y(vy)+'" stroke="var(--line)"/><text x="'+(L-6)+'" y="'+(+Y(vy)+4)+'" text-anchor="end">'+num(vy)+'</text>'
+      +'<text x="'+X(vx)+'" y="'+(H-B+16)+'" text-anchor="middle">'+num(vx)+'</text>'}
+  g+='<text x="'+((L+W-R)/2)+'" y="'+(H-6)+'" text-anchor="middle">'+esc(sc.x.label)+' ('+esc(sc.x.unit)+')</text>'
+    +'<text transform="translate(12 '+((T+H-B)/2)+') rotate(-90)" text-anchor="middle">'+esc(sc.y.label)+' ('+esc(sc.y.unit)+')</text>';
+  g+=sc.points.map(p=>'<g data-go="profile/'+encodeURIComponent(p.patient_id)+'" style="cursor:pointer"><circle cx="'+X(p.x)+'" cy="'+Y(p.y)+'" r="6" style="fill:var(--pri)"/>'
+    +'<text x="'+(+X(p.x)+9)+'" y="'+(+Y(p.y)-8)+'" style="fill:var(--ink)">'+esc(p.hn||p.patient_id)+'</text><title>'+esc(p.hn)+': '+num(p.x)+' '+esc(sc.x.unit)+', '+num(p.y)+' '+esc(sc.y.unit)+'</title></g>').join('');
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="font-size:11px;fill:var(--mute)">'+g+'</svg>'}
+async function loadPercentiles(){
+  try{
+    const opts=await patientOptions(),pick=$('#rp-pick');
+    if(!opts.length){$('#rp-pct').innerHTML='<div class="mute">ยังไม่มีผู้ป่วย</div>';return}
+    const id=opts.some(p=>p.patient_id===CUR)?CUR:opts[0].patient_id;
+    pick.innerHTML=opts.map(p=>'<option value="'+esc(p.patient_id)+'">'+esc(p.hn)+'  '+esc(p.display_name)+'</option>').join('');pick.value=id;
+    const r=await get('/api/reports/percentiles',{patient_id:id,cohort:RP.cohort});
+    if(id===$('#rp-pick').value)$('#rp-pct').innerHTML=['tremor','cadence','activity'].map(k=>pctBar(r.metrics[k])).join('');
+  }catch(e){$('#rp-err').textContent='ดึงข้อมูลเทียบกลุ่มอ้างอิงไม่ได้ ('+e.message+')'}
+}
+async function loadReports(){
+  $('#rp-err').textContent='';
+  const q=RP.range?{from:RP.range.from,to:RP.range.to}:{};
+  loadPercentiles();
+  try{
+    const [o,sc]=await Promise.all([get('/api/reports/overview',q),get('/api/reports/scatter',{x:'tremor',y:'cadence',...q})]);
+    if(!RP.range)$('#reports .dr .lb').textContent=fmt(o.from)+' – '+fmt(o.to);  // ยังไม่เลือก = 30 วันล่าสุดที่มีข้อมูล
+    $('#rp-cards').innerHTML=['tremor','cadence','activity'].map(k=>{const c=o.metrics[k];
+      return pfCard(k,{...c,label:c.label+' (เฉลี่ย)'},'เฉลี่ยจากผู้ป่วย '+c.n_patients+' คน · เทียบ '+fmt(o.compare_from)+' – '+fmt(o.compare_to))}).join('');
+    $('#rp-scatter').innerHTML=scatterChart(sc);
+  }catch(e){$('#rp-err').textContent='ดึงรายงานไม่ได้ ('+e.message+')'}
+}
+$('#reports').addEventListener('range',e=>{RP.range=e.detail;loadReports()});
+$('#rp-cohort').addEventListener('click',e=>{const s=e.target.closest('[data-c]');if(s){RP.cohort=s.dataset.c;loadPercentiles()}});
+$('#rp-pick').addEventListener('change',e=>{CUR=e.target.value;loadPercentiles()});
+addEventListener('hashchange',()=>{if(location.hash==='#reports')loadReports()});
+if(location.hash==='#reports')loadReports();
+// ===== หน้า 7 การแจ้งเตือน: รายการ + แท็บตามประเภท (นับจำนวนให้) + ปุ่มรับทราบ (PATCH status) =====
+const AL={type:'',items:[],list:[]};
+const alPath=a=>'/api/alerts/'+encodeURIComponent(a.patient_id)+'/'+encodeURIComponent(a.created_at);
+function renderAlerts(){
+  const n={};AL.items.forEach(a=>n[a.type]=(n[a.type]||0)+1);
+  $$('#al-tabs [data-t]').forEach(b=>b.querySelector('span').textContent='('+(b.dataset.t?n[b.dataset.t]||0:AL.items.length)+')');
+  const list=AL.list=AL.items.filter(a=>!AL.type||a.type===AL.type);
+  $('#al').innerHTML=list.length?list.map((a,i)=>{const isNew=a.status!=='seen';
+    return '<div class="item"'+(i===list.length-1?' style="border:0"':'')+'><div class="ic"'+(isNew?'':' style="opacity:.5"')+'>'+(ICON[a.metric]||(a.type==='assessment'?'📋':'🔔'))+'</div>'
+      +'<div style="flex:1;min-width:0"><div style="color:var(--'+(isNew?'bad':'ink')+');font-weight:500">'+esc(a.text)+(isNew?' <span class="pill bad sm" style="min-width:0">ใหม่</span>':'')+'</div>'
+      +'<div class="sm mute">'+esc(a.hn||a.patient_id)+' '+esc(a.display_name||'')+' | '+when(a.created_at)+'</div>'
+      +(a.rule?'<div class="sm mute">เกณฑ์: '+esc(a.rule)+(a.days&&a.days.length?' ('+a.days.map(fmt).join(', ')+')':'')+'</div>':'')
+      +(!isNew&&a.seen_at?'<div class="sm mute">✓ รับทราบแล้ว '+when(a.seen_at)+'</div>':'')+'</div>'
+      +'<div class="flex wrap" style="gap:6px;justify-content:flex-end"><button class="btn l" data-al="'+i+'">'+(isNew?'✓ รับทราบ':'ยกเลิกรับทราบ')+'</button>'
+      +'<button class="btn l" data-go="profile/'+encodeURIComponent(a.patient_id)+'">ดูรายละเอียด</button></div></div>'}).join('')
+    :'<div class="mute">ไม่มีการแจ้งเตือน</div>';
+}
+async function loadAlerts(){
+  $('#al-err').textContent='';
+  try{AL.items=await get('/api/alerts',{limit:500});renderAlerts()}catch(e){$('#al-err').textContent='ดึงการแจ้งเตือนไม่ได้ ('+e.message+')'}
+}
+$('#al-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(b){AL.type=b.dataset.t;renderAlerts()}});
+$('#al').addEventListener('click',async e=>{const b=e.target.closest('[data-al]');if(!b)return;
+  const a=AL.list[+b.dataset.al];b.disabled=true;
+  try{const u=await send('PATCH',alPath(a),{status:a.status==='seen'?'new':'seen'});
+    if(u.status==='new'){delete a.seen_at;delete a.seen_by}
+    Object.assign(a,u);renderAlerts();updateBadge()}  // ค่าที่ PATCH ส่งกลับไม่มี hn/ชื่อ จึงรวมเข้ากับของเดิม
+  catch(err){$('#al-err').textContent='อัปเดตสถานะไม่ได้ ('+err.message+')';b.disabled=false}});
+addEventListener('hashchange',()=>{if(location.hash==='#alerts')loadAlerts()});
+if(location.hash==='#alerts')loadAlerts();
+// ===== หน้า 8 นัดหมาย: ปฏิทินรายเดือน (จำนวนนัดต่อวัน) + รายการนัดของวันที่เลือก + เปลี่ยนสถานะ (PATCH) =====
+const AP={month:iso(new Date()).slice(0,7),day:null,counts:{},items:[]};
+const AP_COL={'มาแล้ว':'ok','รอพบ':'bad','ยังไม่มา':''};   // สีป้ายสถานะ ('' = เทา)
+function renderCal(){
+  const [y,m]=AP.month.split('-').map(Number),first=new Date(y,m-1,1).getDay(),n=new Date(y,m,0).getDate(),today=iso(new Date());
+  $('#ap-mlabel').textContent=new Date(y,m-1,1).toLocaleDateString('th-TH',{month:'long',year:'numeric'});$('#ap-month').value=AP.month;
+  let h=["อา.","จ.","อ.","พ.","พฤ.","ศ.","ส."].map(d=>'<span class="h">'+d+'</span>').join('')+'<span></span>'.repeat(first);
+  for(let d=1;d<=n;d++){const ds=AP.month+'-'+pad(d),c=AP.counts[ds];
+    h+='<span class="d'+(ds===AP.day?' on':'')+(ds===today?' today':'')+'" data-day="'+ds+'">'+d+(c?'<small>'+c+' นัด</small>':'')+'</span>'}
+  $('#cal').innerHTML=h;
+}
+async function loadMonth(){
+  $('#ap-err').textContent='';renderCal();  // วาดปฏิทินก่อน จำนวนนัดตามมาทีหลัง
+  try{const want=AP.month,r=await get('/api/appointments',{month:want});if(want!==AP.month)return;AP.counts=r.days;renderCal()}
+  catch(e){$('#ap-err').textContent='ดึงนัดหมายไม่ได้ ('+e.message+')'}
+}
+async function loadDay(){
+  if(!AP.day){$('#dlab').textContent='—';$('#ap-list').innerHTML='<div class="mute sm" style="padding:14px 0">เลือกวันในปฏิทิน</div>';return}
+  $('#dlab').textContent=fmt(AP.day);
+  try{
+    const want=AP.day,r=await get('/api/appointments',{date:want});if(want!==AP.day)return;AP.items=r.items;
+    $('#ap-list').innerHTML=r.items.length?r.items.map((a,i)=>'<div class="item"'+(i===r.items.length-1?' style="border:0"':'')+'><b style="width:52px;flex:none">'+esc(a.time)+'</b>'
+      +'<div style="flex:1;min-width:0"><div style="color:var(--ink)">'+esc(a.hn||a.patient_id)+' '+esc(a.display_name||'')+'</div><div class="sm mute">'+esc(a.purpose)+(a.note?' · '+esc(a.note):'')+'</div></div>'
+      +'<select class="pill '+AP_COL[a.status]+'" data-ap="'+i+'" aria-label="สถานะนัด">'+Object.keys(AP_COL).map(s=>'<option'+(s===a.status?' selected':'')+'>'+s+'</option>').join('')+'</select></div>').join('')
+      :'<div class="mute sm" style="padding:14px 0">ไม่มีนัดในวันนี้</div>';
+  }catch(e){$('#ap-err').textContent='ดึงนัดของวันนี้ไม่ได้ ('+e.message+')'}
+}
+const apMonth=(y,m)=>{const d=new Date(y,m,1);AP.month=d.getFullYear()+'-'+pad(d.getMonth()+1);AP.counts={};loadMonth()};
+const apShift=k=>{const [y,m]=AP.month.split('-').map(Number);apMonth(y,m-1+k)};
+$('#ap-prev').addEventListener('click',()=>apShift(-1));$('#ap-next').addEventListener('click',()=>apShift(1));
+$('#ap-month').addEventListener('change',e=>{if(e.target.value){const [y,m]=e.target.value.split('-').map(Number);apMonth(y,m-1)}});
+$('#ap-today').addEventListener('click',()=>{const t=iso(new Date());AP.day=t;apMonth(+t.slice(0,4),+t.slice(5,7)-1);loadDay()});
+$('#cal').addEventListener('click',e=>{const d=e.target.closest('[data-day]');if(d){AP.day=d.dataset.day;renderCal();loadDay()}});
+$('#ap-list').addEventListener('change',async e=>{const s=e.target.closest('[data-ap]');if(!s)return;
+  const a=AP.items[+s.dataset.ap],old=a.status;s.disabled=true;
+  try{const u=await send('PATCH','/api/appointments/'+[a.date,a.time,a.patient_id].map(encodeURIComponent).join('/'),{status:s.value});
+    a.status=u.status;s.className='pill '+AP_COL[u.status]}
+  catch(err){s.value=old;$('#ap-err').textContent='เปลี่ยนสถานะไม่ได้ ('+err.message+')'}finally{s.disabled=false}});
+addEventListener('hashchange',()=>{if(location.hash==='#appts'){loadMonth();loadDay()}});
+if(location.hash==='#appts'){loadMonth();loadDay()}
+// ฟอร์ม "เพิ่มนัดหมาย" -> POST /api/appointments
+const apF=n=>$('#newappt [name="'+n+'"]');
+async function openNewAppt(){
+  $('#apn-err').textContent='';
+  if(!apF('date').value)apF('date').value=AP.day||iso(new Date());  // ค่าเริ่มต้น = วันที่เลือกในปฏิทิน
+  try{
+    const [opts,me]=await Promise.all([patientOptions(),ME||get('/api/me')]);ME=me;
+    const keep=apF('patient').value;
+    apF('patient').innerHTML='<option value="">เลือก…</option>'+opts.map(p=>'<option value="'+esc(p.patient_id)+'">'+esc(p.hn)+'  '+esc(p.display_name)+'</option>').join('');
+    apF('patient').value=keep||CUR||'';
+    apF('doctor').value=me.name||me.doctor_id;apF('doctor').readOnly=true;  // นัดในชื่อหมอที่ login (backend ไม่รับค่านี้จากฟอร์ม)
+  }catch(e){$('#apn-err').textContent='ดึงข้อมูลสำหรับฟอร์มไม่ได้ ('+e.message+')'}
+}
+addEventListener('hashchange',()=>{if(location.hash==='#newappt')openNewAppt()});
+if(location.hash==='#newappt')openNewAppt();
+$('#ap-save').addEventListener('click',async()=>{
+  const err=$('#apn-err'),body={patient_id:apF('patient').value,date:apF('date').value,time:apF('time').value.slice(0,5),purpose:apF('purpose').value};
+  if(!body.patient_id||!body.date||!body.time||!body.purpose){err.textContent='กรุณากรอก ผู้ป่วย วันที่ เวลา และประเภทนัด ให้ครบ';return}
+  if(apF('note').value.trim())body.note=apF('note').value.trim();
+  const btn=$('#ap-save');btn.disabled=true;err.textContent='';
+  try{
+    await post('/api/appointments',body);
+    $$('#newappt select, #newappt textarea, #newappt input:not([name=doctor])').forEach(x=>x.value='');
+    AP.month=body.date.slice(0,7);AP.day=body.date;CUR=body.patient_id;location.hash='appts';  // กลับไปปฏิทิน ที่วันที่เพิ่งนัด
+  }catch(e){err.textContent='บันทึกไม่สำเร็จ: '+e.message}finally{btn.disabled=false}
+});
+// ===== หน้า 9 ตั้งค่า: โปรไฟล์หมอ + ธีม / ภาษา / รูปแบบวันที่ / แจ้งเตือน (บันทึกลง DB ผ่าน PUT /api/me/settings) =====
+function applySettings(){  // ใช้ค่าที่ตั้งไว้กับทั้งเว็บ + ให้ช่องในหน้าตั้งค่าตรงกับค่าจริง
+  try{SET.theme==='auto'?document.documentElement.removeAttribute('data-theme'):document.documentElement.dataset.theme=SET.theme}catch(_){}
+  $$('#theme [data-t]').forEach(s=>s.classList.toggle('on',s.dataset.t===SET.theme));
+  $('#st-lang').value=SET.lang;$('#st-date').value=SET.date_format;$('#st-notify').checked=SET.notify_alerts;
+}
+async function updateBadge(){  // จำนวนแจ้งเตือนที่ยังไม่ได้รับทราบ ที่เมนูซ้าย
+  const b=$('#nav-al');if(!SET.notify_alerts){b.hidden=true;return}
+  try{const n=(await get('/api/alerts',{status:'new',limit:500})).length;b.textContent=n;b.hidden=!n}catch(_){b.hidden=true}
+}
+async function saveSettings(){
+  const msg=$('#st-msg');msg.style.color='var(--mute)';msg.textContent='กำลังบันทึก…';
+  try{SET=await send('PUT','/api/me/settings',SET);applySettings();updateBadge();msg.style.color='var(--ok)';msg.textContent='✓ บันทึกแล้ว'}
+  catch(e){msg.style.color='var(--bad)';msg.textContent='บันทึกไม่สำเร็จ ('+e.message+')'}
+}
+$('#theme').addEventListener('click',e=>{const s=e.target.closest('[data-t]');if(s){SET.theme=s.dataset.t;saveSettings()}});
+$('#st-lang').addEventListener('change',e=>{SET.lang=e.target.value;saveSettings()});
+$('#st-date').addEventListener('change',e=>{SET.date_format=e.target.value;saveSettings()});
+$('#st-notify').addEventListener('change',e=>{SET.notify_alerts=e.target.checked;saveSettings()});
+async function loadMe(){
+  $('#st-msg').textContent='';
+  try{const me=await get('/api/me');ME=ME||me;$('#st-name').textContent=me.name||me.doctor_id;$('#st-pos').textContent=[me.position,me.hospital].filter(Boolean).join(' · ')}
+  catch(e){$('#st-msg').style.color='var(--bad)';$('#st-msg').textContent='ดึงข้อมูลแพทย์ไม่ได้ ('+e.message+')'}
+}
+addEventListener('hashchange',()=>{if(location.hash==='#settings')loadMe()});
+if(location.hash==='#settings')loadMe();
+// เปิดเว็บ: โหลดการตั้งค่าก่อน แล้วใช้กับทั้งเว็บ (ธีม / ป้ายแจ้งเตือน)
+get('/api/me/settings').then(s=>{SET=s;applySettings();
+  if(SET.date_format!=='short'&&(location.hash===''||location.hash==='#home'))loadHome(HOME_RANGE)})  // หน้าหลักอาจโหลดเสร็จก่อน -> วาดวันที่ใหม่ตามรูปแบบที่ตั้งไว้
+  .catch(()=>applySettings()).finally(updateBadge);
+$('#login-btn').addEventListener('click',login);$('#st-logout').addEventListener('click',logout);
 route();
 </script>
 </body>
