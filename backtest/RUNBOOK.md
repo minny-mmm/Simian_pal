@@ -109,6 +109,9 @@ aws sso login --profile minny
 - `--workers` สูงสุด 2 และมี memory guard; รันซ้ำคำสั่งเดิมเพื่อ resume
 - memory guard ดู **available commit** (ไม่ใช่ RAM ว่าง) ต่อคนต้องการ ~4.9–5.8 GiB + 1 GiB; เครื่องที่เปิดแอปอื่นเยอะ commit ว่างแค่ 4–9 GB
   → ใช้ `--workers 1` (หรือปิดแอป/เพิ่ม page file) ไม่งั้นทุกคน fail ทันที
+- `--stage checkpoint` ก่อน fit ตัวเต็มจะสร้าง `data/models/reference-v1/<run>/checkpoints/` ทำให้ `fit_bundle` ปฏิเสธ
+  ("Output model directory exists") → บันทึก SHA256 แล้วย้าย `checkpoints/` ออกชั่วคราว, `--stage fit`, ย้ายกลับและตรวจ SHA256
+  (ทำแล้วกับ `real-20261024-full-v2`: baseline `e2a35a02…`, test plan lock ตรงกัน) หรือทำ checkpoint หลัง fit ตัวเต็มเท่านั้น
 - ห้าม kill controller ระหว่างที่ worker ทำงาน: worker ที่ไม่มีแถว `failed` ใน `train_progress.json` จะ retry ใน run เดิมไม่ได้
   (`real-20261024-full-v1` ถูกทิ้งด้วยเหตุนี้ ใช้ `real-20261024-full-v2` แทน)
 

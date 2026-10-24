@@ -135,7 +135,9 @@ Flow: raw (OSF/CDC → S3 `data/raw/`) → subject selection & splits (`tools/`,
   runs with different names don't mix even when the policy is identical; never mix preprocessing versions.
 - `tools/run_real_reference.py` `initialize()` refuses to continue a run once git HEAD or clean source changes. Run long
   real runs from a dedicated `git worktree` so commits elsewhere don't break them; a run's clean evidence lives only on
-  the machine that ran it (S3 has bundles/reports, not `data/clean/reference-runs/`).
+  the machine that ran it (S3 has bundles/reports, not `data/clean/reference-runs/`). A `--stage checkpoint` taken
+  before the full fit leaves `data/models/reference-v1/<run>/checkpoints/`, and `fit_bundle` then refuses the non-empty
+  model dir: move `checkpoints/` aside (hash it), fit, move it back (see backtest/RUNBOOK.md).
 - Legacy CSVs in S3 `data/features/` have no manifests: don't use them for the reference baseline (Track B only).
   `tools/audit_model_readiness.py` fetches QC/diaries of every split incl. test; use `backtest.prepare_symptom` instead.
   `data/features/nhanes/tests/` holds test-split files — don't pull or open test data until the test gate is unlocked.
