@@ -1,6 +1,8 @@
 """SageMaker BYOC entrypoint; the same fit_bundle used locally. No API calls."""
 import argparse
+import importlib.metadata
 import os
+import platform
 import sys
 from pathlib import Path
 
@@ -8,6 +10,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from src.reference.io import load_bundle
 from tools.reference_baseline import fit_bundle
+from src.reference.common import sha256,write_json
 
 
 def main():
@@ -20,6 +23,12 @@ def main():
     if not daily.split.eq('train').all() or not provenance.get('training_bundle_only'):
         raise ValueError('AWS input must be prepared train-only bundle; run prepare_reference_training.py')
     artifact=fit_bundle(a.bundle,a.model_dir)
+    write_json(a.model_dir/'runtime_metadata.json',dict(schema_version=1,data_origin=artifact['data_kind'],
+        is_demo=artifact['is_demo'],python=platform.python_version(),
+        dependencies={p:importlib.metadata.version(p) for p in ['numpy','pandas','PyYAML']},
+        declared_code_revision=os.environ.get('REFERENCE_CODE_REVISION'),
+        input_manifest_sha256=os.environ.get('REFERENCE_INPUT_MANIFEST_SHA256'),
+        baseline_sha256=sha256(a.model_dir/'baseline.json'),fit_split='train'))
     print(f"{artifact['data_kind']} reference artifact saved; no classifier/endpoint; fit_split=train")
 
 

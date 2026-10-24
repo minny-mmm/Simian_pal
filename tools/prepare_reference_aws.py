@@ -72,6 +72,12 @@ def build_request(pipeline, cfg):
             'sagemaker_submit_directory':json.dumps(root+'/'+cfg['source_relative']),
             'sagemaker_container_log_level':'20',
             'sagemaker_region':json.dumps(pipeline['storage']['region'])}
+        if cfg['network_isolation']:
+            # SageMaker downloads this channel; the isolated training process has
+            # neither network access nor credentials to fetch the source from S3.
+            request['InputDataConfig'].append(dict(ChannelName='code',DataSource=dict(S3DataSource=dict(
+                S3DataType='S3Prefix',S3Uri=root+'/'+cfg['source_relative'],S3DataDistributionType='FullyReplicated'))))
+            request['HyperParameters']['sagemaker_submit_directory']=json.dumps('/opt/ml/input/data/code/'+Path(cfg['source_relative']).name)
     shape=botocore.session.Session().get_service_model('sagemaker').operation_model('CreateTrainingJob').input_shape
     validate_parameters(request,shape)  # offline validation against the installed SDK's real API shape
     return request

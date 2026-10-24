@@ -1,0 +1,19 @@
+mode: prebuilt_script
+run_id: aws-real-pilot-20261024-v1
+source_run: real-20261023-v1
+job_name: pd-reference-real-pilot-20261024-v1
+role_arn: arn:aws:iam::205506434226:role/service-role/ParkinsonsReferencePilot20261024v1
+# Official Singapore sklearn 1.9-0 digest read from ECR on 2026-10-24.
+image_uri: 121021644041.dkr.ecr.ap-southeast-1.amazonaws.com/sagemaker-scikit-learn@sha256:be551a45aeb4bd9dc2e3d48b829aab9faf293a581a5c79122445a0ab63422c88
+instance_type: ml.m5.xlarge
+instance_count: 1
+volume_size_gb: 20
+max_runtime_seconds: 900
+input_relative: data/daily/reference-v1/aws-real-pilot-20261024-v1/train
+output_relative: data/models/reference-v1/aws-real-pilot-20261024-v1
+source_relative: data/models/reference-v1/aws-real-pilot-20261024-v1/source/source.tar.gz
+network_isolation: true
+training_quota_code: L-CCE2AFA6
+# Deliberately no RetryStrategy: opt-in job retry is disabled.
+numerical_rtol: 1.0e-12
+numerical_atol: 1.0e-12
