@@ -179,6 +179,11 @@ Remove-Item backtest/config/backtest_config.test-unlock.yaml
   หรือ extractor/clean config ปัจจุบันสร้าง `preprocessing_version` ไม่ตรง baseline
 - เขียนเฉพาะ `backtest/workspace/real/test/<run>/<sha12>/` และ `backtest/outputs/_test_prepared/<sha>.json`; สร้าง bundle ครั้งเดียว
 - เปิด test แล้ว (`outputs/_test_opened/<sha>.json`) จะเปิดซ้ำไม่ได้ แม้ run ล้มกลางทาง — การลบ marker คือการตัดสินใจของทีม ต้องบันทึกเหตุผล
+- **test ใช้ได้ครั้งเดียวต่อชุดคน ไม่ใช่ต่อ SHA**: ล็อกในโค้ดผูกกับ SHA ของ baseline ดังนั้น baseline ใหม่ (fit ใหม่/config ใหม่) จะเปิด
+  test ชุดเดิมได้อีกในทางเทคนิค แต่หลังเห็นผล test ของ baseline v1 (`e2a35a02…`, run `real-20261024-full-v2`) แล้ว
+  **ห้ามใช้ผล test นั้นปรับหรือเลือกโมเดล/config/threshold รอบถัดไป** — ใช้ train/valid, LOO, walk-forward เท่านั้น
+  ถ้าจำเป็นต้องรัน test ชุดเดิมกับ baseline ใหม่ ต้องรายงานว่าเป็น "test ที่ถูกใช้ซ้ำหลังเห็นผล" (ไม่ใช่ held-out, มีแนวโน้มดีเกินจริง)
+  held-out ที่สะอาดจริงต้องมาจากคนที่ไม่เคยอยู่ใน split ใดเลย
 
 ### ขั้น 7 — Track B (ถ้าต้องการ)
 

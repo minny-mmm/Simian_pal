@@ -117,6 +117,9 @@ Flow: raw (OSF/CDC → S3 `data/raw/`) → subject selection & splits (`tools/`,
   row is read. The test bundle is built only by `backtest/prepare_test.py` (same locks; locked pipeline/reference
   config, noise lock and clean source must reproduce the baseline `preprocessing_version`) and is never pulled by
   `--pull`. Keep `allow_test_split: false` in the main config; unlock via a separate config copy with identical gates.
+  The lock is per baseline SHA, but the test *people* are single-use: once baseline v1's test result (`e2a35a02…`,
+  run `real-20261024-full-v2`) has been seen, never use it to tune/select later models, configs or thresholds (use
+  train/valid/LOO/walk-forward); re-running that test on a new baseline must be reported as reused test, not held-out.
   `real.data_root` points real mode at another checkout (e.g. a run's worktree) before the repo/workspace.
 
 ## Gotchas
